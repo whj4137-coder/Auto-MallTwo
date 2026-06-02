@@ -25,7 +25,7 @@ cartRouter.get("/cart", requireAuth, (_req, res) => {
 });
 
 // API-009 加入购物车（仅 PHYSICAL；展示服务→2003；售罄→4009）
-cartRouter.post("/cart", requireAuth, gateWrite, (req, res) => {
+cartRouter.post("/cart", gateWrite, requireAuth, (req, res) => {
   const { productCode, color, capacity, qty = 1 } = req.body ?? {};
   const p = store.getProduct(productCode);
   if (!p || !p.published) {
@@ -69,7 +69,7 @@ cartRouter.post("/cart", requireAuth, gateWrite, (req, res) => {
 });
 
 // API-010 修改数量 [1,5]
-cartRouter.patch("/cart/:itemId", requireAuth, gateWrite, (req, res) => {
+cartRouter.patch("/cart/:itemId", gateWrite, requireAuth, (req, res) => {
   const item = store.cart.find((i) => i.itemId === req.params.itemId);
   if (!item) {
     fail(res, ERR.NOT_FOUND, COPY.C036_NOT_FOUND);
@@ -81,7 +81,7 @@ cartRouter.patch("/cart/:itemId", requireAuth, gateWrite, (req, res) => {
 });
 
 // API-011 切换勾选
-cartRouter.patch("/cart/:itemId/select", requireAuth, gateWrite, (req, res) => {
+cartRouter.patch("/cart/:itemId/select", gateWrite, requireAuth, (req, res) => {
   const item = store.cart.find((i) => i.itemId === req.params.itemId);
   if (!item) {
     fail(res, ERR.NOT_FOUND, COPY.C036_NOT_FOUND);
@@ -92,7 +92,7 @@ cartRouter.patch("/cart/:itemId/select", requireAuth, gateWrite, (req, res) => {
 });
 
 // API-012 删除项（无二次确认）
-cartRouter.delete("/cart/:itemId", requireAuth, gateWrite, (req, res) => {
+cartRouter.delete("/cart/:itemId", gateWrite, requireAuth, (req, res) => {
   store.cart = store.cart.filter((i) => i.itemId !== req.params.itemId);
   ok(res, cartView());
 });

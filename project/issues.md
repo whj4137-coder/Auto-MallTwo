@@ -27,3 +27,9 @@
 | I-018 | DEBT | P2 | RESOLVED | 文档/代码 SSOT 一致原仅靠自觉；已加 scripts/check-ssot.mjs + commit hook 强制校验（change 0008），并修全部 7 处硬编码（change 0007） | S-022 | S-022 | - |
 | I-019 | DEBT | P2 | RESOLVED | 沙箱限制仅针对 Codex 会话；S-037 在本机普通环境实跑 `npm run verify`（30 测）+ `npm run test:e2e`（9/9，含 LAYOUT-01 1280×720 审计）全绿 | S-035 | S-037 | TC-019 |
 | I-020 | DEBT | P2 | RESOLVED | 本机有 Homebrew `openjdk@17` + `android-commandlinetools`（platforms 35/36、build-tools 34/35/36）；S-037 `gradle :app:assembleDebug` 成功产出 debug APK，工具链验证通过；新增 android-webview/.gitignore | S-036 | S-037 | - |
+| I-021 | BUG | P1 | RESOLVED | 实物 checkout 可重复支付：`POST /pay` 仅会员幂等，实物二次支付再次 `nextP()` 生成第二单 + 序号膨胀（违反 EDGE-013/§12.1）。S-038 加 `c.paid` 守卫→4009 `ALREADY_PAID`，补 L2 用例 | S-038 | S-038 | EDGE-013 |
+| I-022 | W | P2 | RESOLVED | 后端门禁优先级与 PRD §8 相反：写路由 `requireAuth,gateWrite` 顺序使「未登录+行车/断网」返 1001 而非 2001/2002。S-038 改 `gateWrite,requireAuth`，补 L2 优先级用例 | S-038 | S-038 | REQ-024 |
+| I-023 | W | P3 | RESOLVED | 搜索空 `q` 返回 `[]` 而非 §15.10.2 要求的 4000。S-038 后端兜底返回 4000（前端已空输入短路），补 L2 用例 | S-038 | S-038 | REQ-003 |
+| I-024 | DEBT | P2 | RESOLVED | CHANGELOG 损坏：WebView 内容滞留 [Unreleased] 但已在 v1.0.0 tag；[1.0.0] 段有多个重复 `### Added/### Changed`（违反 Keep a Changelog/R8）。S-038 重整：折叠进 1.0.0、每组单标题、新 [Unreleased] 记 bug 修复 | S-034 | S-038 | - |
+| I-025 | DEBT | P3 | OPEN | Android `network_security_config.xml` 全局 `cleartextTrafficPermitted="true"`：允许所有域 HTTP 明文。公网走 HTTPS 时不必要（安全气味），仅局域网 http 测试需要。公网/正式分发前决策：改 false 或限定域 | S-038 | - | - |
+| I-026 | DEBT | P3 | OPEN | 后端 `app.use(cors())` 全开 CORS：单服务同源部署无需 CORS 全开。Demo 可接受，正式分发前可收窄/移除 | S-038 | - | - |

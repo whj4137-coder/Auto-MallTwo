@@ -208,6 +208,48 @@ describe("门禁矩阵补充（REQ-024：写入端点统一受 auth+gateWrite）
     const q = await request(app).patch(`/api/cart/${id}`).set(auth(t)).set("x-demo-drive", "DRIVING").send({ qty: 3 });
     expect(q.body.code).toBe(ERR.DRIVING_BLOCKED);
   });
+  // 优先级 DRIVING > OFFLINE > GUEST（PRD §8）：同时命中只返最高，行车/断网先于 GUEST
+  it("优先级：未登录 + 行车 → 2001（非 1001）", async () => {
+    const r = await request(app).post("/api/cart").set("x-demo-drive", "DRIVING").send({ productCode: "phy_car_001" });
+    expect(r.body.code).toBe(ERR.DRIVING_BLOCKED);
+  });
+  it("优先级：未登录 + 断网 → 2002（非 1001）", async () => {
+    const r = await request(app).post("/api/cart").set("x-demo-net", "OFFLINE").send({ productCode: "phy_car_001" });
+    expect(r.body.code).toBe(ERR.OFFLINE_BLOCKED);
+  });
+});
+
+describe("重复支付拦截（EDGE-013 / §12.1）", () => {
+  it("实物 checkout 二次支付 → 4009 ALREADY_PAID，不生成第二单，seq 不递增", async () => {
+    const t = await login();
+    await request(app).post("/api/cart").set(auth(t)).send({ productCode: "phy_car_001" });
+    const co = await request(app).post("/api/checkout").set(auth(t)).send({ source: "CART" });
+    const pay1 = await request(app).post(`/api/checkout/${co.body.data.checkoutId}/pay`).set(auth(t));
+    expect(pay1.body.data.order.orderNo).toBe("ORDER-P-001");
+    const pay2 = await request(app).post(`/api/checkout/${co.body.data.checkoutId}/pay`).set(auth(t));
+    expect(pay2.body.code).toBe(ERR.NOT_CHECKOUTABLE);
+    expect(pay2.body.data.reason).toBe("ALREADY_PAID");
+    const orders = await request(app).get("/api/orders").set(auth(t));
+    expect(orders.body.data).toHaveLength(1);
+    expect(store.seq.snapshot().seqP).toBe(1);
+  });
+});
+
+describe("搜索（REQ-003 / §15.10.2）", () => {
+  it("空 q → 4000", async () => {
+    const r = await request(app).get("/api/search?q=");
+    expect(r.body.code).toBe(ERR.VALIDATION);
+  });
+  it("命中实物（substring）", async () => {
+    const r = await request(app).get("/api/search?q=" + encodeURIComponent("支架"));
+    expect(r.body.code).toBe(ERR.OK);
+    expect(r.body.data.some((p: any) => p.productCode === "phy_car_001")).toBe(true);
+  });
+  it("排除展示服务", async () => {
+    const r = await request(app).get("/api/search?q=" + encodeURIComponent("充电"));
+    expect(r.body.code).toBe(ERR.OK);
+    expect(r.body.data.every((p: any) => p.type !== "DISPLAY_SERVICE")).toBe(true);
+  });
 });
 
 describe("Demo 重置", () => {

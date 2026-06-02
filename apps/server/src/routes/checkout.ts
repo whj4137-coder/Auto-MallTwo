@@ -10,7 +10,7 @@ import { gateWrite } from "../middleware/gate.js";
 export const checkoutRouter = Router();
 
 // API-013 创建 Checkout（后端权威定价；校验下架/售罄 → 4009）
-checkoutRouter.post("/checkout", requireAuth, gateWrite, (req, res) => {
+checkoutRouter.post("/checkout", gateWrite, requireAuth, (req, res) => {
   const { source, productCode, color, capacity, qty = 1 } = req.body ?? {};
 
   let lines: CheckoutLine[] = [];
@@ -102,10 +102,16 @@ checkoutRouter.get("/checkout/:checkoutId", requireAuth, (req, res) => {
 });
 
 // API-015 模拟支付 → 落单（仅此处写订单/置会员/删勾选项）
-checkoutRouter.post("/checkout/:checkoutId/pay", requireAuth, gateWrite, (req, res) => {
+checkoutRouter.post("/checkout/:checkoutId/pay", gateWrite, requireAuth, (req, res) => {
   const c = store.checkouts.get(req.params.checkoutId);
   if (!c) {
     fail(res, ERR.NOT_FOUND, COPY.C035_QR_EXPIRED);
+    return;
+  }
+
+  // EDGE-013 / §12.1：同一 checkout 已支付 → 4009 ALREADY_PAID，绝不再次落单或递增序号
+  if (c.paid) {
+    fail(res, ERR.NOT_CHECKOUTABLE, "订单已支付，请勿重复支付", { reason: "ALREADY_PAID" });
     return;
   }
 

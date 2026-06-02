@@ -58,10 +58,13 @@ catalogRouter.get("/products/:productCode", (req, res) => {
 // API-005 搜索（名称 substring；仅可购买商品=实物+会员；仅 published）
 catalogRouter.get("/search", (req, res) => {
   const q = String(req.query.q ?? "").trim();
-  const results = q
-    ? visibleProducts(store.products).filter(
-        (p) => p.type !== "DISPLAY_SERVICE" && p.name.includes(q),
-      )
-    : [];
+  // §15.10.2：q 为空返回 4000（前端已做空输入短路，此为后端兜底）
+  if (!q) {
+    fail(res, ERR.VALIDATION, "搜索词不能为空");
+    return;
+  }
+  const results = visibleProducts(store.products).filter(
+    (p) => p.type !== "DISPLAY_SERVICE" && p.name.includes(q),
+  );
   ok(res, results);
 });
