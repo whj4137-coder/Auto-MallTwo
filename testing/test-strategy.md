@@ -51,13 +51,13 @@
 
 | 级别 | 工具 | 文件 | 用例 | 覆盖 |
 |------|------|------|------|------|
-| L1 单测 | Vitest | `apps/server/src/store/sequencer.test.ts`、`services/shelf.test.ts`、`apps/web/src/lib/money.test.ts` | 6 | 订单号 P/M 递增·重置、上下架可见性·排序、分→¥ |
-| L2 集成 | Supertest | `apps/server/src/api.test.ts` | 23 | 信封、home 聚合、门禁 1001/2001/2002/2003、A-01 合并·结算·支付·收货字段·数量上限、B-01 互斥幂等、4009(DELISTED/SOLD_OUT)、Demo 重置、Admin CRUD+校验(4000)、Admin 下架/改价→前台只读实时、门禁矩阵补充 |
-| L3 E2E | Playwright(1280×720) | `e2e/shop.e2e.ts` | 9 | A-01、B-01、AUTH-01、D-01、A-02、C-01、D-02、SEARCH-01、**LAYOUT-01（关键页无横向溢出，非列表页无整页纵向溢出）** |
+| L1 单测 | Vitest | `apps/server/src/store/sequencer.test.ts`、`services/shelf.test.ts`、`apps/web/src/lib/money.test.ts` | 7 | 订单号 P/M 递增·重置、上下架可见性·排序、分→¥ |
+| L2 集成 | Supertest | `apps/server/src/api.test.ts` | 29 | 信封、home 聚合、门禁 1001/2001/2002/2003、**门禁优先级 DRIVING>OFFLINE>GUEST**、A-01 合并·结算·支付·收货字段·数量上限、B-01 互斥幂等、4009(DELISTED/SOLD_OUT/**ALREADY_PAID 重复支付**)、搜索(空 q→4000/命中/排除展示服务)、Demo 重置、Admin CRUD+校验(4000)、Admin 下架/改价→前台只读实时、门禁矩阵补充 |
+| L3 E2E | Playwright(1280×720) | `e2e/shop.e2e.ts` | 10 | A-01、B-01、AUTH-01、D-01、A-02、C-01、D-02、SEARCH-01、LAYOUT-01（关键页无横向溢出，非列表页无整页纵向溢出）、**ADMIN-01（后台真实点击下架/上架 → 前台 UI 实时反映，真跨端联动）** |
 
-- `npm run verify`（typecheck + check:ssot + **L1/L2，共 29**）已接入 commit-gate hook；L3（9）因需起服务+浏览器单独 `npm run test:e2e`。
-- 隔离：L2 `beforeEach` 调 `store.resetAll()`；L3 每用例先点「重置数据」。
-- 当前环境限制：Codex macOS 沙箱中 Playwright Chromium 启动被 MachPort 权限拦截（I-019），LAYOUT-01 需在可启动浏览器的本地环境或人工 1280×720 审计中完成实跑。
+- `npm run verify`（typecheck + check:ssot + **L1/L2，共 36**）已接入 commit-gate hook；L3（10）因需起服务+浏览器单独 `npm run test:e2e`。
+- 隔离：L2 `beforeEach` 调 `store.resetAll()`；L3 每用例先点「重置数据」；ADMIN-01 改动 Admin 上下架后自带「上架」还原，避免污染共享内存态。
+- 实跑（S-037/S-040，本机普通环境）：`verify` 36 + `test:e2e` 10 全绿，含 LAYOUT-01（1280×720 无溢出）与 ADMIN-01（跨端联动）；I-019 沙箱限制已解。
 
 ### 历史：手动冒烟记录（核心闭环首验）
 
