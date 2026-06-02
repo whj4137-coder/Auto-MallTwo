@@ -158,6 +158,26 @@ describe("Admin CRUD（change 0010）", () => {
     expect(r.body.data.priceCents).toBe(4900);
     expect(r.body.data.validDays).toBe(31);
   });
+
+  it("Admin 下架 → 前台只读接口实时不返回（home/category/detail）", async () => {
+    const t = await login();
+    await request(app).patch("/api/admin/products/phy_car_001/shelf").set(auth(t)).send({ published: false });
+    const home = await request(app).get("/api/home");
+    expect(home.body.data.featured.some((p: any) => p.productCode === "phy_car_001")).toBe(false);
+    const shelf = home.body.data.shelves.find((s: any) => s.category.categoryCode === "cat_car_goods");
+    expect(shelf.products.some((p: any) => p.productCode === "phy_car_001")).toBe(false);
+    const cat = await request(app).get("/api/categories/cat_car_goods/products");
+    expect(cat.body.data.products.some((p: any) => p.productCode === "phy_car_001")).toBe(false);
+    const detail = await request(app).get("/api/products/phy_car_001");
+    expect(detail.body.code).toBe(ERR.NOT_FOUND); // 下架详情 4004
+  });
+
+  it("Admin 改价 → 首页/详情实时同步", async () => {
+    const t = await login();
+    await request(app).patch("/api/admin/products/phy_car_001").set(auth(t)).send({ priceCents: 13900 });
+    const detail = await request(app).get("/api/products/phy_car_001");
+    expect(detail.body.data.priceCents).toBe(13900);
+  });
 });
 
 describe("Demo 重置", () => {

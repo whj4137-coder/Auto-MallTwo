@@ -9,6 +9,10 @@
 
 ## [Unreleased]
 
+### Added
+- **搜索独立页 `/search`（M-C）**：商品名 substring，仅实物+会员、仅 published；行车/断网禁用 + 语音占位（COPY-004）；空结果 COPY-014 + COPY-015 返回推荐。首页搜索框由重定向 /category 改为进 /search。
+- **测试扩充（M-B）**：E2E 增 A-02/C-01/D-02/SEARCH-01（共 8）；L2 增 Admin 下架·改价→前台只读实时（共 25 单测/集成）。api-spec 补实现增量（image/Checkout 字段/Admin 写操作/搜索）。
+
 ### Changed
 - **评审冻结（2026-05-29，ADR-0009）**：REVIEW-CHECKLIST 全通过 → changes **0001/0006/0007/0010/0011 → Accepted**；**SPEC-001..005 → APPROVED**；PRD §10/§11 进入硬锁（Phase 1 冻结判据达成）。PRD 同步 §10.8 首页新布局（Bento+类目条+精选 rail+分类货架，取代 精选3+服务3）、§10.1 加 image 字段；SPEC-004 纳入账号信息只读模块。关 I-009/I-013/I-014。
 

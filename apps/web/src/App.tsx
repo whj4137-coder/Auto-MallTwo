@@ -2,6 +2,7 @@ import { Routes, Route } from "react-router-dom";
 import { FrontLayout } from "./components/FrontLayout";
 import { Home } from "./pages/Home";
 import { Category } from "./pages/Category";
+import { Search } from "./pages/Search";
 import { ProductDetail } from "./pages/ProductDetail";
 import { Membership } from "./pages/Membership";
 import { ServiceDetail } from "./pages/ServiceDetail";
@@ -27,6 +28,7 @@ export default function App() {
       <Route element={<FrontLayout />}>
         <Route index element={<Home />} />
         <Route path="category" element={<Category />} />
+        <Route path="search" element={<Search />} />
         <Route path="product/:code" element={<ProductDetail />} />
         <Route path="membership/:code" element={<Membership />} />
         <Route path="service/:code" element={<ServiceDetail />} />

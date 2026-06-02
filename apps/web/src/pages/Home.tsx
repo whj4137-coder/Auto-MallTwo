@@ -34,7 +34,7 @@ export function Home() {
       <div className="top pad-r">
         <span className="wm">Apex <b>Drive Store</b></span>
         <span className="tagchip">车机商城 · DEMO</span>
-        <div className="search r" onClick={() => nav("/category")}>
+        <div className="search r" onClick={() => nav("/search")}>
           <Glyph name="search" />
           <span className="t">搜索车品、电子配件、会员…</span>
           <span className="mic" onClick={(e) => { e.stopPropagation(); toast(COPY.C004_VOICE); }}>

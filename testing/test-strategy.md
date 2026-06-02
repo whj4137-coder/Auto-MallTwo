@@ -52,12 +52,12 @@
 | 级别 | 工具 | 文件 | 用例 | 覆盖 |
 |------|------|------|------|------|
 | L1 单测 | Vitest | `apps/server/src/store/sequencer.test.ts`、`services/shelf.test.ts`、`apps/web/src/lib/money.test.ts` | 6 | 订单号 P/M 递增·重置、上下架可见性·排序、分→¥ |
-| L2 集成 | Supertest | `apps/server/src/api.test.ts` | 12 | 信封、home 聚合、门禁 1001/2001/2002/2003、A-01 合并·结算·支付·收货字段·数量上限、B-01 互斥幂等、4009(DELISTED/SOLD_OUT)、Demo 重置 |
-| L3 E2E | Playwright(1280×720) | `e2e/shop.e2e.ts` | 4 | A-01、B-01、AUTH-01（登录弹窗）、D-01（行车拦截 toast 不入车） |
+| L2 集成 | Supertest | `apps/server/src/api.test.ts` | 19 | 信封、home 聚合、门禁 1001/2001/2002/2003、A-01 合并·结算·支付·收货字段·数量上限、B-01 互斥幂等、4009(DELISTED/SOLD_OUT)、Demo 重置、Admin CRUD+校验(4000)、**Admin 下架/改价→前台只读实时(M-B)** |
+| L3 E2E | Playwright(1280×720) | `e2e/shop.e2e.ts` | 7 | A-01、B-01、AUTH-01、D-01、**A-02（立即购买不入车）、C-01（展示服务不可购）、D-02（断网拦截）**（M-B 扩） |
 
-- `npm run verify`（typecheck + check:ssot + **L1/L2**）已接入 commit-gate hook；L3 因需起服务+浏览器单独 `npm run test:e2e`。
+- `npm run verify`（typecheck + check:ssot + **L1/L2，共 25**）已接入 commit-gate hook；L3（7）因需起服务+浏览器单独 `npm run test:e2e`。
 - 隔离：L2 `beforeEach` 调 `store.resetAll()`；L3 每用例先点「重置数据」。
-- 待扩（下一迭代）：L3 A-02/C-01/D-02/SEARCH-01、Admin 上下架→前台实时生效；testing/test-cases TC 逐条映射到自动化用例。
+- 待扩：L3 SEARCH-01（依赖 M-C 搜索独立页）；门禁矩阵 REQ-024 逐格；testing/test-cases TC 逐条映射。
 
 ### 历史：手动冒烟记录（核心闭环首验）
 

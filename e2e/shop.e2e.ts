@@ -62,3 +62,41 @@ test("D-01 行车加购 → 拦截 toast，不入车", async ({ page }) => {
   await expect(page.getByText("行车中仅支持浏览，请在驻车后继续操作")).toBeVisible();
   await expect(page.getByText(/CART 0/)).toBeVisible();
 });
+
+test("A-02 立即购买 → 进确认页，购物车不变", async ({ page }) => {
+  await reset(page);
+  await login(page);
+  await featured(page, "磁吸手机支架").click();
+  await page.getByRole("button", { name: "立即购买" }).click();
+  await expect(page).toHaveURL(/\/confirm\//);
+  await expect(page.getByText(/CART 0/)).toBeVisible(); // BUY_NOW 不触购物车
+});
+
+test("C-01 展示服务不可购买（无加购/购买入口）", async ({ page }) => {
+  await reset(page);
+  await page.locator(".scard", { hasText: "城市快充服务" }).click();
+  await expect(page).toHaveURL(/\/service\//);
+  await expect(page.getByRole("button", { name: "暂未开放" })).toBeVisible();
+  await expect(page.getByRole("button", { name: "加入购物车" })).toHaveCount(0);
+  await expect(page.getByRole("button", { name: "立即购买" })).toHaveCount(0);
+});
+
+test("D-02 断网加购 → 拦截 toast，不入车", async ({ page }) => {
+  await reset(page);
+  await login(page);
+  await page.locator(".segs .seg").nth(1).getByText("断网", { exact: true }).click();
+  await featured(page, "磁吸手机支架").click();
+  await page.getByRole("button", { name: "加入购物车" }).click();
+  await expect(page.getByText("当前网络不可用，请检查网络后重试")).toBeVisible();
+  await expect(page.getByText(/CART 0/)).toBeVisible();
+});
+
+test("SEARCH-01 搜索命中 + 空结果", async ({ page }) => {
+  await reset(page);
+  await page.locator(".search.r").click(); // 首页搜索框 → 搜索页
+  await expect(page).toHaveURL(/\/search/);
+  await page.locator(".search input").fill("支架");
+  await expect(page.locator(".bigcard", { hasText: "磁吸手机支架" })).toBeVisible();
+  await page.locator(".search input").fill("zzzz");
+  await expect(page.getByText("未查询到你想要的结果")).toBeVisible();
+});

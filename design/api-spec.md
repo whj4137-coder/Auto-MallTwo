@@ -5,7 +5,14 @@
 > **统一信封**：`{ "code": int, "message": string, "data": any }`，`code=0` 为成功。金额字段一律 `priceCents`（分）。
 > 错误码语义见 [../product/prd.md](../product/prd.md) §12（REQ-025）；字面值见 [../product/prd.md](../product/prd.md) §10。
 >
-> **实现状态（2026-05-29）**：核心接口已在 `apps/server`（Express）落地并联调通过，开发态基址 `http://localhost:3001/api`（dev-guide §2）。已实现：API-001..019（首页/类目/商品/搜索/登录登出/我的/购物车/Checkout/支付/订单/会员/重置）+ API-020/021/023/024（Admin 登录/商品上下架·库存/订单查询/订单详情）。**本迭代为核心闭环**，未实现：API-005 搜索建议类增强、API-022/025/026（Admin Banner/服务/会话）留待下一迭代。当前实现路径未加 `/v1` 前缀（直接 `/api/...`），与本文「省略写作」一致。
+> **实现状态（2026-05-29，已评审冻结）**：全部接口已在 `apps/server`（Express）落地并联调+自动化测试通过，开发态基址 `http://localhost:3001/api`（dev-guide §2）。路径未加 `/v1` 前缀（直接 `/api/...`）。
+>
+> **实现增量（changes 0007/0010/0011 已 Accepted）**：
+> - **Product.image**（0011）：商品对象含 `image`（`/products/{code}.svg`），首页聚合/类目/详情均返回。
+> - **Checkout 响应**（0007）：API-013/014 的 `data` 实物订单增 `receiver{name,phone,address}` 与 `deliveryNote`（会员为 undefined）。
+> - **首页聚合**（0001）：`GET /api/home` → `{banners, categories(带 count), featured(homeFeatured 不截断), shelves[{category,products}]}`。
+> - **Admin 写操作**（0010）：`POST /api/admin/products`、`PATCH /api/admin/products/:code`、`POST /api/admin/banners`、`PATCH /api/admin/banners/:code`、`PATCH /api/admin/services/:code`；字段校验失败返 **4000**。`API-022/025/026`（Banner/服务/会话）已实现。
+> - **搜索**（API-005）：`GET /api/search?q=` 名称 substring，仅实物+会员、仅 published；前端 `/search` 独立页，空结果 COPY-014。
 
 ## 公共约定
 - **Base / 版本**：`/api/v1`（破坏性变更走 `/api/v2`）。本文路径省略写作 `/api/...` 即 `/api/v1/...`。
