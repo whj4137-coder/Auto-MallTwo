@@ -70,8 +70,10 @@
 - **埋点事件**（PRD §14.4）：`demo_state_changed` / `product_viewed` / `gate_blocked` / `cart_changed` / `checkout_created` / `payment_simulated` / `membership_activated` / `admin_content_changed` → 可作为自动化验收的观测点（断言事件与必带字段），本期不接真实数据平台。
 
 ## 7. 缺口清单（待补用例）
-- 服务异常 5000 注入
-- 网络层失败/超时
+> change 0013（2026-06-02）已补齐一批空白端点 L2 断言：1002/4004、订单详情、/me、/membership 状态机、购物车删除·勾选·改量边界、A-02 BUY_NOW 不变量、requireAdmin 拒绝 GUEST、admin/session 快照、banner/service 上下架。
+> change 0014（2026-06-02）EDGE-001..025 逐条落 L2：001/002/004/005/012/014/016/017/020/024 已补；003/007/013/015/019/021/025 既有覆盖；008/009/010/011/022/023 为前端门禁 UI（L3 D-01/D-02/AUTH-01 覆盖）；006 因无硬删 N/A。
+> change 0015（2026-06-02）EDGE-005 **完整覆盖**：CART 改价后按新价结算 + 落单后历史订单快照不变（两断言）；CART checkout 已对齐实时价，I-029 已解。
+- 服务异常 5000 注入（无故障注入入口，需少量产品代码支撑，未做）
+- 网络层失败/超时（客户端强发；OFFLINE 已由 2002 覆盖）
 - 视觉 token 快照
 - Emulator：Android WebView 加载冒烟自动化
-- EDGE-001..025 的逐条 Playwright/Vitest 落地（随实现补齐）

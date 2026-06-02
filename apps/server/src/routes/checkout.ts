@@ -34,15 +34,19 @@ checkoutRouter.post("/checkout", gateWrite, requireAuth, (req, res) => {
         return;
       }
     }
-    lines = selected.map((i) => ({
-      productCode: i.productCode,
-      name: i.name,
-      color: i.color,
-      capacity: i.capacity,
-      unitPriceCents: i.unitPriceCents,
-      qty: i.qty,
-      lineTotalCents: i.unitPriceCents * i.qty,
-    }));
+    // 定价按实时商品价（§15.12 EDGE-005）；所选 SKU/数量沿用购物车快照
+    lines = selected.map((i) => {
+      const p = store.getProduct(i.productCode)!;
+      return {
+        productCode: i.productCode,
+        name: i.name,
+        color: i.color,
+        capacity: i.capacity,
+        unitPriceCents: p.priceCents ?? 0,
+        qty: i.qty,
+        lineTotalCents: (p.priceCents ?? 0) * i.qty,
+      };
+    });
     sourceItemIds = selected.map((i) => i.itemId);
     type = "PHYSICAL";
   } else {

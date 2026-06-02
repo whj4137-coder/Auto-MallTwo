@@ -35,3 +35,4 @@
 | I-026 | DEBT | P3 | RESOLVED | CORS 由全开收窄为 localhost/127.0.0.1 任意端口白名单（dev :5173→:3001）；生产单服务同源不受影响。Live 校验：dev origin 放行、evil.com 无 ACAO、无 Origin 请求 200 | S-038 | S-039 | - |
 | I-027 | DEBT | P3 | RESOLVED | 冗余清理（S-039）：删除死脚手架 `.pre-commit-config.yaml`（过时 pnpm/未init 假设，真门禁=commit-gate.sh）+ 更新 INDEX 引用；修正 tech-stack/build-variants pnpm 滞后文档 | S-039 | S-039 | - |
 | I-028 | DEBT | P3 | WONT_FIX | 经评审决定保留：①copy.ts 5 个未用 SSOT 镜像常量（C007/C008/C037/C038、ERR 5000）——是 PRD §11/§12 完整镜像，删除需走 openspec 改契约，收益微小；②1280×664 免滚动布局规格在 CLAUDE§8/prototype/build-variants 三处重复——低风险，暂不收敛 | S-039 | S-039 | - |
+| I-029 | W | P2 | RESOLVED | EDGE-005 行为偏离（change 0014 落地时发现）：CART 来源 checkout 按"加购时快照价"定价，Admin 改价后不对进行中的 CART 结算重定价；PRD §15.12 EDGE-005 期望按新价（BUY_NOW 路径读实时价，两路径不一致）。用户决策「改代码对齐 PRD」：S-043 走 [change 0015]，CART 分支改读实时价 `p.priceCents`，两路径口径统一；EDGE-005 L2 补全为"新价结算"+"历史快照不变"两断言（verify 65→66） | S-042 | S-043 | EDGE-005 / REQ-006 / change 0015 |

@@ -13,8 +13,11 @@
 
 ### Added
 - **L3 跨端联动 E2E `ADMIN-01`**：在 `/admin` UI 真实点击「下架/上架」→ 前台首页 UI 实时反映（商品消失/恢复），补齐"三端联动"此前仅 L2(API)覆盖、无真实点击 E2E 的缺口；自带还原避免污染共享态。E2E 由 9 → **10**。
+- **L2 空白端点补测（[change 0013](openspec/changes/0013-supplement-endpoint-tests.md)）**：逐路由核对后补齐已实现但无断言的端点/边界——登录 1002·登出失效·`/me`、订单详情命中+4004·`/membership` 状态机、目录 4004·类目排序、购物车删除·勾选·改量边界·4004、A-02 BUY_NOW 购物车不变量、`requireAdmin` 拒绝 GUEST·`admin/login`·`admin/session` 快照·banner/service 上下架。L2 由 29 → **48**，`verify` 总测 36 → **55**。纯补测试，不改契约/代码。
+- **EDGE-001..025 逐条 L2（[change 0014](openspec/changes/0014-edge-cases-l2.md)）**：补 §15.12 后端可断言边界 EDGE-001/002/004/005/012/014/016/017/020/024（同 SKU 增量合并封顶、不同 SKU 不合并、cart 改售罄结算 4009、历史订单快照不变、checkout 被 reset 失效、订单后下架快照不变、搜索下架不返回、首页服务货架缺项不补、reset 保留商品改动、多重门禁优先级）。L2 48 → **58**，`verify` 总测 55 → **65**。落地中发现 EDGE-005 重定价偏离 → 记 I-029。
 
 ### Fixed
+- **CART 结算按实时价（EDGE-005 / §15.12，[change 0015](openspec/changes/0015-cart-checkout-live-pricing.md)，关 I-029）**：购物车来源 checkout 此前按"加购时快照价"定价，Admin 改价后不对进行中的购物车重新定价，与 PRD §15.12 EDGE-005 期望（按新价结算）及 BUY_NOW 路径（已读实时价）均不一致。改为 CART 分支取实时商品价 `p.priceCents`，两路径定价口径统一；历史订单仍按落单快照不变。EDGE-005 L2 拆为"新价结算"+"历史快照不变"两断言，L2 58 → **59**，`verify` 总测 65 → **66**。
 - **重复支付拦截（EDGE-013 / §12.1）**：`POST /checkout/:id/pay` 此前仅对会员幂等，实物 checkout 二次支付会再次落单并使 `ORDER-P` 序号递增。改为支付前判 `c.paid`，已支付直接返回 `4009`（`data.reason=ALREADY_PAID`），不再生成第二单或递增序号。补 L2 用例。
 - **后端门禁优先级（PRD §8）**：写路由原注册顺序为 `requireAuth, gateWrite`，导致「未登录+行车/断网」并发时先返回 `1001` 而非更高优先级的 `2001/2002`。改为 `gateWrite, requireAuth`，使 `DRIVING > OFFLINE > GUEST` 在后端兜底也成立。补 L2 优先级用例。
 - **搜索空查询**：`GET /search?q=` 空查询此前返回 `[]`，按 §15.10.2 改为返回 `4000`（前端已对空输入短路，此为后端兜底）。补 L2 用例。
