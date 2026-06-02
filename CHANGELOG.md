@@ -9,6 +9,8 @@
 
 ## [Unreleased]
 
+> 本组修复纳入 openspec [change 0012](openspec/changes/0012-fix-pay-idempotency-and-gate-order.md)（代码对齐已冻结 PRD，不改契约；关联 I-021/I-022/I-023）。
+
 ### Fixed
 - **重复支付拦截（EDGE-013 / §12.1）**：`POST /checkout/:id/pay` 此前仅对会员幂等，实物 checkout 二次支付会再次落单并使 `ORDER-P` 序号递增。改为支付前判 `c.paid`，已支付直接返回 `4009`（`data.reason=ALREADY_PAID`），不再生成第二单或递增序号。补 L2 用例。
 - **后端门禁优先级（PRD §8）**：写路由原注册顺序为 `requireAuth, gateWrite`，导致「未登录+行车/断网」并发时先返回 `1001` 而非更高优先级的 `2001/2002`。改为 `gateWrite, requireAuth`，使 `DRIVING > OFFLINE > GUEST` 在后端兜底也成立。补 L2 优先级用例。

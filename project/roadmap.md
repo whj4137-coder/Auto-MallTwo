@@ -47,6 +47,8 @@ Phase 0: 治理框架    Phase 1: 需求分析    Phase 2: 设计输出
 | 0001 | 首页改版（已并入 §10.8） | ✅ Accepted | Phase 3 |
 | 0009 | 自动化测试 L1/L2/L3 | ✅ Accepted | Phase 5 |
 | 0010 | Admin 完整 CRUD（新增·编辑） | ✅ Accepted | Phase 4 |
+| 0011 | 商品插画（代码生成 SVG）+ Product.image | ✅ Accepted | Phase 3/4 |
+| 0012 | 修复重复支付幂等 / 门禁优先级 / 搜索空查询 | ✅ Accepted | Phase 5 |
 
 **评审冻结已完成（2026-05-29）**：0001/0006/0007/0010/0011 全 Accepted；SPEC-001..005 APPROVED；§10/§11 硬锁。
 **M-B ✅**：E2E 8（A-01/A-02/B-01/C-01/D-01/D-02/AUTH-01/SEARCH-01）；L2 29 已固化（含门禁矩阵 REQ-024 + Admin 下架·改价→前台实时）。**M-C ✅**：搜索独立页 `/search`；api-spec 增量已补。**M-F**：演示脚本 [../testing/demo-script.md](../testing/demo-script.md) ✅；P0/P1 清零 ✅；LAYOUT-01 1280×720 审计用例已固化（待可启动浏览器/允许本地监听环境实跑，见 I-019）；版本号/CHANGELOG 已切到 **1.0.0**。

@@ -27,9 +27,9 @@
 | I-018 | DEBT | P2 | RESOLVED | 文档/代码 SSOT 一致原仅靠自觉；已加 scripts/check-ssot.mjs + commit hook 强制校验（change 0008），并修全部 7 处硬编码（change 0007） | S-022 | S-022 | - |
 | I-019 | DEBT | P2 | RESOLVED | 沙箱限制仅针对 Codex 会话；S-037 在本机普通环境实跑 `npm run verify`（30 测）+ `npm run test:e2e`（9/9，含 LAYOUT-01 1280×720 审计）全绿 | S-035 | S-037 | TC-019 |
 | I-020 | DEBT | P2 | RESOLVED | 本机有 Homebrew `openjdk@17` + `android-commandlinetools`（platforms 35/36、build-tools 34/35/36）；S-037 `gradle :app:assembleDebug` 成功产出 debug APK，工具链验证通过；新增 android-webview/.gitignore | S-036 | S-037 | - |
-| I-021 | BUG | P1 | RESOLVED | 实物 checkout 可重复支付：`POST /pay` 仅会员幂等，实物二次支付再次 `nextP()` 生成第二单 + 序号膨胀（违反 EDGE-013/§12.1）。S-038 加 `c.paid` 守卫→4009 `ALREADY_PAID`，补 L2 用例 | S-038 | S-038 | EDGE-013 |
-| I-022 | W | P2 | RESOLVED | 后端门禁优先级与 PRD §8 相反：写路由 `requireAuth,gateWrite` 顺序使「未登录+行车/断网」返 1001 而非 2001/2002。S-038 改 `gateWrite,requireAuth`，补 L2 优先级用例 | S-038 | S-038 | REQ-024 |
-| I-023 | W | P3 | RESOLVED | 搜索空 `q` 返回 `[]` 而非 §15.10.2 要求的 4000。S-038 后端兜底返回 4000（前端已空输入短路），补 L2 用例 | S-038 | S-038 | REQ-003 |
+| I-021 | BUG | P1 | RESOLVED | 实物 checkout 可重复支付：`POST /pay` 仅会员幂等，实物二次支付再次 `nextP()` 生成第二单 + 序号膨胀（违反 EDGE-013/§12.1）。S-038 加 `c.paid` 守卫→4009 `ALREADY_PAID`，补 L2 用例；纳入 openspec change 0012 | S-038 | S-038 | EDGE-013 / change 0012 |
+| I-022 | W | P2 | RESOLVED | 后端门禁优先级与 PRD §8 相反：写路由 `requireAuth,gateWrite` 顺序使「未登录+行车/断网」返 1001 而非 2001/2002。S-038 改 `gateWrite,requireAuth`，补 L2 优先级用例；纳入 openspec change 0012 | S-038 | S-038 | REQ-024 / change 0012 |
+| I-023 | W | P3 | RESOLVED | 搜索空 `q` 返回 `[]` 而非 §15.10.2 要求的 4000。S-038 后端兜底返回 4000（前端已空输入短路），补 L2 用例；纳入 openspec change 0012 | S-038 | S-038 | REQ-003 / change 0012 |
 | I-024 | DEBT | P2 | RESOLVED | CHANGELOG 损坏：WebView 内容滞留 [Unreleased] 但已在 v1.0.0 tag；[1.0.0] 段有多个重复 `### Added/### Changed`（违反 Keep a Changelog/R8）。S-038 重整：折叠进 1.0.0、每组单标题、新 [Unreleased] 记 bug 修复 | S-034 | S-038 | - |
 | I-025 | DEBT | P3 | RESOLVED | Android `network_security_config.xml` 改 `base-config cleartextTrafficPermitted="false"`（公网强制 HTTPS），仅 localhost/127.0.0.1/10.0.2.2 经 domain-config 放行明文供本地/模拟器调试。APK 重建编译通过 | S-038 | S-039 | - |
 | I-026 | DEBT | P3 | RESOLVED | CORS 由全开收窄为 localhost/127.0.0.1 任意端口白名单（dev :5173→:3001）；生产单服务同源不受影响。Live 校验：dev origin 放行、evil.com 无 ACAO、无 Origin 请求 200 | S-038 | S-039 | - |

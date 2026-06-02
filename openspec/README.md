@@ -32,7 +32,7 @@ openspec/
 
 | Change | 切片 | 状态 | 关联 SPEC |
 |--------|------|------|-----------|
-| 0001 | 首页改版（Bento+类目条+精选 rail+分类货架） | Draft | SPEC-001 |
+| 0001 | 首页改版（Bento+类目条+精选 rail+分类货架） | Accepted | SPEC-001 |
 | 0002 | 实现脚手架 + 共享 SSOT 镜像 + 双层门禁基座 | Accepted | SPEC-001/003 |
 | 0003 | 核心购物闭环 A-01/A-02 + 2003 + 4009 | Accepted | SPEC-001 |
 | 0004 | 会员开通 B-01（互斥幂等） | Accepted | SPEC-002 |
@@ -43,8 +43,9 @@ openspec/
 | 0009 | 自动化测试 L1/L2/L3（Vitest+Supertest+Playwright） | Accepted | 全部 |
 | 0010 | Admin 完整 CRUD（新增·编辑表单） | Accepted | SPEC-004 |
 | 0011 | 商品插画（代码生成 SVG）+ Product.image 字段 | Accepted | SPEC-001 |
+| 0012 | 修复重复支付幂等 / 门禁优先级 / 搜索空查询（代码对齐冻结 PRD） | Accepted | SPEC-001/003 |
 
-> 待评审确认项：0001（首页 vs §10.8）、0006（账号信息模块纳入 SPEC-004）、0007（api-spec 响应字段补示例）、0010（PRD §12 并入错误码 4000 + §15.14 删除策略）。
+> 评审冻结已完成（2026-05-29，S-031）：0001/0006/0007/0010/0011 全 Accepted、SPEC-001..005 APPROVED、§10/§11 硬锁。0012 为冻结后的代码对齐修复（不改契约）。
 
 ## REQ → SPEC 覆盖映射
 | SPEC | 覆盖 REQ |
