@@ -41,10 +41,11 @@
 | 后端 API（Express） | http://localhost:3001 |
 | 视口模拟 | DevTools 自定义设备 1280×720 |
 
-## 3. 构建命令（推荐栈）
+## 3. 构建命令（npm workspaces，I-016）
 ```bash
-pnpm --filter web build       # 产出静态资源（web-pc / web-headunit 共用）
-pnpm --filter server build    # 后端打包
+npm run build:web       # 产出前台静态资源 apps/web/dist
+npm run build:server    # 后端打包 apps/server/dist/index.cjs
+npm run build:release   # = build:web + build:server（单服务部署用）
 ```
 
 ## 4. 车机承载（web-headunit）说明

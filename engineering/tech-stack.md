@@ -1,7 +1,7 @@
 # 技术选型 — Apex Drive Store V2
 
 > **这是什么**：实现技术栈（HOW）。业务规则以 [../product/](../product/) 为准，本文件不重定义业务。
-> **决策记录**：栈选型见 [../project/decisions.md](../project/decisions.md) ADR-0004（**Accepted**）。**前期先用 Web 实现前端**（前端先行，可先用前端内 Mock / MSW，后端 Express 随后补齐）。
+> **决策记录**：栈选型见 [../project/decisions.md](../project/decisions.md) ADR-0004（**Accepted**）。实际落地：前端与 Express 后端**同步实现**（未走 MSW/前端内 Mock，真后端直接提供数据），三端共享 InMemoryStore。
 
 ## 选型原则
 1. 评审 Demo：5–10 分钟跑完核心路径，**横屏 PC 模拟环境**优先可运行。
@@ -21,7 +21,7 @@
 | 存储 | 进程内 InMemoryStore | 无 DB；重置即清空 |
 | HTTP | Fetch + 封装（超时 连10/读15/写15s） | 对齐 REQ-025 |
 | 测试 | Vitest（单测）/ Supertest（后端集成）/ Playwright（E2E 全流程 + 1280×720） | 对齐 ADR-0003 |
-| 包管理 | pnpm | 快、省盘 |
+| 包管理 | npm workspaces（+ package-lock） | ADR-0004 偏差 I-016：未用 pnpm，按 npm workspaces 收口 |
 
 > 车机目标：前台构建产物以 Android WebView 承载（横屏 1280×720 dp）。Demo 阶段以 PC 浏览器为主运行环境。
 

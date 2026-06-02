@@ -13,7 +13,9 @@ import { adminRouter } from "./routes/admin.js";
 // 构建 Express app（不 listen）。index.ts 起服务，测试用 supertest 直接挂载。
 export function createApp(): Express {
   const app = express();
-  app.use(cors());
+  // 仅放行本地开发跨域（前台 vite :5173 → API :3001）。生产为单服务同源，浏览器请求不触发 CORS。
+  // 无 Origin 的请求（curl/同源/服务间）默认放行。收紧自全开 cors()（I-026）。
+  app.use(cors({ origin: [/^https?:\/\/localhost(:\d+)?$/, /^https?:\/\/127\.0\.0\.1(:\d+)?$/] }));
   app.use(express.json());
 
   const api = express.Router();
