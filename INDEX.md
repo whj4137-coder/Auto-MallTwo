@@ -91,6 +91,7 @@ Auto-MallTwo/
 | 开发指南 | engineering/dev-guide.md |
 | 构建变体 | engineering/build-variants.md |
 | 测试策略与范围 | testing/test-strategy.md |
+| 演示脚本（5–10 分钟） | testing/demo-script.md |
 | 测试用例 | testing/test-cases.md |
 | 覆盖矩阵 | testing/coverage-matrix.md |
 | 进度/Roadmap | project/roadmap.md |

@@ -180,6 +180,35 @@ describe("Admin CRUD（change 0010）", () => {
   });
 });
 
+describe("门禁矩阵补充（REQ-024：写入端点统一受 auth+gateWrite）", () => {
+  it("checkout(CART)：GUEST→1001、DRIVING→2001", async () => {
+    const g = await request(app).post("/api/checkout").send({ source: "CART" });
+    expect(g.body.code).toBe(ERR.UNAUTHORIZED);
+    const t = await login();
+    await request(app).post("/api/cart").set(auth(t)).send({ productCode: "phy_car_001" });
+    const d = await request(app).post("/api/checkout").set(auth(t)).set("x-demo-drive", "DRIVING").send({ source: "CART" });
+    expect(d.body.code).toBe(ERR.DRIVING_BLOCKED);
+  });
+  it("pay：OFFLINE→2002", async () => {
+    const t = await login();
+    await request(app).post("/api/cart").set(auth(t)).send({ productCode: "phy_car_001" });
+    const co = await request(app).post("/api/checkout").set(auth(t)).send({ source: "CART" });
+    const p = await request(app).post(`/api/checkout/${co.body.data.checkoutId}/pay`).set(auth(t)).set("x-demo-net", "OFFLINE");
+    expect(p.body.code).toBe(ERR.OFFLINE_BLOCKED);
+  });
+  it("会员开通 checkout：GUEST→1001", async () => {
+    const g = await request(app).post("/api/checkout").send({ source: "BUY_NOW", productCode: "mem_001" });
+    expect(g.body.code).toBe(ERR.UNAUTHORIZED);
+  });
+  it("购物车改量：DRIVING→2001", async () => {
+    const t = await login();
+    const add = await request(app).post("/api/cart").set(auth(t)).send({ productCode: "phy_car_001" });
+    const id = add.body.data.items[0].itemId;
+    const q = await request(app).patch(`/api/cart/${id}`).set(auth(t)).set("x-demo-drive", "DRIVING").send({ qty: 3 });
+    expect(q.body.code).toBe(ERR.DRIVING_BLOCKED);
+  });
+});
+
 describe("Demo 重置", () => {
   it("清会话 + seq 归零", async () => {
     const t = await login();

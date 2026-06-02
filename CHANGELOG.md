@@ -10,6 +10,8 @@
 ## [Unreleased]
 
 ### Added
+- **演示脚本 `testing/demo-script.md`（M-F）**：5–10 分钟评审演示流程（A-01/B-01/门禁/Admin 联动/搜索/重置）。
+- **门禁矩阵 L2（M-B）**：补 checkout/pay/会员/改量 × GUEST·DRIVING·OFFLINE 用例（vitest 共 29）。P0/P1 issues 清零（关 I-002/I-007）。
 - **搜索独立页 `/search`（M-C）**：商品名 substring，仅实物+会员、仅 published；行车/断网禁用 + 语音占位（COPY-004）；空结果 COPY-014 + COPY-015 返回推荐。首页搜索框由重定向 /category 改为进 /search。
 - **测试扩充（M-B）**：E2E 增 A-02/C-01/D-02/SEARCH-01（共 8）；L2 增 Admin 下架·改价→前台只读实时（共 25 单测/集成）。api-spec 补实现增量（image/Checkout 字段/Admin 写操作/搜索）。
 

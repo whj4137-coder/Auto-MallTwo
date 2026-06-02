@@ -8,12 +8,12 @@
 | ID | 类型 | 优先级 | 状态 | 描述 | 发现会话 | 解决会话 | 关联需求 |
 |----|------|--------|------|------|---------|---------|---------|
 | I-001 | SPEC | P2 | RESOLVED | 需求文档原文已并入单一 product/prd.md（原 source-brief 已合并删除，ADR-0005） | S-001 | S-004 | - |
-| I-002 | SPEC | P1 | OPEN | api-spec 字段标准沿用 ADR-0002（对应 PRD §16 OQ-003，待冻结确认） | S-002 | - | - |
+| I-002 | SPEC | P1 | RESOLVED | api-spec 字段标准（ADR-0002 / OQ-003）已随评审冻结确认（2026-05-29） | S-002 | S-033 | - |
 | I-003 | SPEC | P2 | OPEN | 联网检索工具不可用，benchmarking 调研为综合归纳；工具恢复后二次核实开源车机商城范式 | S-003 | - | - |
 | I-004 | SPEC | P2 | RESOLVED | 调研补充项 REQ-026..033 已纳入 PRD §7 并入 SPEC-003/005 覆盖 | S-003 | S-016 | REQ-026..033 |
 | I-005 | SPEC | P1 | RESOLVED | 技术栈定为 Web-first（前期 Web 先做前端），ADR-0004 转 Accepted | S-003 | S-007 | - |
 | I-006 | SPEC | P0 | RESOLVED | 栈冲突已消解：R5/R9/pre-commit 统一改 `pnpm lint && pnpm test`、测试 Vitest/Playwright | S-005 | S-007 | - |
-| I-007 | DEBT | P1 | OPEN | 仓库未 git init、未 openspec init、pre-commit 未启用；R5/R9.2 暂以 `Verified: openspec-not-initialized` 兜底，需尽快初始化 | S-005 | - | - |
+| I-007 | DEBT | P2 | RESOLVED | git init 已完成（4 commits）；提交门禁改用 `.claude/hooks/commit-gate.sh`（跑 verify，等价 pre-commit）；openspec 采用 markdown changes/specs 流程（未用 openspec CLI）。R5/R9.2 实质达成 | S-005 | S-033 | - |
 | I-008 | SPEC | P2 | RESOLVED | Admin+上下架已建 SPEC-004（REQ-023/035-041）；车载增强 REQ-026/027/028/030/031 改由计划 SPEC-005 覆盖（见 I-010） | S-006 | S-011 | REQ-023,035-041 |
 | I-010 | SPEC | P2 | RESOLVED | 已建 SPEC-005 车载体验增强，覆盖 REQ-026/027/028/030/031（OQ-002） | S-011 | S-016 | REQ-026,027,028,030,031 |
 | I-011 | DEBT | P2 | RESOLVED | 范围扩张：Admin 六模块 + 后端 CRUD + 上下架已全部交付（changes 0006/0010）；Phase 4 完成 | S-011 | S-024 | REQ-037/038/039 |

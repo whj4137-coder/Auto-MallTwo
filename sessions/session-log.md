@@ -4,6 +4,7 @@
 
 | 会话 | 日期 | 阶段 | 主要产出 | 遗留 / 下一步 | 代码可演示 |
 |------|------|------|----------|---------------|------------|
+| S-033 | 2026-05-29 | M-F 验收收尾 | 提交 c4dd4ba(M-C搜索+M-B测试)。门禁矩阵 L2 +4(checkout/pay/会员/改量×态)→vitest 29；写演示脚本 testing/demo-script.md(5-10min 全流程)；P0/P1 清零(I-002 随冻结确认、I-007 git init 完成+commit-gate 等价 pre-commit → RESOLVED)；roadmap Phase5 🟢接近完成；INDEX 加演示脚本路由。verify 29 + e2e 8 全绿 | 余：1280×720 无滚动审计(手动)+发版打 tag(待用户定版本号) | ✅ 37 测绿 |
 | S-032 | 2026-05-29 | M-B 测试扩充 + M-C 搜索页 | 提交评审冻结 commit e2203bb(gate 跑 verify 过)。M-B：E2E +A-02/C-01/D-02/SEARCH-01(共8绿)、L2 +Admin 下架·改价→前台实时(共25绿)。M-C：新建 /search 独立页(REQ-003 substring 仅实物+会员/门禁/空态 COPY-014·015)，首页搜索框改进 /search；api-spec 补实现增量(image/Checkout 字段/Admin 写操作)。verify 25 + e2e 8 全绿；同步 roadmap/testing§7/CHANGELOG。澄清用户疑问：正式 coding 已进行且过半，现为硬化收口 | M-B 余 门禁矩阵逐格；M-F 演示脚本/无滚动审计/发版 | ✅ 32 自动化测试绿 |
 | S-031 | 2026-05-29 | M-A 评审冻结 | 用户批准全通过→执行冻结：changes 0001/0006/0007/0010/0011 → Accepted；SPEC-001..005 → APPROVED(+批准日期)；PRD §10.8 首页改新布局/§10.1 加 image 字段/§9.3 P1/homeFeatured 去"前3"/首页聚合 shelves（§12 4000、§15.14 下架代删 原已具备）；SPEC-004 纳入账号信息模块；REVIEW-CHECKLIST 全勾+结论；ADR-0009；roadmap Phase1 冻结达成、切片 0001 Accepted；关 I-009/013/014。后台问题经用户确认=无 | M-B 扩 E2E+门禁矩阵；M-C api-spec 写操作详例+搜索独立页；M-F 验收 | 文档（冻结，不动代码） |
 | S-030 | 2026-05-29 | 商品图撤回抓取源、换回矢量 SVG | 用户「不要抓取数据源，换回矢量图/直接 ai 生图」。本环境无 diffusion 文生图，按备选恢复代码生成 SVG：删 loremflickr 10 jpg + fetch 脚本 + jpg README；恢复 scripts/gen-product-images.mjs 重生 10 SVG；seed image 改回 .svg；回滚 change 0011/CHANGELOG 措辞。verify 23 测绿；svg 200、API 返 .svg | 真照片需外部生成后同名覆盖；评审冻结 | ✅ 矢量图渲染恢复 |
