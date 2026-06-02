@@ -33,6 +33,11 @@ checkoutRouter.post("/checkout", gateWrite, requireAuth, (req, res) => {
         fail(res, ERR.NOT_CHECKOUTABLE, COPY.C046_SOLD_OUT, { reason: "SOLD_OUT" });
         return;
       }
+      // EDGE-006 / §15.10.4「SKU 仍合法」：购物车快照 SKU 若被 Admin 改没 → 4004
+      if ((i.color != null && !p.colors.includes(i.color)) || (i.capacity != null && !p.capacities.includes(i.capacity))) {
+        fail(res, ERR.NOT_FOUND, COPY.C036_NOT_FOUND, { reason: "SKU_INVALID" });
+        return;
+      }
     }
     // 定价按实时商品价（§15.12 EDGE-005）；所选 SKU/数量沿用购物车快照
     lines = selected.map((i) => {
@@ -62,6 +67,11 @@ checkoutRouter.post("/checkout", gateWrite, requireAuth, (req, res) => {
     }
     if (p.stock === "SOLD_OUT") {
       fail(res, ERR.NOT_CHECKOUTABLE, COPY.C046_SOLD_OUT, { reason: "SOLD_OUT" });
+      return;
+    }
+    // §15.10.4「SKU 合法」：显式传入的 color/capacity 必须属于该商品 → 否则 4000
+    if ((color != null && !p.colors.includes(color)) || (capacity != null && !p.capacities.includes(capacity))) {
+      fail(res, ERR.VALIDATION, COPY.C036_NOT_FOUND, { reason: "SKU_INVALID" });
       return;
     }
     const lineQty = p.type === "MEMBERSHIP" ? 1 : Math.max(1, Math.min(5, Number(qty) || 1));

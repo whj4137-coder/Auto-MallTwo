@@ -9,7 +9,7 @@
 
 ## [Unreleased]
 
-> 本组修复纳入 openspec [change 0012](openspec/changes/0012-fix-pay-idempotency-and-gate-order.md)（代码对齐已冻结 PRD，不改契约；关联 I-021/I-022/I-023）。
+> 本组为冻结后「代码对齐已冻结 PRD」的修复与测试硬化，含 openspec change 0012–0016（不改契约）：0012 重复支付/门禁优先级/搜索空查询（I-021/022/023）、0013/0014 测试硬化、0015 CART 实时定价（I-029）、0016 SKU 合法性校验。
 
 ### Added
 - **L3 跨端联动 E2E `ADMIN-01`**：在 `/admin` UI 真实点击「下架/上架」→ 前台首页 UI 实时反映（商品消失/恢复），补齐"三端联动"此前仅 L2(API)覆盖、无真实点击 E2E 的缺口；自带还原避免污染共享态。E2E 由 9 → **10**。
@@ -18,6 +18,7 @@
 
 ### Fixed
 - **CART 结算按实时价（EDGE-005 / §15.12，[change 0015](openspec/changes/0015-cart-checkout-live-pricing.md)，关 I-029）**：购物车来源 checkout 此前按"加购时快照价"定价，Admin 改价后不对进行中的购物车重新定价，与 PRD §15.12 EDGE-005 期望（按新价结算）及 BUY_NOW 路径（已读实时价）均不一致。改为 CART 分支取实时商品价 `p.priceCents`，两路径定价口径统一；历史订单仍按落单快照不变。EDGE-005 L2 拆为"新价结算"+"历史快照不变"两断言，L2 58 → **59**，`verify` 总测 65 → **66**。
+- **Checkout 校验 SKU 仍合法（EDGE-006 / §15.10.4，[change 0016](openspec/changes/0016-checkout-sku-validity.md)）**：结算此前只校验 `published`/`stock`，未校验所选 color/capacity 是否仍属该商品。Admin 经 `PATCH` 替换 SKU 数组后，购物车失效项可生成带失效 SKU 的 checkout。改为：CART 来源 SKU 失效返 `4004`、BUY_NOW 传入非法 SKU 返 `4000`，均带 `data.reason=SKU_INVALID` + COPY-036。补 EDGE-006 两 L2 用例，L2 59 → **61**，`verify` 总测 66 → **68**。
 - **重复支付拦截（EDGE-013 / §12.1）**：`POST /checkout/:id/pay` 此前仅对会员幂等，实物 checkout 二次支付会再次落单并使 `ORDER-P` 序号递增。改为支付前判 `c.paid`，已支付直接返回 `4009`（`data.reason=ALREADY_PAID`），不再生成第二单或递增序号。补 L2 用例。
 - **后端门禁优先级（PRD §8）**：写路由原注册顺序为 `requireAuth, gateWrite`，导致「未登录+行车/断网」并发时先返回 `1001` 而非更高优先级的 `2001/2002`。改为 `gateWrite, requireAuth`，使 `DRIVING > OFFLINE > GUEST` 在后端兜底也成立。补 L2 优先级用例。
 - **搜索空查询**：`GET /search?q=` 空查询此前返回 `[]`，按 §15.10.2 改为返回 `4000`（前端已对空输入短路，此为后端兜底）。补 L2 用例。

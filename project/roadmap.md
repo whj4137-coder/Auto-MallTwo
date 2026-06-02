@@ -49,8 +49,12 @@ Phase 0: 治理框架    Phase 1: 需求分析    Phase 2: 设计输出
 | 0010 | Admin 完整 CRUD（新增·编辑） | ✅ Accepted | Phase 4 |
 | 0011 | 商品插画（代码生成 SVG）+ Product.image | ✅ Accepted | Phase 3/4 |
 | 0012 | 修复重复支付幂等 / 门禁优先级 / 搜索空查询 | ✅ Accepted | Phase 5 |
+| 0013 | 补充自动化测试用例（空白端点 / 边界，纯补测试） | ✅ Accepted | Phase 5 |
+| 0014 | EDGE-001..025 逐条 L2 落地（纯补测试） | ✅ Accepted | Phase 5 |
+| 0015 | CART 结算按实时价（对齐 §15.12 EDGE-005，关 I-029） | ✅ Accepted | Phase 5 |
+| 0016 | Checkout 校验 SKU 仍合法（对齐 §15.10.4 / EDGE-006） | ✅ Accepted | Phase 5 |
 
-**评审冻结已完成（2026-05-29）**：0001/0006/0007/0010/0011 全 Accepted；SPEC-001..005 APPROVED；§10/§11 硬锁。
+**评审冻结已完成（2026-05-29）**：0001/0006/0007/0010/0011 全 Accepted；SPEC-001..005 APPROVED；§10/§11 硬锁。0012/0015/0016 为冻结后代码对齐修复（不改契约）。
 **M-B ✅**：E2E 8（A-01/A-02/B-01/C-01/D-01/D-02/AUTH-01/SEARCH-01）；L2 29 已固化（含门禁矩阵 REQ-024 + Admin 下架·改价→前台实时）。**M-C ✅**：搜索独立页 `/search`；api-spec 增量已补。**M-F**：演示脚本 [../testing/demo-script.md](../testing/demo-script.md) ✅；P0/P1 清零 ✅；LAYOUT-01 1280×720 审计用例已固化（待可启动浏览器/允许本地监听环境实跑，见 I-019）；版本号/CHANGELOG 已切到 **1.0.0**。
 **S-037 实跑收口**：①`npm run verify` 30 测全绿 + `test:e2e` 9/9 绿（含 LAYOUT-01）；②本机 openjdk@17 + Android SDK 构建 debug APK 成功（工具链验证）；③`build:release` + `start:prod` 本地单服务部署验证 `/`、`/admin`、`/api/*`；④本地 commit + `v1.0.0` tag。
 **剩余（暂缓，待用户）**：公网部署到对外域名 → 用该域名重建 APK → 提供 git remote 后 push。
@@ -166,7 +170,7 @@ Phase 0: 治理框架    Phase 1: 需求分析    Phase 2: 设计输出
 
 ## 后期里程碑（从「核心闭环已实现」到「可交付演示」）
 
-> 现状基线（S-035）：前台 P1–P13 + 后台全 CRUD + Express 后端 + 测试 L1/L2/L3 + 工程门禁均已落地；当前 Codex 沙箱受本地监听/Chromium 权限限制，完整 `verify` 与 LAYOUT-01 需在可监听/可启动浏览器环境实跑。openspec 切片 0001–0011 已 Accepted。
+> 现状基线（S-035）：前台 P1–P13 + 后台全 CRUD + Express 后端 + 测试 L1/L2/L3 + 工程门禁均已落地；S-037 起在本机普通环境 `verify` 与 LAYOUT-01 已实跑全绿。openspec 切片 0001–0016 已 Accepted。
 > 关键路径：M-A/M-B/M-C 主体已完成；M-E 本期不做；当前只剩 M-F 终验复跑与发版提交。
 
 | 里程碑 | 内容 | 依赖 | 量级 | 主责 |

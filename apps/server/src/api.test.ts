@@ -479,6 +479,30 @@ describe("EDGE 边界（§15.12）", () => {
     expect(detail.body.data.totalCents).toBe(paidTotal);
   });
 
+  // EDGE-006（§15.10.4「SKU 仍合法」，change 0016）：购物车 SKU 被 Admin 改没 → 结算 4004
+  it("EDGE-006 购物车 SKU 被 Admin 改没 → CART 结算 4004", async () => {
+    const t = await login();
+    const detail = await request(app).get("/api/products/phy_car_001");
+    const c1 = detail.body.data.colors[0];
+    await request(app).post("/api/cart").set(auth(t)).send({ productCode: "phy_car_001", color: c1 });
+    // Admin 把颜色数组改为不含 c1 的新值
+    await request(app).patch("/api/admin/products/phy_car_001").set(auth(t)).send({ colors: ["__sku_gone__"] });
+    const co = await request(app).post("/api/checkout").set(auth(t)).send({ source: "CART" });
+    expect(co.body.code).toBe(ERR.NOT_FOUND);
+    expect(co.body.data.reason).toBe("SKU_INVALID");
+  });
+
+  it("EDGE-006 BUY_NOW 传入非法 SKU → 4000", async () => {
+    const t = await login();
+    const co = await request(app).post("/api/checkout").set(auth(t)).send({
+      source: "BUY_NOW",
+      productCode: "phy_car_001",
+      color: "__not_a_real_color__",
+    });
+    expect(co.body.code).toBe(ERR.VALIDATION);
+    expect(co.body.data.reason).toBe("SKU_INVALID");
+  });
+
   it("EDGE-012 checkout 被 Demo reset 清掉 → 旧 checkout 失效", async () => {
     const t = await login();
     await request(app).post("/api/cart").set(auth(t)).send({ productCode: "phy_car_001" });
