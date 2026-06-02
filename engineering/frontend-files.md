@@ -42,11 +42,13 @@ apps/web/
       Toast.tsx                   toast 渲染（COPY-001/002/005...）
       LoginDialog.tsx             P12 模态：预填 admin/123456，错误 COPY-003，成功续作
       ProductCard.tsx             商品卡（图/名/副标题/价格/库存标签/售罄 COPY-046）
+      ProductMedia.tsx            商品视觉：有 image 渲 <img>，否则回退类型图标（change 0011）
       Stepper.tsx                 数量 [1,5] 边界置灰
       Price.tsx  Tag.tsx  Empty.tsx  Section.tsx   原子组件
       gate/GatedButton.tsx        交易按钮：未满足门禁置灰/toast/弹登录
-    pages/                        前台 P1–P13
+    pages/                        前台 P1–P13 + 搜索页
       Home.tsx                    P1：Bento + 类目条 + 精选 rail + 分类货架（见 openspec 0001）
+      Search.tsx                  /search：搜索结果（REQ-003 substring/仅实物+会员/门禁/空态 COPY-014·015）
       Category.tsx                P2：左类目 + 右商品网格
       ProductDetail.tsx           P3：实物详情 + Stepper + 立即购买/加入购物车
       Membership.tsx              P4：会员卡 + 权益 + 立即开通/已开通
@@ -58,14 +60,16 @@ apps/web/
       Orders.tsx                  P10：订单卡列表（可进 P13）
       OrderDetail.tsx             P13：订单信息/商品清单/收货或权益 + 返回
       Mine.tsx                    P11：账号/车辆/地址/会员四卡
-    admin/                        后台 /admin
-      AdminLayout.tsx             顶栏 + 左侧 anav（CATALOG/OPS）
+    admin/                        后台 /admin（六模块，change 0006/0010）
+      AdminLayout.tsx             顶栏 + 左侧 anav（CATALOG/OPS/ACCOUNT）
       AdminLogin.tsx              A0：admin/123456
-      AdminProducts.tsx           A1：商品列表 + 上下架 toggle + 库存
-      AdminBanners.tsx            A2：Banner 列表（迭代二）
-      AdminServices.tsx           A3：服务内容（迭代二）
-      AdminOrders.tsx             A4：订单列表 + 类型/状态筛选
-      AdminSession.tsx            A5：演示会话 KPI + 重置（迭代二）
+      AdminProducts.tsx           A1：商品列表 + 上下架/库存 + 新增·编辑（FormModal）
+      AdminBanners.tsx            A2：Banner 列表 + 上下架 + 新增·编辑
+      AdminServices.tsx           A3：会员/展示服务 + 上下架 + 编辑
+      AdminOrders.tsx             A4：订单列表 + 类型筛选
+      AdminSession.tsx            A5：演示会话运行快照 + 重置
+      AdminAccount.tsx            账号信息：个人 + 车辆（只读，§10.4，change 0006）
+      FormModal.tsx               通用编辑/新增表单弹窗（text/number/csv/select/checkbox）
 ```
 
 ## 核心闭环（本迭代必达）

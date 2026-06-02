@@ -62,14 +62,14 @@
 ## A. 浏览（公开，只读）
 
 ### API-001 首页聚合
-- **用途**：返回首页 Banner + 快捷类目 + 精选商品 + 车主服务
+- **用途**：返回首页 Bento(Banner) + 类目条 + 精选商品 rail + 分类货架（change 0001）
 - **Method+Path**：`GET /api/home`
 - **鉴权/门禁**：无
 - **入参**：无
-- **成功出参**：`data: { banners:[{bannerCode,title,subtitle,target}], categories:[{categoryCode,name,type}], featured:[Product], services:[Product] }`
+- **成功出参**：`data: { banners:[{bannerCode,title,subtitle,targetProductCode}], categories:[{categoryCode,name,type,count}], featured:[Product], shelves:[{category,products:[Product]}] }`
 - **错误码**：5000
 - **关联需求**：REQ-001
-- **备注**：HERO 固定 banner_001；featured 最多 3 个；services 按 PRD §10.8 三项返回，均仅返回 `published=true`，不补位
+- **备注**：HERO 固定 banner_001；featured=`homeFeatured && published`，按 sortOrder，**不截断**；shelves 按 5 类目分区返回该类全部 `published=true`（含展示服务）；售罄仍返回带 stock，下架不返回
 
 ### API-002 类目列表
 - **用途**：返回 5 个类目

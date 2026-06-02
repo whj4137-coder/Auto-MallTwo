@@ -68,6 +68,7 @@
 - 后端 Checkout 注入 `receiver`/`deliveryNote`（仅实物，后端权威），前台 Confirm 直接渲染。
 
 ### Fixed
+- **冻结后 SSOT 自相矛盾修复（审计）**：§10.8 改新布局后，PRD §15.9.2/§15.15 页面表/EDGE-017/首页聚合行 与 api-spec API-001 仍残留旧「精选3+车主服务3 / featured 最多 3 / services 三项」，已全部对齐 change 0001（精选 rail 不限 3 + 分类货架）；搜索路由"若无搜索页"更新为已实现 `/search`；prototype README ⚠ 改为已冻结。frontend-files/system-architecture 补 Search/ProductMedia/FormModal/AdminAccount。
 - commit-gate hook 漏判 `git -c … commit` / `git --no-pager commit`（git 与 commit 间带 flag 时正则不匹配，门禁被静默绕过）；改为「有 git 调用 + 含 commit 子命令」双条件判定，容忍中间 flag。3 态复测通过。
 - 清除前台硬编码 §10/§11 字面值：Confirm 收货人/地址/配送说明改用后端 checkout 字段；Cart 收货人取 `/me`；cartStore/Mine/AdminProducts/AdminOrders 文案改引用 `COPY.*`。check:ssot 现 0 重复。
 
