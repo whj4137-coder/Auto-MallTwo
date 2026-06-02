@@ -145,3 +145,43 @@ test("LAYOUT-01 1280×720 关键页面无意外整页滚动", async ({ page }) =
     await expectNoPageOverflow(page, route, true);
   }
 });
+
+// ADMIN-01 三端联动：在后台 UI 真实点击下架/上架，前台 UI 实时反映（真实跨端 E2E，非仅 API 断言）。
+// 自带还原（下架→验证→上架），避免污染其它用例的共享内存态。
+test("ADMIN-01 后台下架/上架 → 前台实时反映（真实点击跨端联动）", async ({ page }) => {
+  test.setTimeout(30000);
+  const card = () => page.locator(".bigcard", { hasText: "磁吸手机支架" });
+
+  async function adminLogin() {
+    await page.goto("/admin/login", { waitUntil: "domcontentloaded" });
+    await page.getByRole("button", { name: "登录" }).click();
+    await expect(page).toHaveURL(/\/admin\/products/);
+  }
+  async function setShelf(targetOn: boolean) {
+    const row = page.locator("tr", { hasText: "磁吸手机支架" });
+    await expect(row).toBeVisible();
+    const isOn = (await row.locator(".sw.on").count()) > 0;
+    if (isOn !== targetOn) await row.locator(".sw").click();
+    await expect(row.locator(".sw.on")).toHaveCount(targetOn ? 1 : 0); // 列表刷新后开关到位
+  }
+
+  // 基线：前台首页能看到该商品
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(card().first()).toBeVisible();
+
+  // 后台真实点击「下架」
+  await adminLogin();
+  await setShelf(false);
+
+  // 前台实时反映：首页不再出现该商品（Admin 写 → 前台读，三端联动）
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(card()).toHaveCount(0);
+
+  // 后台真实点击「上架」还原
+  await adminLogin();
+  await setShelf(true);
+
+  // 前台恢复可见（同时清理共享态）
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await expect(card().first()).toBeVisible();
+});
