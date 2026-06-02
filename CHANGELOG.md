@@ -10,13 +10,27 @@
 ## [Unreleased]
 
 ### Added
+- （暂无）
+
+### Added
+- **WebView APK + 公网部署交付准备**：新增 Android WebView 横屏壳 `android-webview/`（构建时注入公网 URL）、Docker 单服务部署、Express 生产模式托管前台静态包，以及 `docs/deployment/WEBVIEW_PUBLIC_DEPLOY.md` 交付指南。
+
+## [1.0.0] — 2026-06-02
+
+### Added
+- **LAYOUT-01 布局审计用例（M-F）**：新增 1280×720 关键页面 E2E 审计，覆盖前台关键页、登录后购物车、Admin 六模块，断言无横向溢出，非列表页无整页纵向溢出。当前 Codex macOS 沙箱启动 Chromium 被 MachPort 权限拦截（I-019），需在可启动浏览器环境实跑。
 - **演示脚本 `testing/demo-script.md`（M-F）**：5–10 分钟评审演示流程（A-01/B-01/门禁/Admin 联动/搜索/重置）。
 - **门禁矩阵 L2（M-B）**：补 checkout/pay/会员/改量 × GUEST·DRIVING·OFFLINE 用例（vitest 共 29）。P0/P1 issues 清零（关 I-002/I-007）。
 - **搜索独立页 `/search`（M-C）**：商品名 substring，仅实物+会员、仅 published；行车/断网禁用 + 语音占位（COPY-004）；空结果 COPY-014 + COPY-015 返回推荐。首页搜索框由重定向 /category 改为进 /search。
-- **测试扩充（M-B）**：E2E 增 A-02/C-01/D-02/SEARCH-01（共 8）；L2 增 Admin 下架·改价→前台只读实时（共 25 单测/集成）。api-spec 补实现增量（image/Checkout 字段/Admin 写操作/搜索）。
+- **测试扩充（M-B）**：E2E 增 A-02/C-01/D-02/SEARCH-01（共 8）；L2 增 Admin 下架·改价→前台只读实时与门禁矩阵补充（共 29 单测/集成）。api-spec 补实现增量（image/Checkout 字段/Admin 写操作/搜索）。
 
 ### Changed
 - **评审冻结（2026-05-29，ADR-0009）**：REVIEW-CHECKLIST 全通过 → changes **0001/0006/0007/0010/0011 → Accepted**；**SPEC-001..005 → APPROVED**；PRD §10/§11 进入硬锁（Phase 1 冻结判据达成）。PRD 同步 §10.8 首页新布局（Bento+类目条+精选 rail+分类货架，取代 精选3+服务3）、§10.1 加 image 字段；SPEC-004 纳入账号信息只读模块。关 I-009/I-013/I-014。
+
+### Fixed
+- **首页 Banner 失效目标过滤**：`/api/home` 过滤目标商品已下架的 Banner，避免 Admin 下架主推商品后首页 Hero 留存但无法跳转或价格缺失。
+- **首页主 Banner 价格同步**：主推 CTA 去除硬编码 `¥129`，改为按 Banner 目标商品实时渲染，避免 Admin 改价后 Hero 与商品卡价格不一致。
+- **Admin 价格编辑口径**：商品管理/服务内容表单改为输入「元」，提交时自动转换为后端 `priceCents`，避免运营按元填写后前台显示 `¥0`。
 
 ### Added
 - 文档治理体系：`README.md`（总览）、`INDEX.md`（导航路由+仓库结构）、`CLAUDE.md`（启动护栏）、`CONTRIBUTING.md`（协作规范）。

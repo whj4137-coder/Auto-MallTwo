@@ -9,7 +9,7 @@
 |----|------|--------|------|------|---------|---------|---------|
 | I-001 | SPEC | P2 | RESOLVED | 需求文档原文已并入单一 product/prd.md（原 source-brief 已合并删除，ADR-0005） | S-001 | S-004 | - |
 | I-002 | SPEC | P1 | RESOLVED | api-spec 字段标准（ADR-0002 / OQ-003）已随评审冻结确认（2026-05-29） | S-002 | S-033 | - |
-| I-003 | SPEC | P2 | OPEN | 联网检索工具不可用，benchmarking 调研为综合归纳；工具恢复后二次核实开源车机商城范式 | S-003 | - | - |
+| I-003 | SPEC | P2 | RESOLVED | 已二次联网核实：未发现可直接对标的开源 AAOS/车机商城完整 Demo；benchmarking 保持“车机 HMI + headless commerce + 安全门禁”的综合范式归纳，不阻塞验收 | S-003 | S-035 | - |
 | I-004 | SPEC | P2 | RESOLVED | 调研补充项 REQ-026..033 已纳入 PRD §7 并入 SPEC-003/005 覆盖 | S-003 | S-016 | REQ-026..033 |
 | I-005 | SPEC | P1 | RESOLVED | 技术栈定为 Web-first（前期 Web 先做前端），ADR-0004 转 Accepted | S-003 | S-007 | - |
 | I-006 | SPEC | P0 | RESOLVED | 栈冲突已消解：R5/R9/pre-commit 统一改 `pnpm lint && pnpm test`、测试 Vitest/Playwright | S-005 | S-007 | - |
@@ -21,7 +21,9 @@
 | I-012 | SPEC | P1 | RESOLVED | 跨文档冲突 CD-001..010 已在 PRD §15.7 登记并同步下游（api-spec/system-architecture/prototype/testing/roadmap/openspec） | S-016 | S-016 | - |
 | I-013 | SPEC | P2 | RESOLVED | PRD §16 开放问题已评审定夺：OQ-001 Admin 范围=六模块+账号信息(0006)；OQ-004 原型=已实现；OQ-005 冻结日期=2026-05-29。详见 REVIEW-CHECKLIST | S-016 | S-031 | - |
 | I-014 | W | P1 | RESOLVED | 首页 v7 与 §10.8 差异已走 change 0001 评审冻结：PRD §10.8/§9.3/§10/首页聚合 已更新为新布局，0001→Accepted | S-017 | S-031 | REQ-001 |
-| I-015 | DEBT | P2 | OPEN | 本机 3000 端口被一个遗留 python http.server(PID 外部) 占用；后端按 dev-guide 用 3001（与文档一致，无实际冲突），但提醒清理该遗留进程 | S-019 | - | - |
-| I-016 | DEBT | P3 | OPEN | 环境未装 pnpm/corepack，改用 npm workspaces（功能等价，ADR-0004 偏差）；如需严格对齐 pnpm 后续 `npm i -g pnpm` 再迁移 lockfile | S-019 | - | - |
-| I-017 | DEBT | P1 | RESOLVED | 自动化测试已落地（change 0009）：L1 Vitest 6 + L2 Supertest 12 + L3 Playwright 4，全绿；L1/L2 并入 npm run verify + commit hook，L3 单独 test:e2e。待扩 A-02/C-01/D-02/SEARCH-01 | S-019 | S-023 | - |
+| I-015 | DEBT | P2 | OPEN | 本机 3000 端口被一个遗留 Python 进程占用；后端按 dev-guide 使用 3001（无实际冲突）。当前沙箱无权限结束该外部进程，需用户在本机清理 | S-019 | - | - |
+| I-016 | DEBT | P3 | WONT_FIX | 本仓库已实际采用 npm workspaces + package-lock，脚本/文档/门禁均按 npm 收口；pnpm/corepack 不再作为 1.0.0 必要条件，后续如团队指定再迁移 | S-019 | S-035 | - |
+| I-017 | DEBT | P1 | RESOLVED | 自动化测试已落地（change 0009）：L1/L2 并入 npm run verify + commit hook，L3 单独 test:e2e；A-01/A-02/B-01/C-01/D-01/D-02/AUTH-01/SEARCH-01 与门禁矩阵均已固化 | S-019 | S-023 | - |
 | I-018 | DEBT | P2 | RESOLVED | 文档/代码 SSOT 一致原仅靠自觉；已加 scripts/check-ssot.mjs + commit hook 强制校验（change 0008），并修全部 7 处硬编码（change 0007） | S-022 | S-022 | - |
+| I-019 | DEBT | P2 | RESOLVED | 沙箱限制仅针对 Codex 会话；S-037 在本机普通环境实跑 `npm run verify`（30 测）+ `npm run test:e2e`（9/9，含 LAYOUT-01 1280×720 审计）全绿 | S-035 | S-037 | TC-019 |
+| I-020 | DEBT | P2 | RESOLVED | 本机有 Homebrew `openjdk@17` + `android-commandlinetools`（platforms 35/36、build-tools 34/35/36）；S-037 `gradle :app:assembleDebug` 成功产出 debug APK，工具链验证通过；新增 android-webview/.gitignore | S-036 | S-037 | - |

@@ -1,0 +1,9 @@
+# Android / Gradle build artifacts — never commit
+.gradle/
+build/
+app/build/
+# Machine-specific SDK path (sdk.dir)
+local.properties
+# Local keystores / signing material
+*.jks
+*.keystore

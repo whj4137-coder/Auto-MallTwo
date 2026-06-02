@@ -3,10 +3,10 @@
 > 唯一导航入口。纯路由表，不含业务内容。项目总览看 [README.md](README.md)，规范看 [CONTRIBUTING.md](CONTRIBUTING.md)，启动护栏看 [CLAUDE.md](CLAUDE.md)。
 
 ## 当前状态
-- 阶段：需求规格收口（Web-only）；PRD 已补到可开发执行规格（§15 模块/功能/业务流/数据流/Admin 字段/状态机/路由流转/边界用例）
-- 上次会话：2026-05-29(S-016) PRD v1.1 大改后复核同步下游（CD-001..010）；新建 SPEC-005，REQ-001..042 全覆盖 SPEC-001..005（DRAFT）
-- 当前阻塞：无 P0；仓库仍未 git init / 未脚手架应用代码；OpenSpec 仍为 DRAFT，待评审冻结后 APPROVED
-- 下一步：按 PRD §15.13 的 S1→S7 薄片进入实现，或先继续补高保真原型缺页（P4/P5/P10/P11/P12/P13/Admin）
+- 阶段：Phase 5 验收与公网交付收尾；前台 P1–P13 + 搜索页、Admin 六模块、Express 后端、SSOT 校验、自动化测试、演示脚本、WebView APK 壳、Docker 单服务部署均已落地
+- 上次会话：2026-06-02(S-036) 选择 WebView APK + 公网部署路线，补 Android WebView 壳、Express 静态托管、Dockerfile 与部署指南；SPEC-001..005 已 APPROVED，openspec changes 0001–0011 已 Accepted
+- 当前阻塞：无 P0/P1；版本号已定为 1.0.0，剩余验收项为允许本地监听/浏览器/Android SDK 环境下复跑 verify + 1280×720 布局审计 + APK 构建
+- 下一步：完成最终验证与布局审计 → 构建 APK → 公网部署 → 1.0.0 提交/tag/push 收口
 
 ## 四个入口文件
 | 文件 | 作用 |
@@ -28,7 +28,9 @@ Auto-MallTwo/
 │
 ├── apps/                      ★ 可交互实现（monorepo / npm workspaces）
 │   ├── web/                   前台 / + Admin /admin（Vite+React+TS+Zustand），:5173
-│   └── server/                Express + InMemoryStore（种子=§10），:3001/api
+│   └── server/                Express + InMemoryStore（种子=§10），:3001/api；生产模式托管 apps/web/dist
+├── android-webview/           Android WebView 横屏 APK 壳（构建时注入公网 URL）
+├── Dockerfile                 单服务公网部署镜像（/、/admin、/api）
 ├── packages/
 │   └── shared/                共享类型 / 错误码 / COPY 文案（SSOT 镜像）
 ├── product/
@@ -56,7 +58,8 @@ Auto-MallTwo/
 │   ├── specs/                 DRAFT 规格（SPEC-001 购物 / 002 会员 / 003 演示控制 / 004 Admin+上下架 / 005 车载体验；评审冻结后转 APPROVED）
 │   └── changes/_template.md   提案模板（active change 时各含 specs/ + HANDOFF.md）
 └── docs/
-    └── templates/HANDOFF.template.md   交接模板（R7）
+    ├── deployment/WEBVIEW_PUBLIC_DEPLOY.md  WebView APK + 公网部署指南
+    └── templates/HANDOFF.template.md        交接模板（R7）
 ```
 
 ## 快速导航
@@ -87,6 +90,8 @@ Auto-MallTwo/
 | 原型蓝图（线框） | design/prototype/README.md |
 | 高保真界面（静态） | design/prototype/index.html（索引；前台 P1–P13 + 后台 A0–A5 共 19 页，共享 ui.css） |
 | 可交互实现（运行/文件清单） | apps/web · apps/server（运行见 engineering/dev-guide §2；前端 frontend-files.md / 后端 backend-files.md） |
+| WebView APK 壳 | android-webview/README.md |
+| 公网部署指南 | docs/deployment/WEBVIEW_PUBLIC_DEPLOY.md |
 | 技术选型 | engineering/tech-stack.md |
 | 开发指南 | engineering/dev-guide.md |
 | 构建变体 | engineering/build-variants.md |

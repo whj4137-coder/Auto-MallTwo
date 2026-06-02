@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Product } from "@apex/shared";
 import { ERR } from "@apex/shared";
 import { api } from "../lib/api";
-import { yuan } from "../lib/money";
+import { centsToYuanInput, yuan, yuanInputToCents } from "../lib/money";
 import { FormModal, type Field, type FormValues } from "./FormModal";
 
 export function AdminServices() {
@@ -20,7 +20,7 @@ export function AdminServices() {
   const fields: Field[] = editing && isMem(editing)
     ? [
         { key: "name", label: "名称", type: "text" },
-        { key: "priceCents", label: "价格（分）", type: "number" },
+        { key: "priceYuan", label: "价格（元）", type: "number" },
         { key: "validDays", label: "有效期（天）", type: "number" },
         { key: "benefits", label: "权益（逗号分隔）", type: "csv" },
       ]
@@ -33,7 +33,7 @@ export function AdminServices() {
     if (!editing) return;
     const body: Record<string, unknown> = { name: v.name };
     if (isMem(editing)) {
-      body.priceCents = v.priceCents === "" ? undefined : Number(v.priceCents);
+      body.priceCents = yuanInputToCents(v.priceYuan);
       body.validDays = v.validDays === "" ? undefined : Number(v.validDays);
       body.benefits = String(v.benefits ?? "").split(",").map((s) => s.trim()).filter(Boolean);
     } else {
@@ -46,7 +46,7 @@ export function AdminServices() {
 
   const initial: FormValues = editing
     ? isMem(editing)
-      ? { name: editing.name, priceCents: editing.priceCents ?? "", validDays: editing.validDays ?? "", benefits: (editing.benefits ?? []).join(", ") }
+      ? { name: editing.name, priceYuan: centsToYuanInput(editing.priceCents), validDays: editing.validDays ?? "", benefits: (editing.benefits ?? []).join(", ") }
       : { name: editing.name, serviceDesc: editing.serviceDesc ?? "" }
     : {};
 

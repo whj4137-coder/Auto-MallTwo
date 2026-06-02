@@ -7,15 +7,21 @@
 不接真实支付、不对外发布、不承接真实订单。完整定义见 [产品需求文档 PRD](product/prd.md)。
 
 ## 当前状态
-文档（治理/需求/设计/工程/测试）就位 + **可交互核心闭环已实现并联调通过**：前台 P1–P13 + Admin 六模块 + Express 后端。下一步补自动化测试与剩余 Admin 编辑能力。进度见 [project/roadmap.md](project/roadmap.md)，遗留见 [project/issues.md](project/issues.md)。
+文档（治理/需求/设计/工程/测试）就位 + **可交互核心闭环已实现并联调通过**：前台 P1–P13 + 搜索页、Admin 六模块、Express 后端、SSOT 校验、自动化测试与演示脚本均已落地。当前处于 **1.0.0 验收收尾 + 公网交付准备**：已补 WebView APK 壳、Docker 单服务部署、Express 托管前台静态包；剩余工作是换到允许本地监听/浏览器/Android 构建的环境复跑完整 verify、布局审计并打 APK/部署。进度见 [project/roadmap.md](project/roadmap.md)，遗留见 [project/issues.md](project/issues.md)。
 
 ## 如何运行
 ```bash
 npm install
 npm run dev:server   # 后端 http://localhost:3001/api
 npm run dev:web      # 前台 http://localhost:5173/ · 后台 http://localhost:5173/admin（admin/123456）
+npm run build:release # 构建公网部署用前台静态包
+npm run start:prod    # 单服务模式：http://localhost:3001/ · /admin · /api
 ```
 细节见 [engineering/dev-guide.md](engineering/dev-guide.md)。
+
+## 公网部署 / APK
+- 公网部署：见 [docs/deployment/WEBVIEW_PUBLIC_DEPLOY.md](docs/deployment/WEBVIEW_PUBLIC_DEPLOY.md)。
+- Android WebView APK 壳：见 [android-webview/README.md](android-webview/README.md)。
 
 ## 文档怎么看（四个入口文件）
 | 文件 | 作用 | 谁读 |
@@ -29,8 +35,9 @@ npm run dev:web      # 前台 http://localhost:5173/ · 后台 http://localhost:
 
 ## 目录结构
 ```
-apps/web      前台 / + Admin /admin（Vite+React）         apps/server   Express + 内存存储
+apps/web      前台 / + Admin /admin（Vite+React）         apps/server   Express + 内存存储 + 静态托管
 packages/shared  共享类型 / 错误码 / 文案（SSOT 镜像）
+android-webview  Android WebView 横屏 APK 壳
 product/      业务需求（唯一 PRD）                          design/       架构 / 接口 / 视觉 token / 原型 / 组件
 engineering/  技术栈 / 开发指南 / 前后端文件清单            testing/      策略 / 用例 / 覆盖矩阵
 project/      roadmap / issues / decisions                  sessions/     会话交接      openspec/  变更提案

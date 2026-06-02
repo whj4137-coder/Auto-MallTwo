@@ -1,0 +1,17 @@
+plugins {
+    id "com.android.application"
+}
+
+android {
+    namespace "space.apexdrive.store"
+    compileSdk 35
+
+    defaultConfig {
+        applicationId "space.apexdrive.store"
+        minSdk 26
+        targetSdk 35
+        versionCode 1
+        versionName "1.0.0"
+        resValue "string", "webview_start_url", findProperty("WEBVIEW_URL") ?: "https://example.com/"
+    }
+}

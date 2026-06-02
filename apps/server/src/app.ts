@@ -1,5 +1,7 @@
 import express, { type Express } from "express";
 import cors from "cors";
+import fs from "node:fs";
+import path from "node:path";
 import { catalogRouter } from "./routes/catalog.js";
 import { authRouter } from "./routes/auth.js";
 import { cartRouter } from "./routes/cart.js";
@@ -24,5 +26,17 @@ export function createApp(): Express {
   api.use(demoRouter);
   api.use(adminRouter);
   app.use("/api", api);
+
+  const webDistCandidates = [
+    process.env.WEB_DIST_DIR,
+    path.resolve(process.cwd(), "apps/web/dist"),
+    path.resolve(process.cwd(), "../web/dist"),
+  ].filter(Boolean) as string[];
+  const webDist = webDistCandidates.find((dir) => fs.existsSync(path.join(dir, "index.html")));
+  if (webDist) {
+    app.use(express.static(webDist));
+    app.get("*", (_req, res) => res.sendFile(path.join(webDist, "index.html")));
+  }
+
   return app;
 }

@@ -20,6 +20,8 @@ npm install                 # 根目录一次装齐三个 workspace
 npm run dev:server          # 后端 http://localhost:3001/api（内存数据，启动即 seed）
 npm run dev:web             # 前台 http://localhost:5173/ ，Admin http://localhost:5173/admin
 # Vite 已配 /api 代理 → :3001。浏览器置 1280×720 视口模拟车机横屏。
+npm run build:release       # 生产构建：生成 apps/web/dist
+npm run start:prod          # 单服务模式：http://localhost:3001/ · /admin · /api
 npm run verify              # 提交门禁：typecheck + check:ssot + test（Vitest L1/L2）
 npm test                    # 仅 Vitest（L1 单测 + L2 Supertest 集成，18 例）
 npm run test:e2e            # Playwright E2E（1280×720，需服务在跑；不入 commit 门禁）
@@ -31,6 +33,10 @@ npm run test:e2e            # Playwright E2E（1280×720，需服务在跑；不
 - 前台： http://localhost:5173/
 - 后台 Admin： http://localhost:5173/admin （演示账号 admin / 123456）
 - 后端只读接口可直接看 JSON：如 http://localhost:3001/api/home 、 http://localhost:3001/api/health
+
+**公网部署 / APK**：
+- 单服务 Docker 部署与 Nginx 反代见 [../docs/deployment/WEBVIEW_PUBLIC_DEPLOY.md](../docs/deployment/WEBVIEW_PUBLIC_DEPLOY.md)。
+- Android WebView 壳见 [../android-webview/README.md](../android-webview/README.md)，构建时用 `-PWEBVIEW_URL=https://your-domain/` 注入公网地址。
 
 ## 3. 联调约定
 - 统一响应信封 `{code,message,data}`；前端按 code 分发（见 REQ-025）。

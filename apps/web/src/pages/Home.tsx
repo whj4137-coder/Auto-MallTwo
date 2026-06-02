@@ -23,6 +23,9 @@ export function Home() {
   const hero = data.banners[0];
   const promoCharge = data.banners.find((b) => b.bannerCode === "banner_002");
   const promoMem = data.banners.find((b) => b.bannerCode === "banner_003");
+  const heroProduct = hero
+    ? [...data.featured, ...data.shelves.flatMap((s) => s.products)].find((p) => p.productCode === hero.targetProductCode)
+    : undefined;
   const go = (p: Pick<Product, "productCode" | "type">) => nav(productPath(p));
   const goTarget = (code: string) => {
     const p = [...data.featured, ...data.shelves.flatMap((s) => s.products)].find((x) => x.productCode === code);
@@ -50,7 +53,7 @@ export function Home() {
             <div className="kick">FEATURED</div>
             <div className="h1">{hero?.title}</div>
             <div className="sub">{hero?.subtitle}</div>
-            <div><span className="btn">{COPY.C020_BUY_NOW} ¥129 →</span></div>
+            <div><span className="btn">{COPY.C020_BUY_NOW} {yuan(heroProduct?.priceCents)} →</span></div>
           </div>
           <div className="r"><div className="puck" style={{ width: 150, height: 116 }}><Glyph name="phone" cls="" /></div></div>
         </div>

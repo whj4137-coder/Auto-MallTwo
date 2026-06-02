@@ -13,6 +13,18 @@ async function login(page: Page) {
   await expect(page.getByText(/STATUS USER/)).toBeVisible();
 }
 const featured = (page: Page, name: string) => page.locator(".bigcard", { hasText: name });
+const layoutTolerance = 1;
+
+async function expectNoPageOverflow(page: Page, route: string, allowVertical = false) {
+  const overflow = await page.evaluate(() => ({
+    x: document.documentElement.scrollWidth - window.innerWidth,
+    y: document.documentElement.scrollHeight - window.innerHeight,
+  }));
+  expect(overflow.x, `横向溢出 @ ${route}`).toBeLessThanOrEqual(layoutTolerance);
+  if (!allowVertical) {
+    expect(overflow.y, `整页纵向溢出 @ ${route}`).toBeLessThanOrEqual(layoutTolerance);
+  }
+}
 
 test("A-01 实物购物闭环：加购 → 结算 → 支付 → 支付成功 ORDER-P", async ({ page }) => {
   await reset(page);
@@ -99,4 +111,37 @@ test("SEARCH-01 搜索命中 + 空结果", async ({ page }) => {
   await expect(page.locator(".bigcard", { hasText: "磁吸手机支架" })).toBeVisible();
   await page.locator(".search input").fill("zzzz");
   await expect(page.getByText("未查询到你想要的结果")).toBeVisible();
+});
+
+test("LAYOUT-01 1280×720 关键页面无意外整页滚动", async ({ page }) => {
+  test.setTimeout(20000);
+  const frontRoutes = [
+    { route: "/", allowVertical: false },
+    { route: "/category", allowVertical: false },
+    { route: "/search", allowVertical: false },
+    { route: "/product/phy_car_001", allowVertical: false },
+    { route: "/membership/mem_001", allowVertical: false },
+    { route: "/service/svc_charge_001", allowVertical: false },
+    { route: "/cart", allowVertical: true },
+    { route: "/orders", allowVertical: true },
+    { route: "/mine", allowVertical: false },
+  ];
+  for (const { route, allowVertical } of frontRoutes) {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    await expectNoPageOverflow(page, route, allowVertical);
+  }
+
+  await page.goto("/", { waitUntil: "domcontentloaded" });
+  await login(page);
+  await page.locator('nav.nav a[href="/cart"]').click();
+  await expectNoPageOverflow(page, "/cart", true);
+
+  await page.goto("/admin/login", { waitUntil: "domcontentloaded" });
+  await page.getByRole("button", { name: "登录" }).click();
+  await expect(page).toHaveURL(/\/admin\/products/);
+  const adminRoutes = ["/admin/products", "/admin/banners", "/admin/services", "/admin/orders", "/admin/session", "/admin/account"];
+  for (const route of adminRoutes) {
+    await page.goto(route, { waitUntil: "domcontentloaded" });
+    await expectNoPageOverflow(page, route, true);
+  }
 });

@@ -1,6 +1,6 @@
 {
   "name": "apex-drive-store",
-  "version": "0.1.0",
+  "version": "1.0.0",
   "private": true,
   "type": "module",
   "workspaces": [
@@ -11,6 +11,9 @@
     "dev:server": "npm run dev -w @apex/server",
     "dev:web": "npm run dev -w @apex/web",
     "build:web": "npm run build -w @apex/web",
+    "build:server": "npm run build -w @apex/server",
+    "build:release": "npm run build:web && npm run build:server",
+    "start:prod": "npm run start -w @apex/server",
     "typecheck": "tsc -p apps/web/tsconfig.json --noEmit && tsc -p apps/server/tsconfig.json --noEmit",
     "check:ssot": "node scripts/check-ssot.mjs",
     "test": "vitest run",

@@ -2,7 +2,7 @@ import { useEffect, useState } from "react";
 import type { Product } from "@apex/shared";
 import { ERR, COPY } from "@apex/shared";
 import { api } from "../lib/api";
-import { yuan } from "../lib/money";
+import { centsToYuanInput, yuan, yuanInputToCents } from "../lib/money";
 import { FormModal, type Field, type FormValues } from "./FormModal";
 
 const CATEGORIES = [
@@ -16,7 +16,7 @@ const CATEGORIES = [
 const fields = (isNew: boolean): Field[] => [
   { key: "name", label: "名称", type: "text" },
   ...(isNew ? [{ key: "category", label: "类目", type: "select", options: CATEGORIES } as Field] : []),
-  { key: "priceCents", label: "价格（分，如 12900=¥129；展示服务留空）", type: "number" },
+  { key: "priceYuan", label: "价格（元，如 129；展示服务留空）", type: "number" },
   { key: "colors", label: "颜色 SKU（逗号分隔）", type: "csv", placeholder: "曜石黑, 银灰" },
   { key: "capacities", label: "容量 SKU（逗号分隔，可空）", type: "csv" },
   { key: "sortOrder", label: "排序", type: "number" },
@@ -37,9 +37,10 @@ export function AdminProducts() {
   const open = (p: Product | "new") => { setErr(""); setEditing(p); };
 
   async function submit(v: FormValues) {
+    const priceCents = yuanInputToCents(v.priceYuan);
     const body: Record<string, unknown> = {
       name: v.name,
-      priceCents: v.priceCents === "" ? null : Number(v.priceCents),
+      priceCents: priceCents ?? (editing === "new" ? null : undefined),
       colors: String(v.colors ?? "").split(",").map((s) => s.trim()).filter(Boolean),
       capacities: String(v.capacities ?? "").split(",").map((s) => s.trim()).filter(Boolean),
       sortOrder: v.sortOrder === "" ? undefined : Number(v.sortOrder),
@@ -58,8 +59,8 @@ export function AdminProducts() {
     : <span className="tag phys">实物</span>;
 
   const initial: FormValues = editing && editing !== "new"
-    ? { name: editing.name, priceCents: editing.priceCents ?? "", colors: editing.colors.join(", "), capacities: editing.capacities.join(", "), sortOrder: editing.sortOrder, homeFeatured: editing.homeFeatured }
-    : { name: "", category: "cat_car_goods", priceCents: "", colors: "", capacities: "", sortOrder: "", homeFeatured: false };
+    ? { name: editing.name, priceYuan: centsToYuanInput(editing.priceCents), colors: editing.colors.join(", "), capacities: editing.capacities.join(", "), sortOrder: editing.sortOrder, homeFeatured: editing.homeFeatured }
+    : { name: "", category: "cat_car_goods", priceYuan: "", colors: "", capacities: "", sortOrder: "", homeFeatured: false };
 
   return (
     <main className="acontent">

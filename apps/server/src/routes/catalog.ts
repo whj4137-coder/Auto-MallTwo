@@ -2,7 +2,7 @@ import { Router } from "express";
 import type { HomeData } from "@apex/shared";
 import { ERR, COPY } from "@apex/shared";
 import { store } from "../store/InMemoryStore.js";
-import { visibleProducts } from "../services/shelf.js";
+import { isVisible, visibleProducts } from "../services/shelf.js";
 import { ok, fail } from "../middleware/envelope.js";
 
 export const catalogRouter = Router();
@@ -10,7 +10,9 @@ export const catalogRouter = Router();
 // API-001 首页聚合（仅 published）。布局见 openspec change 0001。
 catalogRouter.get("/home", (_req, res) => {
   const visible = visibleProducts(store.products);
-  const banners = store.banners.filter((b) => b.published).sort((a, b) => a.sortOrder - b.sortOrder);
+  const banners = store.banners
+    .filter((b) => b.published && isVisible(store.getProduct(b.targetProductCode)))
+    .sort((a, b) => a.sortOrder - b.sortOrder);
   const categories = store.categories
     .slice()
     .sort((a, b) => a.sortOrder - b.sortOrder)

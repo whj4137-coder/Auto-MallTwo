@@ -163,6 +163,7 @@ describe("Admin CRUD（change 0010）", () => {
     const t = await login();
     await request(app).patch("/api/admin/products/phy_car_001/shelf").set(auth(t)).send({ published: false });
     const home = await request(app).get("/api/home");
+    expect(home.body.data.banners.some((b: any) => b.targetProductCode === "phy_car_001")).toBe(false);
     expect(home.body.data.featured.some((p: any) => p.productCode === "phy_car_001")).toBe(false);
     const shelf = home.body.data.shelves.find((s: any) => s.category.categoryCode === "cat_car_goods");
     expect(shelf.products.some((p: any) => p.productCode === "phy_car_001")).toBe(false);
