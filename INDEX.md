@@ -24,7 +24,6 @@ Auto-MallTwo/
 ├── CLAUDE.md                  Agent 启动护栏 + 工程纪律 R5–R9
 ├── CONTRIBUTING.md            协作规范（目录/SSOT/PR）
 ├── CHANGELOG.md               变更日志（Keep a Changelog 1.1.0）
-├── .pre-commit-config.yaml    R9.2 提交钩子脚手架（待启用）
 │
 ├── apps/                      ★ 可交互实现（monorepo / npm workspaces）
 │   ├── web/                   前台 / + Admin /admin（Vite+React+TS+Zustand），:5173
@@ -108,6 +107,6 @@ Auto-MallTwo/
 | 工程纪律（R5–R9 / pre-commit gate） | CLAUDE.md §3 |
 | 跨 session 交接（当前） | openspec/HANDOFF.md |
 | 交接模板（R7） | docs/templates/HANDOFF.template.md |
-| 提交钩子配置 | .pre-commit-config.yaml |
+| 提交钩子配置 | .claude/settings.json + .claude/hooks/commit-gate.sh |
 | 上一个会话的状态 | sessions/session-log.md |
 | 会话交接模板 | sessions/_template.md |
