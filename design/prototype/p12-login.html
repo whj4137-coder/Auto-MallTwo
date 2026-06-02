@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><title>P12 登录弹窗 — Apex Drive Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ui.css">
+<style>.bg-hint{padding:18px;color:var(--ink3);font-size:14px}</style></head><body>
+<div class="device">
+  <div class="bar">
+    <span class="badge">DEMO</span><span class="brand">APEX <b>DRIVE</b> STORE</span>
+    <div class="segs"><div class="seg"><b class="on">驻车</b><i>行车</i></div><div class="seg"><b class="on">在线</b><i>断网</i></div><div class="seg"><b>已登录</b><i class="on">未登录</i></div></div>
+    <span class="spacer"></span><span class="readout">STATUS · <em>GUEST</em> / PARKED / ONLINE</span><button class="reset">重置数据</button>
+  </div>
+  <div class="body">
+    <nav class="nav">
+      <div class="logo">APEX</div>
+      <a class="on"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg></span>首页</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>分类</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.2 11.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2"/></svg></span>购物车</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>订单</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>我的</a>
+    </nav>
+    <main class="main"><div class="bg-hint">（点击「加入购物车」等交易动作触发登录，背景页面保留）</div></main>
+  </div>
+  <div class="scrim">
+    <div class="dialog">
+      <div class="dh"><div class="dt">Mock 登录</div><div class="x">×</div></div>
+      <div class="note">演示账号 admin / 123456</div>
+      <div class="field"><label>账号</label><input value="admin"></div>
+      <div class="field"><label>密码</label><input type="password" value="123456"></div>
+      <div class="err">账号或密码不正确</div>
+      <div class="acts"><button class="btn ghost">取消</button><button class="btn">登录</button></div>
+    </div>
+  </div>
+</div></body></html>

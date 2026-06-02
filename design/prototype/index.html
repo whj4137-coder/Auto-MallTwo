@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><title>Apex Drive Store — 设计稿索引</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@500&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ui.css">
+<style>
+  body{display:block;padding:34px;background:var(--bg)}
+  h1{font-family:var(--disp);font-size:24px} h1 b{color:var(--teal)}
+  .sub{color:var(--ink2);font-size:13px;margin:6px 0 22px}
+  .grp{font-family:var(--mono);font-size:11px;letter-spacing:1px;color:var(--teal);margin:22px 0 10px}
+  .grid{display:grid;grid-template-columns:repeat(5,1fr);gap:14px;max-width:1180px}
+  a.tile{display:flex;flex-direction:column;gap:6px;text-decoration:none;background:linear-gradient(180deg,var(--panel),var(--bg2));border:1px solid var(--line);border-radius:12px;padding:15px;color:var(--ink)}
+  a.tile:hover{border-color:var(--line2);box-shadow:0 0 0 1px var(--line2),0 12px 28px rgba(0,0,0,.4);transform:translateY(-2px);transition:.16s}
+  a.tile .id{font-family:var(--mono);color:var(--teal);font-weight:600;font-size:12px}
+  a.tile .nm{font-size:14px}
+</style></head><body>
+  <h1>Apex <b>Drive Store</b> · 设计稿</h1>
+  <div class="sub">座舱 HMI · 深色座舱 · 1280×720。共享样式 ui.css｜文案 PRD §11｜数据 PRD §10。双击任意页面查看。</div>
+
+  <div class="grp">前台 FRONTEND · P1–P13</div>
+  <div class="grid">
+    <a class="tile" href="p1-home.html"><span class="id">P1</span><span class="nm">首页</span></a>
+    <a class="tile" href="p2-category.html"><span class="id">P2</span><span class="nm">分类 / 列表</span></a>
+    <a class="tile" href="p3-detail.html"><span class="id">P3</span><span class="nm">实物详情</span></a>
+    <a class="tile" href="p4-membership.html"><span class="id">P4</span><span class="nm">会员详情</span></a>
+    <a class="tile" href="p5-service.html"><span class="id">P5</span><span class="nm">展示服务</span></a>
+    <a class="tile" href="p6-cart.html"><span class="id">P6</span><span class="nm">购物车</span></a>
+    <a class="tile" href="p7-confirm.html"><span class="id">P7</span><span class="nm">确认订单</span></a>
+    <a class="tile" href="p8-pay.html"><span class="id">P8</span><span class="nm">QR 支付</span></a>
+    <a class="tile" href="p9-result.html"><span class="id">P9</span><span class="nm">支付结果</span></a>
+    <a class="tile" href="p10-orders.html"><span class="id">P10</span><span class="nm">订单中心</span></a>
+    <a class="tile" href="p11-mine.html"><span class="id">P11</span><span class="nm">我的</span></a>
+    <a class="tile" href="p12-login.html"><span class="id">P12</span><span class="nm">登录弹窗</span></a>
+    <a class="tile" href="p13-order-detail.html"><span class="id">P13</span><span class="nm">订单详情</span></a>
+  </div>
+
+  <div class="grp">后台 ADMIN</div>
+  <div class="grid">
+    <a class="tile" href="admin-login.html"><span class="id">A0</span><span class="nm">后台登录</span></a>
+    <a class="tile" href="admin-products.html"><span class="id">A1</span><span class="nm">商品管理</span></a>
+    <a class="tile" href="admin-banners.html"><span class="id">A2</span><span class="nm">Banner 管理</span></a>
+    <a class="tile" href="admin-services.html"><span class="id">A3</span><span class="nm">服务内容</span></a>
+    <a class="tile" href="admin-orders.html"><span class="id">A4</span><span class="nm">订单管理</span></a>
+    <a class="tile" href="admin-session.html"><span class="id">A5</span><span class="nm">演示会话</span></a>
+  </div>
+</body></html>

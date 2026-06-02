@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><title>P4 会员详情 — Apex Drive Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ui.css">
+<style>
+  .mcard{height:100%;min-height:0;border-radius:var(--r-card);background:linear-gradient(140deg,#2fe6d6,#0e7490);padding:26px;display:flex;flex-direction:column;justify-content:space-between;color:#042420;position:relative;overflow:hidden}
+  .mcard .tk{position:absolute;width:14px;height:14px;border:1.5px solid rgba(4,36,32,.4)}
+  .mcard .mk{font-family:var(--mono);font-size:11px;letter-spacing:1.5px;font-weight:600;opacity:.85}
+  .mcard .mn{font-family:var(--disp);font-weight:800;font-size:30px;margin-top:8px}
+  .mcard .mv{font-size:13px;opacity:.8}
+  .mcard .mp{font-family:var(--mono);font-size:40px;font-weight:700}
+  .benefit{display:flex;align-items:center;gap:10px;padding:11px 0;border-bottom:var(--line);border-bottom:1px solid var(--line);font-size:15px}
+  .benefit::before{content:"";width:18px;height:18px;border-radius:50%;background:rgba(34,211,197,.16);box-shadow:inset 0 0 0 1px var(--line2);flex:0 0 18px}
+  .vcard{padding:13px;display:flex;gap:12px;align-items:center}
+  .vcard .vi{width:40px;height:40px;border-radius:10px}.vcard .vi svg{width:22px;height:22px}
+  .vcard .t{font-size:11px;color:var(--ink3)} .vcard .v{font-size:14px}
+</style></head><body>
+<div class="device">
+  <div class="bar">
+    <span class="badge">DEMO</span><span class="brand">APEX <b>DRIVE</b> STORE</span>
+    <div class="segs"><div class="seg"><b class="on">驻车</b><i>行车</i></div><div class="seg"><b class="on">在线</b><i>断网</i></div><div class="seg"><b>已登录</b><i class="on">未登录</i></div></div>
+    <span class="spacer"></span><span class="readout">STATUS · <em>GUEST</em> / PARKED / ONLINE</span><button class="reset">重置数据</button>
+  </div>
+  <div class="body">
+    <nav class="nav">
+      <div class="logo">APEX</div>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg></span>首页</a>
+      <a class="on"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>分类</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.2 11.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2"/></svg></span>购物车</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>订单</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>我的</a>
+    </nav>
+    <main class="main">
+      <div class="phead rev d1"><span class="back">‹ 返回</span><span class="ptitle">会员详情</span></div>
+      <div class="detail rev d1">
+        <div class="limg"><div class="mcard"><span class="tk" style="left:12px;top:12px;border-right:0;border-bottom:0"></span><span class="tk" style="right:12px;bottom:12px;border-left:0;border-top:0"></span>
+          <div><div class="mk">APEX 会员</div><div class="mn">悦行会员月卡</div><div class="mv">适用车辆 · 特斯拉 Model Y</div></div><div class="mp">¥39</div></div></div>
+        <div class="rcol">
+          <div class="nm">悦行会员月卡</div>
+          <div class="pz price"><s>¥</s>39 <span style="font-size:13px;color:var(--ink3);font-weight:400;font-family:var(--sans)">/ 有效期 30 天</span></div>
+          <div class="blk"><div class="lab">会员权益</div><div class="benefit">专属主题</div><div class="benefit">车主精选权益</div><div class="benefit">会员日特惠</div></div>
+          <div class="blk"><div class="lab">绑定车辆</div><div class="card vcard"><div class="tile t-car vi"><svg viewBox="0 0 24 24"><path d="M5 11l1.5-4h11L19 11M5 11h14v5H5z"/></svg></div><div><div class="t">当前车辆</div><div class="v">特斯拉 Model Y · 珍珠白</div></div></div></div>
+          <div class="actions"><button class="btn lg block">立即开通</button></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div></body></html>

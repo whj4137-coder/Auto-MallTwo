@@ -1,0 +1,42 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><title>P3 实物详情 — Apex Drive Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ui.css">
+<style>
+  .limg .big{display:flex;align-items:center;justify-content:center}
+  .limg .big svg{width:120px;height:120px;stroke:var(--teal);fill:none;stroke-width:1}
+  .ship{font-size:13px;color:var(--ink2);line-height:1.9}
+</style></head><body>
+<div class="device">
+  <div class="bar">
+    <span class="badge">DEMO</span><span class="brand">APEX <b>DRIVE</b> STORE</span>
+    <div class="segs"><div class="seg"><b class="on">驻车</b><i>行车</i></div><div class="seg"><b class="on">在线</b><i>断网</i></div><div class="seg"><b>已登录</b><i class="on">未登录</i></div></div>
+    <span class="spacer"></span><span class="readout">STATUS · <em>GUEST</em> / PARKED / ONLINE</span><button class="reset">重置数据</button>
+  </div>
+  <div class="body">
+    <nav class="nav">
+      <div class="logo">APEX</div>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg></span>首页</a>
+      <a class="on"><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>分类</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.2 11.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2"/></svg></span>购物车</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>订单</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>我的</a>
+    </nav>
+    <main class="main">
+      <div class="phead rev d1"><span class="back">‹ 返回</span><span class="ptitle">商品详情</span></div>
+      <div class="detail rev d1">
+        <div class="limg"><div class="card big t-car"><svg viewBox="0 0 24 24"><rect x="7" y="2.4" width="10" height="19.2" rx="2.6"/><path d="M10.4 5h3.2"/><circle cx="12" cy="18.4" r="1.05"/></svg></div></div>
+        <div class="rcol">
+          <div class="nm">磁吸手机支架</div>
+          <div class="pz price"><s>¥</s>129</div>
+          <div class="blk"><div class="lab">颜色</div><div class="opts"><span class="opt sel">曜石黑</span><span class="opt">银灰</span></div></div>
+          <div class="blk"><div class="lab">数量（1–5）</div><div class="stepper"><button class="dim">−</button><span class="n">1</span><button>＋</button></div></div>
+          <div class="blk ship">标准配送 · 预计 2-3 个工作日送达（演示）<br><span class="pill stock">库存充足</span></div>
+          <div class="actions"><button class="btn lg">立即购买</button><button class="btn ghost lg">加入购物车</button></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div></body></html>

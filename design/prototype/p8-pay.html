@@ -1,0 +1,50 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><title>P8 QR 支付 — Apex Drive Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ui.css">
+<style>
+  .payl{flex:0 0 70%;display:flex;flex-direction:column;align-items:center;justify-content:center;padding:24px}
+  .amtl{font-size:13px;color:var(--ink3)} .amt{font-family:var(--mono);font-size:44px;font-weight:700;color:var(--amber);margin:4px 0 22px}
+  .qr{width:208px;height:208px;border-radius:16px;border:1px solid var(--line2);display:flex;align-items:center;justify-content:center;
+    background:repeating-conic-gradient(#0a0d12 0% 25%,#dfe6ee 0% 50%) 0 0/38px 38px,var(--panel2);box-shadow:0 0 30px rgba(34,211,197,.1)}
+  .qr span{background:var(--panel);color:var(--ink3);font-size:12px;padding:4px 9px;border-radius:6px}
+  .pnote{margin-top:18px;color:var(--ink3);font-size:13px}
+  .pback{margin-top:8px;color:var(--ink3);font-size:12px;cursor:pointer}
+  .it{display:flex;align-items:center;gap:12px;padding:6px 0}.it .th{width:46px;height:46px;flex:0 0 46px}.it .th svg{width:23px;height:23px}.it .nm{flex:1;font-size:14px}
+</style></head><body>
+<div class="device">
+  <div class="bar">
+    <span class="badge">DEMO</span><span class="brand">APEX <b>DRIVE</b> STORE</span>
+    <div class="segs"><div class="seg"><b class="on">驻车</b><i>行车</i></div><div class="seg"><b class="on">在线</b><i>断网</i></div><div class="seg"><b class="on">已登录</b><i>未登录</i></div></div>
+    <span class="spacer"></span><span class="readout">STATUS · <em>ADMIN</em> / PARKED / ONLINE</span><button class="reset">重置数据</button>
+  </div>
+  <div class="body">
+    <nav class="nav">
+      <div class="logo">APEX</div>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg></span>首页</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>分类</a>
+      <a class="on"><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.2 11.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2"/></svg></span>购物车</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>订单</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>我的</a>
+    </nav>
+    <main class="main">
+      <div class="phead rev d1"><span class="ptitle">扫码支付</span></div>
+      <div class="ls rev d1">
+        <section class="card payl">
+          <div class="amtl">应付金额</div><div class="amt">¥129</div>
+          <div class="qr"><span>二维码占位</span></div>
+          <div class="pnote">演示支付，不会产生真实扣款</div>
+          <div class="pback">取消并返回</div>
+        </section>
+        <aside class="right"><div class="card summary">
+          <h3>订单明细</h3>
+          <div class="it"><div class="tile t-car th"><svg viewBox="0 0 24 24"><rect x="7" y="2.4" width="10" height="19.2" rx="2.6"/><circle cx="12" cy="18.4" r="1.05"/></svg></div><div class="nm">磁吸手机支架 ×1</div><span class="price"><s>¥</s>129</span></div>
+          <div class="stotal"><span>合计</span><span class="price"><s>¥</s>129</span></div>
+          <button class="btn lg block">模拟扫码成功</button>
+        </div></aside>
+      </div>
+    </main>
+  </div>
+</div></body></html>

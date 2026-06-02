@@ -1,0 +1,48 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><title>P9 支付结果 — Apex Drive Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ui.css">
+<style>
+  .res{height:100%;display:flex;align-items:center;justify-content:center}
+  .panel{width:520px;padding:38px;text-align:center}
+  .ok{width:74px;height:74px;border-radius:50%;margin:0 auto 20px;background:rgba(52,211,153,.14);box-shadow:0 0 36px rgba(52,211,153,.25),inset 0 0 0 2px var(--green);display:flex;align-items:center;justify-content:center}
+  .ok::after{content:"";width:20px;height:36px;border:solid var(--green);border-width:0 4px 4px 0;transform:rotate(45deg) translateY(-4px)}
+  .rt{font-family:var(--disp);font-size:26px;font-weight:700;margin-bottom:20px}
+  .rows{text-align:left;max-width:360px;margin:0 auto 26px}
+  .r{display:flex;justify-content:space-between;padding:11px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--ink2)}
+  .r .v{color:var(--ink)} .r .v.mono{font-family:var(--mono)}
+  .acts{display:flex;gap:12px}.acts .btn{flex:1}
+</style></head><body>
+<div class="device">
+  <div class="bar">
+    <span class="badge">DEMO</span><span class="brand">APEX <b>DRIVE</b> STORE</span>
+    <div class="segs"><div class="seg"><b class="on">驻车</b><i>行车</i></div><div class="seg"><b class="on">在线</b><i>断网</i></div><div class="seg"><b class="on">已登录</b><i>未登录</i></div></div>
+    <span class="spacer"></span><span class="readout">STATUS · <em>ADMIN</em> / PARKED / ONLINE · ORDERS 1</span><button class="reset">重置数据</button>
+  </div>
+  <div class="body">
+    <nav class="nav">
+      <div class="logo">APEX</div>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg></span>首页</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>分类</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.2 11.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2"/></svg></span>购物车</a>
+      <a class="on"><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>订单</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>我的</a>
+    </nav>
+    <main class="main">
+      <div class="res rev d1">
+        <div class="card panel">
+          <div class="ok"></div>
+          <div class="rt">支付成功</div>
+          <div class="rows">
+            <div class="r"><span>订单号</span><span class="v mono">ORDER-P-001</span></div>
+            <div class="r"><span>金额</span><span class="v price"><s>¥</s>129</span></div>
+            <div class="r"><span>状态</span><span class="v badge-ok">已支付</span></div>
+          </div>
+          <div class="acts"><button class="btn lg">查看订单</button><button class="btn ghost lg">返回首页</button></div>
+        </div>
+      </div>
+    </main>
+  </div>
+</div></body></html>

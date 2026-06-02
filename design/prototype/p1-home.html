@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="zh-CN"><head>
+<meta charset="utf-8"><title>P1 首页 — Apex Drive Store</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@500;600&family=IBM+Plex+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="ui.css">
+<style>
+  .main{gap:10px; padding:12px 0 12px 18px}
+  .bento{height:172px} .puck{width:138px;height:108px} .puck svg{width:54px;height:54px}
+</style></head><body>
+<div class="device">
+  <div class="bar">
+    <span class="badge">DEMO</span><span class="brand">APEX <b>DRIVE</b> STORE</span>
+    <div class="segs">
+      <div class="seg"><b class="on">驻车</b><i>行车</i></div>
+      <div class="seg"><b class="on">在线</b><i>断网</i></div>
+      <div class="seg"><b>已登录</b><i class="on">未登录</i></div>
+    </div>
+    <span class="spacer"></span><span class="readout">STATUS · <em>GUEST</em> / PARKED / ONLINE · CART 0</span>
+    <button class="reset">重置数据</button>
+  </div>
+  <div class="body">
+    <nav class="nav">
+      <div class="logo">APEX</div>
+      <a class="on"><span class="ic"><svg viewBox="0 0 24 24"><path d="M3 10.5 12 3l9 7.5"/><path d="M5 9.5V20h14V9.5"/></svg></span>首页</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><rect x="3" y="3" width="7" height="7" rx="1.5"/><rect x="14" y="3" width="7" height="7" rx="1.5"/><rect x="3" y="14" width="7" height="7" rx="1.5"/><rect x="14" y="14" width="7" height="7" rx="1.5"/></svg></span>分类</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="9" cy="20" r="1.4"/><circle cx="18" cy="20" r="1.4"/><path d="M3 4h2l2.2 11.2a1 1 0 0 0 1 .8h8.6a1 1 0 0 0 1-.8L20 8H6.2"/></svg></span>购物车</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><path d="M6 3h12v18l-3-2-3 2-3-2-3 2z"/><path d="M9 8h6M9 12h6"/></svg></span>订单</a>
+      <a><span class="ic"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="3.5"/><path d="M5 20a7 7 0 0 1 14 0"/></svg></span>我的</a>
+    </nav>
+    <main class="main">
+      <div class="top pad-r rev d1">
+        <span class="wm">Apex <b>Drive Store</b></span><span class="tagchip">车机商城 · DEMO</span>
+        <div class="search r"><svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><path d="m20 20-3-3"/></svg><span class="t">搜索车品、电子配件、会员…</span><svg class="mic" viewBox="0 0 24 24"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0 0 14 0M12 18v3"/></svg></div>
+      </div>
+      <div class="bento pad-r rev d2">
+        <section class="hero">
+          <div class="glow"></div><span class="tick tl"></span><span class="tick tr"></span><span class="tick bl"></span><span class="tick br"></span>
+          <div class="l"><div class="kick">稳固出行装备</div><div class="h1">磁吸手机支架<br>舒适触达</div><div class="sub">车主优选 · 驻车一键购，行车安心看</div><button class="btn">立即查看 <span class="p">¥129</span> →</button></div>
+          <div class="r"><div class="puck"><svg viewBox="0 0 24 24"><rect x="7" y="2.4" width="10" height="19.2" rx="2.6"/><path d="M10.4 5h3.2"/><circle cx="12" cy="18.4" r="1.05"/></svg></div></div>
+        </section>
+        <div class="promos">
+          <div class="promo pr-charge"><div class="pk">便捷充电服务</div><div class="pt">城市快充服务展示</div><div class="ps">覆盖商圈 · 即将开放</div><span class="pico"><svg viewBox="0 0 24 24"><path d="M13 3 5 13h6l-1 8 8-10h-6z"/></svg></span></div>
+          <div class="promo pr-mem"><div class="pk">会员专属权益</div><div class="pt">开启专属车内体验</div><div class="ps">悦行月卡 ¥39 起</div><span class="pico"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 20l-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></span></div>
+        </div>
+      </div>
+      <div class="cats pad-r rev d2">
+        <div class="cat on"><svg viewBox="0 0 24 24"><path d="M5 11l1.5-4h11L19 11M5 11h14v5H5z"/></svg><span class="cn">车品</span><span class="cc">03</span></div>
+        <div class="cat"><svg viewBox="0 0 24 24"><rect x="4" y="5" width="16" height="12" rx="2"/><path d="M9 20h6"/></svg><span class="cn">电子配件</span><span class="cc">02</span></div>
+        <div class="cat"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 20l-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg><span class="cn">会员服务</span><span class="cc">02</span></div>
+        <div class="cat"><svg viewBox="0 0 24 24"><path d="M13 3 5 13h6l-1 8 8-10h-6z"/></svg><span class="cn">充电服务</span><span class="cc">02</span></div>
+        <div class="cat"><svg viewBox="0 0 24 24"><path d="M4 13c2-5 14-5 16 0M7 13v4h10v-4"/></svg><span class="cn">生活服务</span><span class="cc">01</span></div>
+      </div>
+      <div class="sh pad-r rev d3">精选商品<span class="hint">← 横向滑动 →</span><span class="more">FEATURED</span></div>
+      <div class="railwrap rev d3"><div class="frail">
+        <div class="bigcard"><div class="vis v-car"><svg viewBox="0 0 24 24"><rect x="7" y="2.4" width="10" height="19.2" rx="2.6"/><circle cx="12" cy="18.4" r="1.05"/></svg></div><div class="ft"><div class="kk">稳固出行</div><div class="nm">磁吸手机支架</div><div class="pr"><span class="price"><s>¥</s>129</span><span class="go">查看 →</span></div></div></div>
+        <div class="bigcard"><div class="vis v-ele"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div><div class="ft"><div class="kk">高清夜视</div><div class="nm">行车记录仪 Mini</div><div class="pr"><span class="price"><s>¥</s>499</span><span class="go">查看 →</span></div></div></div>
+        <div class="bigcard"><div class="vis v-mem"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 20l-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></div><div class="ft"><div class="kk">会员专享</div><div class="nm">悦行会员月卡</div><div class="pr"><span class="price"><s>¥</s>39</span><span class="go">开通 →</span></div></div></div>
+        <div class="bigcard"><div class="vis v-ele"><svg viewBox="0 0 24 24"><path d="M7 4h4l-1 6h4l-6 10 1-7H6z"/></svg></div><div class="ft"><div class="kk">快充</div><div class="nm">双口快充充电器</div><div class="pr"><span class="price"><s>¥</s>159</span><span class="go">查看 →</span></div></div></div>
+      </div></div>
+      <div class="catzone rev d4">
+        <div class="csec"><div class="chead">车品 <span class="k">CAR GOODS</span><span class="cnt">3 件</span></div><div class="glist">
+          <div class="scard"><div class="tile s-car t-car"><svg viewBox="0 0 24 24"><rect x="7" y="2.4" width="10" height="19.2" rx="2.6"/><circle cx="12" cy="18.4" r="1.05"/></svg></div><div class="sinfo"><div class="nm">磁吸手机支架</div><div class="mt">曜石黑/银灰</div><div class="pr"><span class="price"><s>¥</s>129</span><span class="pill stock">库存充足</span></div></div></div>
+          <div class="scard"><div class="tile s-car t-car"><svg viewBox="0 0 24 24"><rect x="4" y="8" width="16" height="11" rx="2"/><path d="M7 8V6h10v2"/></svg></div><div class="sinfo"><div class="nm">后备箱折叠收纳箱</div><div class="mt">黑色/深灰</div><div class="pr"><span class="price"><s>¥</s>199</span><span class="pill stock">库存充足</span></div></div></div>
+          <div class="scard"><div class="tile s-car t-car"><svg viewBox="0 0 24 24"><path d="M9 3h6v4a4 4 0 0 1-4 4 4 4 0 0 1 4 4v4H9"/></svg></div><div class="sinfo"><div class="nm">车载香氛补充装</div><div class="mt">海盐蓝/森林绿</div><div class="pr"><span class="price"><s>¥</s>89</span><span class="pill stock">库存充足</span></div></div></div>
+        </div></div>
+        <div class="csec"><div class="chead">电子配件 <span class="k">ELECTRONICS</span><span class="cnt">2 件</span></div><div class="glist">
+          <div class="scard"><div class="tile s-ele t-ele"><svg viewBox="0 0 24 24"><rect x="3" y="6" width="18" height="12" rx="2"/><circle cx="12" cy="12" r="3"/></svg></div><div class="sinfo"><div class="nm">行车记录仪 Mini</div><div class="mt">黑色 · 64G/128G</div><div class="pr"><span class="price"><s>¥</s>499</span><span class="pill stock">库存充足</span></div></div></div>
+          <div class="scard"><div class="tile s-ele t-ele"><svg viewBox="0 0 24 24"><path d="M7 4h4l-1 6h4l-6 10 1-7H6z"/></svg></div><div class="sinfo"><div class="nm">双口快充充电器</div><div class="mt">黑色/银色</div><div class="pr"><span class="price"><s>¥</s>159</span><span class="pill stock">库存充足</span></div></div></div>
+        </div></div>
+        <div class="csec"><div class="chead">会员服务 <span class="k">MEMBERSHIP</span><span class="cnt">2 件</span></div><div class="glist">
+          <div class="scard"><div class="tile s-mem t-mem"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 20l-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></div><div class="sinfo"><div class="nm">悦行会员月卡</div><div class="mt">有效期 30 天</div><div class="pr"><span class="price"><s>¥</s>39</span><span class="pill">立即开通</span></div></div></div>
+          <div class="scard"><div class="tile s-mem t-mem"><svg viewBox="0 0 24 24"><path d="M12 3l2.4 4.9 5.4.8-3.9 3.8.9 5.4L12 20l-4.8 2.5.9-5.4L4.2 8.7l5.4-.8z"/></svg></div><div class="sinfo"><div class="nm">尊享会员年卡</div><div class="mt">有效期 365 天</div><div class="pr"><span class="price"><s>¥</s>299</span><span class="pill">立即开通</span></div></div></div>
+        </div></div>
+        <div class="csec"><div class="chead">充电服务 <span class="k">CHARGING</span><span class="cnt">2 件</span></div><div class="glist">
+          <div class="scard"><div class="tile s-svc t-svc"><svg viewBox="0 0 24 24"><path d="M13 3 5 13h6l-1 8 8-10h-6z"/></svg></div><div class="sinfo"><div class="nm">城市快充服务</div><div class="mt">服务展示</div><div class="pr"><span class="pill off">暂未开放</span></div></div></div>
+          <div class="scard"><div class="tile s-svc t-svc"><svg viewBox="0 0 24 24"><path d="M12 21s-7-4.5-7-10a7 7 0 0 1 14 0c0 5.5-7 10-7 10z"/><circle cx="12" cy="11" r="2.4"/></svg></div><div class="sinfo"><div class="nm">目的地充电服务</div><div class="mt">服务展示</div><div class="pr"><span class="pill off">暂未开放</span></div></div></div>
+        </div></div>
+        <div class="csec"><div class="chead">生活服务 <span class="k">LIFE</span><span class="cnt">1 件</span></div><div class="glist">
+          <div class="scard"><div class="tile s-svc t-svc"><svg viewBox="0 0 24 24"><path d="M4 13c2-5 14-5 16 0M7 13v4h10v-4M9 17v2M15 17v2"/></svg></div><div class="sinfo"><div class="nm">精洗护理服务</div><div class="mt">服务展示</div><div class="pr"><span class="pill off">暂未开放</span></div></div></div>
+        </div></div>
+      </div>
+    </main>
+  </div>
+</div></body></html>

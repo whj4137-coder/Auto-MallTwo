@@ -1,0 +1,16 @@
+# 依赖
+node_modules/
+
+# 构建产物
+dist/
+apps/web/dist/
+
+# 测试产物
+test-results/
+playwright-report/
+.playwright/
+coverage/
+
+# 运行时/日志
+*.log
+.DS_Store

@@ -1,0 +1,162 @@
+import { Router } from "express";
+import { nanoid } from "nanoid";
+import type { Checkout, CheckoutLine, Order } from "@apex/shared";
+import { ERR, COPY } from "@apex/shared";
+import { store } from "../store/InMemoryStore.js";
+import { ok, fail } from "../middleware/envelope.js";
+import { requireAuth } from "../middleware/auth.js";
+import { gateWrite } from "../middleware/gate.js";
+
+export const checkoutRouter = Router();
+
+// API-013 创建 Checkout（后端权威定价；校验下架/售罄 → 4009）
+checkoutRouter.post("/checkout", requireAuth, gateWrite, (req, res) => {
+  const { source, productCode, color, capacity, qty = 1 } = req.body ?? {};
+
+  let lines: CheckoutLine[] = [];
+  let type: Checkout["type"] = "PHYSICAL";
+  let sourceItemIds: string[] = [];
+
+  if (source === "CART") {
+    const selected = store.cart.filter((i) => i.selected);
+    if (selected.length === 0) {
+      fail(res, ERR.NOT_CHECKOUTABLE, "请先选择商品");
+      return;
+    }
+    for (const i of selected) {
+      const p = store.getProduct(i.productCode);
+      if (!p || !p.published) {
+        fail(res, ERR.NOT_CHECKOUTABLE, COPY.C045_DELISTED, { reason: "DELISTED" });
+        return;
+      }
+      if (p.stock === "SOLD_OUT") {
+        fail(res, ERR.NOT_CHECKOUTABLE, COPY.C046_SOLD_OUT, { reason: "SOLD_OUT" });
+        return;
+      }
+    }
+    lines = selected.map((i) => ({
+      productCode: i.productCode,
+      name: i.name,
+      color: i.color,
+      capacity: i.capacity,
+      unitPriceCents: i.unitPriceCents,
+      qty: i.qty,
+      lineTotalCents: i.unitPriceCents * i.qty,
+    }));
+    sourceItemIds = selected.map((i) => i.itemId);
+    type = "PHYSICAL";
+  } else {
+    // BUY_NOW：实物 or 会员
+    const p = store.getProduct(productCode);
+    if (!p || !p.published) {
+      fail(res, ERR.NOT_FOUND, COPY.C036_NOT_FOUND);
+      return;
+    }
+    if (p.type === "DISPLAY_SERVICE") {
+      fail(res, ERR.SCOPE_BLOCKED, COPY.C039_SCOPE);
+      return;
+    }
+    if (p.stock === "SOLD_OUT") {
+      fail(res, ERR.NOT_CHECKOUTABLE, COPY.C046_SOLD_OUT, { reason: "SOLD_OUT" });
+      return;
+    }
+    const lineQty = p.type === "MEMBERSHIP" ? 1 : Math.max(1, Math.min(5, Number(qty) || 1));
+    lines = [{
+      productCode: p.productCode,
+      name: p.name,
+      color: color ?? p.colors[0],
+      capacity: capacity ?? p.capacities[0],
+      unitPriceCents: p.priceCents ?? 0,
+      qty: lineQty,
+      lineTotalCents: (p.priceCents ?? 0) * lineQty,
+    }];
+    type = p.type === "MEMBERSHIP" ? "MEMBERSHIP" : "PHYSICAL";
+  }
+
+  const totalCents = lines.reduce((s, l) => s + l.lineTotalCents, 0);
+  const firstProduct = store.getProduct(lines[0].productCode);
+  const checkout: Checkout = {
+    checkoutId: nanoid(10),
+    source: source === "CART" ? "CART" : "BUY_NOW",
+    type,
+    lines,
+    totalCents,
+    paid: false,
+    // 实物注入收货信息与配送说明（后端权威，前端不硬编码 §10 字面值）
+    receiver: type === "PHYSICAL" ? store.user.receiver : undefined,
+    deliveryNote: type === "PHYSICAL" ? firstProduct?.deliveryNote : undefined,
+  };
+  store.checkouts.set(checkout.checkoutId, checkout);
+  if (sourceItemIds.length) store.checkoutCartItemIds.set(checkout.checkoutId, sourceItemIds);
+  ok(res, checkout);
+});
+
+// API-014 查看 Checkout
+checkoutRouter.get("/checkout/:checkoutId", requireAuth, (req, res) => {
+  const c = store.checkouts.get(req.params.checkoutId);
+  if (!c) {
+    fail(res, ERR.NOT_FOUND, COPY.C034_CHECKOUT_EXPIRED);
+    return;
+  }
+  ok(res, c);
+});
+
+// API-015 模拟支付 → 落单（仅此处写订单/置会员/删勾选项）
+checkoutRouter.post("/checkout/:checkoutId/pay", requireAuth, gateWrite, (req, res) => {
+  const c = store.checkouts.get(req.params.checkoutId);
+  if (!c) {
+    fail(res, ERR.NOT_FOUND, COPY.C035_QR_EXPIRED);
+    return;
+  }
+
+  // 会员幂等：已 ACTIVE 则不再产生新单
+  if (c.type === "MEMBERSHIP" && store.membership.status === "ACTIVE") {
+    c.paid = true;
+    const existing = store.orders.find((o) => o.orderNo === store.membership.orderNo);
+    ok(res, { order: existing, membership: store.membership });
+    return;
+  }
+
+  let order: Order;
+  if (c.type === "MEMBERSHIP") {
+    const memProduct = store.getProduct(c.lines[0].productCode);
+    const orderNo = store.seq.nextM();
+    order = {
+      orderNo,
+      type: "MEMBERSHIP",
+      status: "ACTIVATED",
+      totalCents: c.totalCents,
+      lines: c.lines,
+      createdAt: new Date().toISOString(),
+      payMethod: "模拟支付",
+      validDays: memProduct?.validDays,
+      boundVehicle: memProduct?.boundVehicle,
+    };
+    store.membership = {
+      status: "ACTIVE",
+      productCode: c.lines[0].productCode,
+      orderNo,
+      validDays: memProduct?.validDays,
+      boundVehicle: memProduct?.boundVehicle,
+    };
+  } else {
+    const orderNo = store.seq.nextP();
+    order = {
+      orderNo,
+      type: "PHYSICAL",
+      status: "PAID",
+      totalCents: c.totalCents,
+      lines: c.lines,
+      createdAt: new Date().toISOString(),
+      payMethod: "模拟支付",
+      receiver: store.user.receiver,
+    };
+    // CART 来源：删除已结算的勾选项
+    const ids = store.checkoutCartItemIds.get(c.checkoutId) ?? [];
+    if (ids.length) store.cart = store.cart.filter((i) => !ids.includes(i.itemId));
+  }
+
+  store.orders.unshift(order);
+  c.paid = true;
+  ok(res, { order, membership: store.membership });
+});
