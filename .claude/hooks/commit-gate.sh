@@ -6,10 +6,13 @@ set -euo pipefail
 input="$(cat)"
 cmd="$(printf '%s' "$input" | python3 -c 'import sys,json; print(json.load(sys.stdin).get("tool_input",{}).get("command",""))' 2>/dev/null || true)"
 
-# 仅当命令真正以 git commit 调用时才触发（命令起始 / 经 ; && | 链接），
-# 避免 echo/printf 等仅在字符串里出现 "git commit" 的误判。
-if printf '%s' "$cmd" | grep -Eq '(^|[;&|]|&&)[[:space:]]*(cd[^;&|]*&&[[:space:]]*)?git[[:space:]]+commit([[:space:]]|$)'; then
-  if printf '%s' "$cmd" | grep -Eq '(^|[;&|]|&&)[[:space:]]*(cd[^;&|]*&&[[:space:]]*)?git[[:space:]]+commit' && printf '%s' "$cmd" | grep -q -- '--no-verify'; then
+# 触发条件：命令里有 git 调用（命令起始/经 ; && | 链接，允许 cd 前缀）且含 commit 子命令。
+# 容忍 git 与 commit 之间的任意 flag（如 `git -c user.email=x commit`、`git --no-pager commit`）。
+# 误判风险（如 `git log --grep commit`）仅多跑一次 verify，无害。
+is_git=$(printf '%s' "$cmd" | grep -Eq '(^|[;&|])[[:space:]]*(cd[^&|;]*&&[[:space:]]*)?git([[:space:]]|$)' && echo y || true)
+has_commit=$(printf '%s' "$cmd" | grep -Eq '(^|[[:space:]])commit([[:space:]]|$)' && echo y || true)
+if [ "$is_git" = y ] && [ "$has_commit" = y ]; then
+  if printf '%s' "$cmd" | grep -q -- '--no-verify'; then
     echo "[commit-gate] 禁止 --no-verify 绕过提交门禁（CLAUDE.md §6/§10）。" >&2
     exit 2
   fi
