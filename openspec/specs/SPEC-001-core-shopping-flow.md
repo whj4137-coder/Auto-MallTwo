@@ -1,8 +1,8 @@
 # SPEC-001 实物购物核心流程（浏览 → 加购/立即购买 → 结算 → 支付 → 订单）
 
-- 状态：DRAFT（评审冻结后转 APPROVED）
+- 状态：APPROVED（评审冻结 2026-05-29，见 openspec/REVIEW-CHECKLIST.md）
 - 提出日期：2026-05-29
-- 批准日期：-
+- 批准日期：2026-05-29
 - 关联需求：REQ-001, REQ-002, REQ-003, REQ-004, REQ-006, REQ-007, REQ-008, REQ-010, REQ-011, REQ-012, REQ-013, REQ-014, REQ-034, REQ-042
 - 关联流程：A-01, A-02, C-01, SEARCH-01
 - 真值来源：[../../product/prd.md](../../product/prd.md)（§7 需求、§8 流程、§10 数据契约、§11 文案）

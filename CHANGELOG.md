@@ -9,6 +9,9 @@
 
 ## [Unreleased]
 
+### Changed
+- **评审冻结（2026-05-29，ADR-0009）**：REVIEW-CHECKLIST 全通过 → changes **0001/0006/0007/0010/0011 → Accepted**；**SPEC-001..005 → APPROVED**；PRD §10/§11 进入硬锁（Phase 1 冻结判据达成）。PRD 同步 §10.8 首页新布局（Bento+类目条+精选 rail+分类货架，取代 精选3+服务3）、§10.1 加 image 字段；SPEC-004 纳入账号信息只读模块。关 I-009/I-013/I-014。
+
 ### Added
 - 文档治理体系：`README.md`（总览）、`INDEX.md`（导航路由+仓库结构）、`CLAUDE.md`（启动护栏）、`CONTRIBUTING.md`（协作规范）。
 - 单一产品需求文档 `product/prd.md`（含功能清单 §4、用户故事地图 §5、用户故事 §6、需求清单 §7 REQ-001..033、业务流程 §8、页面规格 §9、数据契约 §10 ★SSOT、文案锁定 §11 ★SSOT、错误处理 §12、验收 §14）。
@@ -41,7 +44,11 @@
 - 前/后端文件汇总蓝图：`engineering/frontend-files.md`、`engineering/backend-files.md`。
 - 预览服务器脚本 `.claude/preview-server.js`（Node 静态服务，替代沙箱受限的 python http.server）。
 
+### Added
+- **商品图（change 0011）**：新增 `Product.image` 字段 + seed 挂载 + `ProductMedia`（img + 图标兜底）接入 P2 大卡/首页/P3。图片来源经反复后定为**代码生成的座舱风矢量 SVG**（`scripts/gen-product-images.mjs` → `apps/web/public/products/{code}.svg`，10 张独特线稿、按类型配色）。中途试过的 loremflickr 免版权 JPEG 抓取已按用户要求撤销删除。本环境无照片级文生图、pencil 经否决，「直接 AI 生图」生成不了真实照片；真照片可外部生成后同名覆盖。
+
 ### Changed
+- P2 分类页右侧：小横卡 `.scard` 网格 → **大商品卡**（2 列，大图标区 + 类型/名称/规格/价格 + 「查看详情 →」），点击进 P3 详情。纯呈现调整，不触 §10/§11/tokens（LeftFilter+RightGrid 形态不变）。
 - `engineering/dev-guide.md` 运行命令改 npm workspaces（`npm run dev:server` / `dev:web`），补「前台/后台/接口分别用浏览器打开」入口。
 - `design/api-spec.md`、`design/system-architecture.md` 增「实现状态/实现落地」段，标注已实现接口与路由合并。
 - **Admin 补全为六模块**：新增前端 AdminBanners(API-022)/AdminServices(API-025)/AdminSession(API-026)/AdminAccount(个人+车辆只读，PRD §10.4) + 后端对应端点；左导航 CATALOG(商品/Banner/服务)·OPS(订单/会话)·ACCOUNT(账号)。

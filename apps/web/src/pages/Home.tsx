@@ -6,6 +6,7 @@ import { api } from "../lib/api";
 import { yuan } from "../lib/money";
 import { productPath } from "../lib/paths";
 import { Glyph, typeVisual } from "../components/icons";
+import { ProductMedia } from "../components/ProductMedia";
 import { useUiStore } from "../stores/uiStore";
 
 export function Home() {
@@ -86,7 +87,7 @@ export function Home() {
             const v = typeVisual(p.type, p.category);
             return (
               <div key={p.productCode} className="bigcard" onClick={() => go(p)}>
-                <div className={`vis ${v.vcls}`}><Glyph name={v.icon} /></div>
+                <div className={`vis ${v.vcls}`} style={{ overflow: "hidden" }}><ProductMedia product={p} /></div>
                 <div className="ft">
                   <div className="kk">{p.type === "MEMBERSHIP" ? "MEMBER" : "PHYSICAL"}</div>
                   <div className="nm">{p.name}</div>
@@ -107,7 +108,7 @@ export function Home() {
                 const v = typeVisual(p.type, p.category);
                 return (
                   <div key={p.productCode} className="scard" onClick={() => go(p)}>
-                    <div className={`tile stile ${v.cls}`}><Glyph name={v.icon} /></div>
+                    <div className={`tile stile ${v.cls}`} style={{ overflow: "hidden" }}><ProductMedia product={p} /></div>
                     <div className="sinfo">
                       <div className="nm">{p.name}</div>
                       <div className="mt">{p.type === "DISPLAY_SERVICE" ? "服务展示" : p.colors[0] ?? "标准配送"}</div>

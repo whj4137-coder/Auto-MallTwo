@@ -1,8 +1,8 @@
 # SPEC-002 会员开通流程
 
-- 状态：DRAFT（评审冻结后转 APPROVED）
+- 状态：APPROVED（评审冻结 2026-05-29，见 openspec/REVIEW-CHECKLIST.md）
 - 提出日期：2026-05-29
-- 批准日期：-
+- 批准日期：2026-05-29
 - 关联需求：REQ-005, REQ-009, REQ-015, REQ-033
 - 关联流程：B-01
 - 真值来源：[../../product/prd.md](../../product/prd.md)（§7 需求、§8 流程、§10 数据契约、§11 文案）

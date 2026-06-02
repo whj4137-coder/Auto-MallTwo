@@ -42,6 +42,7 @@ openspec/
 | 0008 | 工程门禁：SSOT 校验 + commit hook + verify | Accepted | 工程/ADR |
 | 0009 | 自动化测试 L1/L2/L3（Vitest+Supertest+Playwright） | Accepted | 全部 |
 | 0010 | Admin 完整 CRUD（新增·编辑表单） | Accepted | SPEC-004 |
+| 0011 | 商品插画（代码生成 SVG）+ Product.image 字段 | Accepted | SPEC-001 |
 
 > 待评审确认项：0001（首页 vs §10.8）、0006（账号信息模块纳入 SPEC-004）、0007（api-spec 响应字段补示例）、0010（PRD §12 并入错误码 4000 + §15.14 删除策略）。
 

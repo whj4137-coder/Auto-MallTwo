@@ -300,7 +300,7 @@ And   历史订单不受影响
 
 ### REQ-001 首页推荐
 - P2 ｜ US-001 ｜ 页面 P1 ｜ 前置：无
-- 规则：HERO+Grid 布局；标题区(含搜索框 + **语音占位入口**)+HERO Banner+快捷类目(5)+精选(3)+车主服务(3)；HERO 固定 banner_001→phy_car_001；精选与车主服务内容锁定见 §10.8（均仅展示已上架项）
+- 规则（change 0001）：Bento(HERO banner_001→phy_car_001 + 2 promo) + 快捷类目条(5,带数量) + 精选商品横滑 rail(homeFeatured,不限3) + 分类货架(5 类目,各列该类全部已上架商品)；标题区含搜索框 + **语音占位入口**；内容锁定见 §10.8（均仅展示已上架项）
 - 语音占位入口：点击提示 COPY-004「语音能力暂未开放」（不接真实语音）。
 - 验收：[ ] 一屏(1280×664)免滚动 [ ] 点 HERO 进 phy_car_001 [ ] 5 类目可进入 [ ] 语音入口点击提示 COPY-004 [ ] 仅展示已上架商品
 
@@ -592,6 +592,7 @@ HERO+Grid / LeftFilter+RightGrid / LeftImage+RightDetail / LeftList+RightSummary
 - **实物共有**：配送标签 `标准配送`；配送说明 `预计 2-3 个工作日送达（演示）`；库存 `stock`∈`IN_STOCK`(库存充足)/`SOLD_OUT`(已售罄)，**种子默认 IN_STOCK**，Admin 可配，不做真实扣减；售罄规则见 REQ-042。
 - **展示服务共有**：充电类 按钮 `暂未开放` 说明 `充电服务交易能力将在后续版本提供`；生活类 按钮 `暂未开放` 说明 `生活服务交易能力将在后续版本提供`；所有写入接口返回 `2003`。
 - **上下架（published）**：每个商品/Banner/服务含 `published`（true=上架/false=下架）+ `sortOrder`（排序）；**种子数据默认全部上架**，由 Admin 调整；下架可见性规则见 REQ-035。以上字段为后端种子数据，**前台不写死**。
+- **商品图（image，change 0011）**：每商品含 `image`（`/products/{code}.svg`，代码生成座舱风矢量插画）；前端缺省回退类型图标。本环境无照片级文生图，真照片可外部生成后同名覆盖。
 
 ### 10.2 类目（5 个）
 | categoryCode | 名称 | 类型 |
@@ -641,15 +642,17 @@ HERO+Grid / LeftFilter+RightGrid / LeftImage+RightDetail / LeftList+RightSummary
 | 会员订单状态 | 已开通 | — |
 | quantity | 整数 [1,5] | 1 |
 
-### 10.8 首页区块内容锁定
+### 10.8 首页区块内容锁定（change 0001 已冻结）
 | 区块 | 内容 |
 |------|------|
-| HERO Banner | banner_001 → phy_car_001 |
-| 快捷类目（5） | 车品 / 电子配件 / 会员服务 / 充电服务 / 生活服务 |
-| 精选商品（3） | phy_car_001 / phy_ele_001 / mem_001（homeFeatured ✅） |
-| 车主服务（3） | svc_charge_001 城市快充服务 / svc_life_001 精洗护理服务 / mem_002 尊享会员年卡 |
+| Bento·HERO | banner_001 → phy_car_001 |
+| Bento·promo（2） | banner_002 便捷充电（→svc_charge_001） / banner_003 会员专属（→mem_001） |
+| 快捷类目条（5） | 车品 / 电子配件 / 会员服务 / 充电服务 / 生活服务（各带商品数量） |
+| 精选商品 rail | `homeFeatured=true 且 published=true`，按 sortOrder，**横向滑动、不限 3 个** |
+| 分类货架 | 按 5 类目分区，每区列出该类目**全部 published=true 商品**（含展示服务，仅浏览进 P5） |
 
-> 上述均仅在「已上架」时展示；下架则该位空缺或不显（不补位）。
+> 均仅「已上架」展示，下架不补位；售罄仍展示并带 COPY-046。布局形态见 change 0001（Accepted）。
+> 原「精选 3 + 车主服务 3」锁定已被 change 0001 取代（车主服务并入会员/充电/生活货架分区）。
 
 ---
 
@@ -973,7 +976,7 @@ HERO+Grid / LeftFilter+RightGrid / LeftImage+RightDetail / LeftList+RightSummary
 | membership.boundVehicle | MEMBERSHIP | 必填 | 原则上不可改 | 固定「特斯拉 Model Y」 | 会员详情/我的/订单详情 | 若未来多车支持另立范围 |
 | image/assetKey | PHYSICAL/MEMBERSHIP | 建议必填 | 可改 | 本期可用本地占位资源 key；不可填外链依赖 | 卡片/详情缩略图 | 没有图片时用类型占位图 |
 | detailText | PHYSICAL/MEMBERSHIP | 可选 | 可改 | 0-200 字 | 详情页说明区域 | 前台可隐藏空说明 |
-| homeFeatured | PHYSICAL/MEMBERSHIP | 可选 | 可改 | boolean；首页精选最多展示按 sortOrder 前 3 个 published=true | 首页精选区 | 超过 3 个不报错，仅截取前 3 |
+| homeFeatured | PHYSICAL/MEMBERSHIP | 可选 | 可改 | boolean；首页精选 rail 展示 homeFeatured=true 且 published=true，按 sortOrder（change 0001：横滑，不限数量） | 首页精选 rail | 不截断；售罄仍展示带 COPY-046 |
 | published | PHYSICAL/MEMBERSHIP | 必填 | 可改 | boolean | false 后首页/类目/搜索不展示；详情入口不可达；购物车结算拦截 COPY-045 | 历史订单不受影响 |
 | stock | PHYSICAL/MEMBERSHIP | 必填 | 可改 | IN_STOCK/SOLD_OUT | SOLD_OUT 仍展示但不可买，提示 COPY-046 | 不做真实扣减 |
 | sortOrder | PHYSICAL/MEMBERSHIP | 必填 | 可改 | 整数；允许重复，重复时按更新时间或 code 稳定排序 | 首页/类目/搜索/Admin 列表排序 | 建议 Admin 提供上下移 |
@@ -1128,7 +1131,7 @@ HERO+Grid / LeftFilter+RightGrid / LeftImage+RightDetail / LeftList+RightSummary
 | 数据来源 | 进入 P1 调 API-001；返回 P1 时重新读取，保证 Admin 改动可见。 |
 | 页面内容 | 标题区、搜索框、语音占位入口、HERO banner_001、快捷类目 5 个、精选商品最多 3 个、车主服务 3 个。 |
 | HERO | 固定展示 banner_001；点击 target=phy_car_001 进入 P3。若 banner_001 下架或 target 不可达，HERO 区隐藏或显示空占位，不补其它 Banner。 |
-| 精选商品 | 展示 homeFeatured=true 且 published=true 的实物/会员，按 sortOrder，最多 3 个；售罄仍展示 COPY-046 标签。 |
+| 精选商品 | 展示 homeFeatured=true 且 published=true 的实物/会员，按 sortOrder（change 0001：横滑 rail，不限 3）；售罄仍展示 COPY-046 标签。 |
 | 车主服务 | 展示 §10.8 的 svc_charge_001/svc_life_001/mem_002，均需 published=true；不补位。 |
 | 搜索框 | PARKED+ONLINE 可输入；按 Enter 或搜索图标触发 API-005；DRIVING 禁用并点击语音入口 COPY-004；OFFLINE 禁用并 toast COPY-002。 |
 | 空/错 | API-001 失败时保留 App Shell，内容区显示可重试错误态；重试仍调用 API-001。 |
@@ -1287,7 +1290,7 @@ HERO+Grid / LeftFilter+RightGrid / LeftImage+RightDetail / LeftList+RightSummary
 
 | 能力 | 输入 | 处理规则 | 输出 | 特殊情况 |
 |------|------|----------|------|----------|
-| 首页聚合 | 无 | banners 取 published=true；categories 固定 5 个；featured 取 homeFeatured=true 且 published=true 前 3；services 取 §10.8 三项且 published=true | banners/categories/featured/services | 不补位；售罄仍返回并带 stock |
+| 首页聚合 | 无 | banners 取 published=true；categories 固定 5 个(带 count)；featured 取 homeFeatured=true 且 published=true 按 sortOrder(change 0001：不截断)；shelves 按 5 类目分区返回全部 published 商品 | banners/categories/featured/shelves | 不补位；售罄仍返回并带 stock |
 | 类目商品 | categoryCode | 校验类目存在；返回该类目 published=true 项，按 sortOrder/code 排序 | Product[] | 空数组合法 |
 | 商品详情 | productCode | 前台详情只允许 published=true；Admin 详情可看全部 | Product | 下架前台返回 4004；Admin 返回实体 |
 | 搜索 | q | trim 后 substring 匹配 name；仅 PHYSICAL/MEMBERSHIP；published=true；按 sortOrder/code | Product[] | q 为空返回 4000；DISPLAY_SERVICE 永不返回 |

@@ -1,8 +1,8 @@
 # SPEC-005 车载体验增强（触控 / 降噪 / 可达性 / 三态 / 数量边界）
 
-- 状态：DRAFT（评审冻结后转 APPROVED）
+- 状态：APPROVED（评审冻结 2026-05-29，见 openspec/REVIEW-CHECKLIST.md）
 - 提出日期：2026-05-29
-- 批准日期：-
+- 批准日期：2026-05-29
 - 关联需求：REQ-026, REQ-027, REQ-028, REQ-030, REQ-031
 - 真值来源：[../../product/prd.md](../../product/prd.md)（§7 需求、§9.1 视觉总则、§14.1 成功指标、§15.9 页面交互详规）+ [../../design/design-tokens.md](../../design/design-tokens.md)
 

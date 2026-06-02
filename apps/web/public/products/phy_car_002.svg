@@ -1,0 +1,29 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="phy_car_002">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#16323a"/><stop offset="1" stop-color="#0d1a20"/>
+    </linearGradient>
+    <radialGradient id="gl" cx="0.72" cy="0.12" r="0.7">
+      <stop offset="0" stop-color="rgba(34,211,197,0.30)"/><stop offset="0.6" stop-color="rgba(34,211,197,0)"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0 H0 V32" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <rect width="400" height="300" fill="url(#grid)"/>
+  <rect width="400" height="300" fill="url(#gl)"/>
+  <g fill="none" stroke="rgba(34,211,197,0.5)" stroke-width="1.5">
+    <path d="M16 16 h14 M16 16 v14"/><path d="M384 16 h-14 M384 16 v14"/>
+    <path d="M16 284 h14 M16 284 v-14"/><path d="M384 284 h-14 M384 284 v-14"/>
+  </g>
+  <g transform="translate(200,150)" fill="none" stroke="#22d3c5" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M-78 -16 L78 -16 L60 70 L-60 70 Z"/>
+    <path d="M-78 -16 L-92 -54 L-30 -54 L-12 -16"/>
+    <path d="M78 -16 L92 -54 L30 -54 L12 -16"/>
+    <line x1="-12" y1="-16" x2="-12" y2="70"/>
+    <line x1="12" y1="-16" x2="12" y2="70"/>
+    <path d="M-20 -54 Q0 -74 20 -54"/>
+  </g>
+  <text x="20" y="282" font-family="IBM Plex Mono, monospace" font-size="12" fill="rgba(255,255,255,0.28)">phy_car_002</text>
+</svg>

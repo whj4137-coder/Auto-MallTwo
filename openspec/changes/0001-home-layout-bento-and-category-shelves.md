@@ -1,7 +1,7 @@
 ---
 id: 0001
 title: 首页改版 — Bento + 类目条 + 精选横滑 rail + 分类货架（展示全部商品）
-status: Draft            # Draft | In Review | Accepted | Rejected | Superseded
+status: Accepted
 author: Claude (design phase)
 created: 2026-05-29
 updated: 2026-05-29

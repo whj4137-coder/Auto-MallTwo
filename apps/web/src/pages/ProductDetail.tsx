@@ -5,6 +5,7 @@ import { ERR, COPY } from "@apex/shared";
 import { api } from "../lib/api";
 import { yuan } from "../lib/money";
 import { Glyph, typeVisual } from "../components/icons";
+import { ProductMedia } from "../components/ProductMedia";
 import { GatedButton } from "../components/gate/GatedButton";
 import { useCartStore } from "../stores/cartStore";
 import { useUiStore } from "../stores/uiStore";
@@ -45,7 +46,7 @@ export function ProductDetail() {
     <main className="main">
       <div className="phead"><span className="back" onClick={() => nav(-1)}><Glyph name="back" /> {COPY.C044_BACK}</span></div>
       <div className="detail">
-        <div className="limg"><div className={`big tile ${v.cls}`} style={{ height: "100%" }}><Glyph name={v.icon} cls="" /></div></div>
+        <div className="limg"><div className={`big tile ${v.cls}`} style={{ height: "100%", overflow: "hidden" }}><ProductMedia product={p} /></div></div>
         <div className="rcol">
           <div className="nm">{p.name}</div>
           <div className="price pz">{yuan(lineTotal)}{soldOut && <span className="pill amber" style={{ marginLeft: 10 }}>{COPY.C046_SOLD_OUT}</span>}</div>

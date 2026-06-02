@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="svc_charge_002">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a2c16"/><stop offset="1" stop-color="#1c1610"/>
+    </linearGradient>
+    <radialGradient id="gl" cx="0.72" cy="0.12" r="0.7">
+      <stop offset="0" stop-color="rgba(255,176,32,0.30)"/><stop offset="0.6" stop-color="rgba(255,176,32,0)"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0 H0 V32" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <rect width="400" height="300" fill="url(#grid)"/>
+  <rect width="400" height="300" fill="url(#gl)"/>
+  <g fill="none" stroke="rgba(255,176,32,0.5)" stroke-width="1.5">
+    <path d="M16 16 h14 M16 16 v14"/><path d="M384 16 h-14 M384 16 v14"/>
+    <path d="M16 284 h14 M16 284 v-14"/><path d="M384 284 h-14 M384 284 v-14"/>
+  </g>
+  <g transform="translate(200,150)" fill="none" stroke="#ffb020" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 -70 C-44 -70 -64 -36 -64 -8 C-64 34 0 78 0 78 C0 78 64 34 64 -8 C64 -36 44 -70 0 -70 Z"/>
+    <path d="M8 -44 L-14 4 L4 4 L-6 44 L24 -12 L4 -12 Z" fill="rgba(255,176,32,0.2)"/>
+  </g>
+  <text x="20" y="282" font-family="IBM Plex Mono, monospace" font-size="12" fill="rgba(255,255,255,0.28)">svc_charge_002</text>
+</svg>

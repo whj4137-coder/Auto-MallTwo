@@ -116,3 +116,16 @@
   5. v1 范围含三端（**不延后 Admin/后端**）；实现顺序仍前端先行（ADR-0004），仅工程节奏。
 - **理由**：贴合「非单纯前端 Mock、具运营配置能力」的产品定义。
 - **影响**：PRD 多节、api-spec、system-architecture、SPEC-004 新建；roadmap 后端/Admin 由「下一期」改为 v1 内（前端先行）。**修订 ADR-0004 中「Admin 下一期」的表述**。
+
+---
+
+## ADR-0009 · 评审冻结（2026-05-29）：SPEC 锁定 + 实现切片 Accepted + 工程门禁
+- **状态**：Accepted
+- **背景**：实现已落地（前台 P1–P13 + 后台全 CRUD + 后端 + 测试），openspec 切片 0002–0011 待评审；SPEC-001..005 仍 DRAFT。需冻结口径以防漂移。
+- **决策**（依据 [openspec/REVIEW-CHECKLIST.md](../openspec/REVIEW-CHECKLIST.md) 全通过）：
+  1. changes **0001/0006/0007/0010/0011 → Accepted**（首页新布局 / Admin 账号模块 / Checkout 收货字段 / Admin CRUD+错误码4000 / 商品图 image 字段）。
+  2. **SPEC-001..005 → APPROVED**；PRD §10/§11 进入「改动须走 openspec」**硬锁**（Phase 1 冻结判据达成，关 I-009/013/014）。
+  3. PRD 同步：§10.8 首页改为 Bento+类目条+精选 rail+分类货架；§10.1 加 image 字段（§12 的 4000 / §15.14 下架代删 原已具备）；SPEC-004 纳入账号信息只读模块。
+  4. 开放问题定夺：图片=矢量 SVG（真照片可覆盖）；Admin 表单=FormModal；搜索=独立页(M-C)；详情不实时刷新；车机 WebView 本期不做。
+- **工程门禁**：`verify`(typecheck+check:ssot+test) + commit-gate hook 持续守护 SSOT 不漂移。
+- **影响**：后续改 §10/§11/SPEC 必须先走 openspec change。下一步进入 M-B 测试补全 / M-C 接口文档收口。

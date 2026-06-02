@@ -1,8 +1,8 @@
 # SPEC-003 演示控制与门禁（Demo Bar / 登录续作 / 行车·断网 / 重置）
 
-- 状态：DRAFT（评审冻结后转 APPROVED）
+- 状态：APPROVED（评审冻结 2026-05-29，见 openspec/REVIEW-CHECKLIST.md）
 - 提出日期：2026-05-29
-- 批准日期：-
+- 批准日期：2026-05-29
 - 关联需求：REQ-016, REQ-017, REQ-018, REQ-019, REQ-020, REQ-021, REQ-022, REQ-024, REQ-025, REQ-029, REQ-032
 - 关联流程：AUTH-01, D-01, D-02, DEMO-01
 - 真值来源：[../../product/prd.md](../../product/prd.md)（§3 全局门禁、§7 需求、§8 流程、§11 文案、§12 错误处理）

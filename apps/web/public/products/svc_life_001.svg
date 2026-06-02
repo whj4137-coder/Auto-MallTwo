@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 400 300" width="400" height="300" role="img" aria-label="svc_life_001">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#3a2c16"/><stop offset="1" stop-color="#1c1610"/>
+    </linearGradient>
+    <radialGradient id="gl" cx="0.72" cy="0.12" r="0.7">
+      <stop offset="0" stop-color="rgba(255,176,32,0.30)"/><stop offset="0.6" stop-color="rgba(255,176,32,0)"/>
+    </radialGradient>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0 H0 V32" fill="none" stroke="rgba(255,255,255,0.05)" stroke-width="1"/>
+    </pattern>
+  </defs>
+  <rect width="400" height="300" fill="url(#bg)"/>
+  <rect width="400" height="300" fill="url(#grid)"/>
+  <rect width="400" height="300" fill="url(#gl)"/>
+  <g fill="none" stroke="rgba(255,176,32,0.5)" stroke-width="1.5">
+    <path d="M16 16 h14 M16 16 v14"/><path d="M384 16 h-14 M384 16 v14"/>
+    <path d="M16 284 h14 M16 284 v-14"/><path d="M384 284 h-14 M384 284 v-14"/>
+  </g>
+  <g transform="translate(200,150)" fill="none" stroke="#ffb020" stroke-width="6" stroke-linecap="round" stroke-linejoin="round">
+    <path d="M0 -68 C-30 -28 -46 -8 -46 18 C-46 46 -22 66 0 66 C22 66 46 46 46 18 C46 -8 30 -28 0 -68 Z"/>
+    <path d="M-18 14 Q-18 -2 -2 -2" />
+    <path d="M40 -44 l5 11 12 2 -9 8 2 12 -10 -6 -10 6 2 -12 -9 -8 12 -2 z" fill="rgba(255,176,32,0.25)"/>
+  </g>
+  <text x="20" y="282" font-family="IBM Plex Mono, monospace" font-size="12" fill="rgba(255,255,255,0.28)">svc_life_001</text>
+</svg>

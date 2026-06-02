@@ -31,6 +31,7 @@ export interface Product {
   published: boolean;
   sortOrder: number;
   stock: Stock;
+  image?: string; // 商品插画 URL（/products/{code}.svg）；缺省时前端回退类型图标
   // 仅会员
   validDays?: number;
   benefits?: string[];

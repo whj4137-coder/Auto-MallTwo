@@ -65,6 +65,9 @@ export const SEED_PRODUCTS: Product[] = [
   },
 ];
 
+// 为每个种子商品挂上插画 URL（scripts/gen-product-images.mjs 代码生成的矢量 SVG，public/products/）。
+SEED_PRODUCTS.forEach((p) => { p.image = `/products/${p.productCode}.svg`; });
+
 export const SEED_BANNERS: Banner[] = [
   { bannerCode: "banner_001", title: "稳固出行装备", subtitle: "磁吸手机支架，舒适触达", targetProductCode: "phy_car_001", published: true, sortOrder: 1 },
   { bannerCode: "banner_002", title: "便捷充电服务", subtitle: "城市快充服务展示", targetProductCode: "svc_charge_001", published: true, sortOrder: 2 },
