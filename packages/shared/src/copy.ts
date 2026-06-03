@@ -49,4 +49,5 @@ export const COPY = {
   C046_SOLD_OUT: "已售罄",
   C047_RETRY: "重试", // §15.9.1 错误态重试按钮（change 0020 补入 §11）
   C048_CAT_EMPTY: "该分类下暂无可购商品", // §15.9.3 P2 空态（change 0020 补入 §11）
+  C049_DELISTED_TAG: "已下架", // §15.9.7 购物车下架项标记（change 0022 补入 §11）
 } as const;

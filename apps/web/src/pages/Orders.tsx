@@ -61,7 +61,7 @@ export function Orders() {
                 <div style={{ fontFamily: "var(--mono)", fontSize: 11, color: "var(--ink3)", marginTop: 3 }}>{o.orderNo} · {new Date(o.createdAt).toLocaleString("zh-CN", { hour12: false }).slice(5, 16)}</div>
               </div>
               <span className="price">{yuan(o.totalCents)}</span>
-              <span className={`tag ${mem ? "memb" : "phys"}`}>{mem ? COPY.C033_TAG_ACTIVATED : COPY.C032_TAG_PAID}</span>
+              <span className={`tag ${mem ? "memb" : "phys"}`}>{o.status === "ACTIVATED" ? COPY.C033_TAG_ACTIVATED : COPY.C032_TAG_PAID}</span>
             </div>
           );
         })}

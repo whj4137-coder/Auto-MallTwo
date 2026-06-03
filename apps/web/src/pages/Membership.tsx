@@ -21,6 +21,7 @@ export function Membership() {
 
   if (load !== "ok" || !p) return <PageFallback status={load} onRetry={reload} />;
   const active = status === "ACTIVE";
+  const soldOut = p.stock === "SOLD_OUT";
 
   const activate = () =>
     api.createCheckout({ source: "BUY_NOW", productCode: p.productCode }).then((env) => {
@@ -43,7 +44,7 @@ export function Membership() {
         </div>
         <div className="rcol">
           <div className="nm">{p.name}</div>
-          <div className="price pz">{yuan(p.priceCents)}</div>
+          <div className="price pz">{yuan(p.priceCents)}{soldOut && <span className="pill amber" style={{ marginLeft: 10 }}>{COPY.C046_SOLD_OUT}</span>}</div>
           <div className="blk">
             <div className="lab">会员权益</div>
             {(p.benefits ?? []).map((b) => (
@@ -56,6 +57,8 @@ export function Membership() {
           <div className="actions">
             {active ? (
               <button className="btn" onClick={() => nav("/orders")}>{COPY.C023_ACTIVATED}</button>
+            ) : soldOut ? (
+              <button className="btn dis" disabled>{COPY.C046_SOLD_OUT}</button>
             ) : (
               <GatedButton className="btn" action={activate}>{COPY.C022_ACTIVATE}</GatedButton>
             )}

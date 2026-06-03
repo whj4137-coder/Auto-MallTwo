@@ -15,14 +15,14 @@ interface UiState {
 
 let seq = 0;
 
-// toast 单条优先级由调用方保证（门禁只抛最高优先级一条）。
+// §15.9.1 Toast：同时刻只显一条，后到覆盖前一条（优先级由门禁只抛最高一条保证）。
 export const useUiStore = create<UiState>((set, get) => ({
   toasts: [],
   loginOpen: false,
   pendingAction: null,
   toast: (text) => {
     const id = ++seq;
-    set((s) => ({ toasts: [...s.toasts, { id, text }] }));
+    set({ toasts: [{ id, text }] }); // 覆盖式：仅保留最新一条
     setTimeout(() => get().dismiss(id), 2500);
   },
   dismiss: (id) => set((s) => ({ toasts: s.toasts.filter((t) => t.id !== id) })),

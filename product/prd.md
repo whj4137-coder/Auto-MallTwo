@@ -710,6 +710,7 @@ HERO+Grid / LeftFilter+RightGrid / LeftImage+RightDetail / LeftList+RightSummary
 | COPY-046 | 售罄标签/按钮/拦截 | 已售罄 |
 | COPY-047 | 错误态重试按钮（§15.9.1，change 0020） | 重试 |
 | COPY-048 | P2 类目空态（§15.9.3，change 0020） | 该分类下暂无可购商品 |
+| COPY-049 | 购物车下架项标记（§15.9.7，change 0022） | 已下架 |
 
 > 错误码 2001/2002 toast 复用 COPY-001/002；1002 复用 COPY-003。
 

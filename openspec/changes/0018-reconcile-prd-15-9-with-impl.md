@@ -1,7 +1,7 @@
 ---
 id: 0018
 title: PRD §15.9 前台交互详规 ↔ apps/web 实现逐条核对与对齐
-status: Draft
+status: Accepted
 author: Claude
 created: 2026-06-02
 updated: 2026-06-02
@@ -9,7 +9,9 @@ related_milestone: M5
 related_issues: []
 ---
 
-# 0018 · PRD §15.9 ↔ 实现逐条核对与对齐（Draft）
+# 0018 · PRD §15.9 ↔ 实现逐条核对与对齐
+
+> **状态（S-046）：已完成。** 24 条偏离经执行 change 0020（H1/H2/H4/M1/M5/M6/M7/M13/L2）、0021（H3/M2/M12）、0022（M3/M4/M8/M9/M10/L1/L3/L4/L5/L6/L7）全部对齐，本父审计单转 Accepted。
 
 ## 1. 动机（Why）
 change 0017 校准派生文档 `component-spec.md` 时立了一条边界：派生文档可追平实现，但**与 PRD §15.9（前台页面级交互详规，冻结契约）的实质行为差异必须回到 openspec 解决**，不得借派生文档绕过 SSOT。本 change 即专门做这件事：把 §15.9（P1–P13 + 全局框架，§15.9.1–15.9.14）逐条与 `apps/web` 实现核对，列出真实偏离，并对每条给出对齐方向。

@@ -20,7 +20,7 @@ export function OrderDetail() {
       <div className="scroll" style={{ display: "flex", flexDirection: "column", gap: 10 }}>
         <div className="card" style={{ padding: 16 }}>
           <div className="sline">订单号<span className="v" style={{ fontFamily: "var(--mono)" }}>{o.orderNo}</span></div>
-          <div className="sline">状态<span className="badge-ok">{mem ? COPY.C033_TAG_ACTIVATED : COPY.C032_TAG_PAID}</span></div>
+          <div className="sline">状态<span className="badge-ok">{o.status === "ACTIVATED" ? COPY.C033_TAG_ACTIVATED : COPY.C032_TAG_PAID}</span></div>
           <div className="sline">下单时间<span className="v">{new Date(o.createdAt).toLocaleString("zh-CN", { hour12: false })}</span></div>
           <div className="sline">支付方式<span className="v">{o.payMethod}</span></div>
         </div>

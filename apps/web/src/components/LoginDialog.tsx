@@ -11,6 +11,8 @@ export function LoginDialog() {
   const open = useUiStore((s) => s.loginOpen);
   const closeLogin = useUiStore((s) => s.closeLogin);
   const takePending = useUiStore((s) => s.takePending);
+  // §15.9.13 取消/× → 清 PendingAction 并关闭（页面保持触发前状态）
+  const cancel = () => { takePending(); closeLogin(); };
   const loginSuccess = useSessionStore((s) => s.loginSuccess);
   const [username, setUsername] = useState("admin");
   const [password, setPassword] = useState("123456");
@@ -38,7 +40,7 @@ export function LoginDialog() {
       <div className="dialog">
         <div className="dh">
           <div className="dt">{COPY.C016_LOGIN_TITLE}</div>
-          <div className="x" onClick={closeLogin}>×</div>
+          <div className="x" onClick={cancel}>×</div>
         </div>
         <div className="note">{COPY.C017_LOGIN_SUB}</div>
         <div className="field">
@@ -51,7 +53,7 @@ export function LoginDialog() {
         </div>
         {err && <div className="err">{err}</div>}
         <div className="acts">
-          <button className="btn ghost" onClick={closeLogin}>{COPY.C019_LOGIN_CANCEL}</button>
+          <button className="btn ghost" onClick={cancel}>{COPY.C019_LOGIN_CANCEL}</button>
           <button className="btn" onClick={submit}>{COPY.C018_LOGIN_OK}</button>
         </div>
       </div>

@@ -80,7 +80,7 @@ export function Category() {
                     <div className="nm">{p.name}</div>
                     <div style={{ fontSize: 11, color: "var(--ink3)", margin: "0 0 8px" }}>{meta}</div>
                     <div className="pr">
-                      <span className="price">{yuan(p.priceCents)}</span>
+                      <span className="price">{p.type === "DISPLAY_SERVICE" ? "服务展示" : yuan(p.priceCents)}</span>
                       {p.stock === "SOLD_OUT"
                         ? <span className="pill amber">{COPY.C046_SOLD_OUT}</span>
                         : <span className="go">查看详情 →</span>}

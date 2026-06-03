@@ -6,7 +6,6 @@ import { api } from "../lib/api";
 import { yuan } from "../lib/money";
 import { Glyph } from "../components/icons";
 import { GatedButton } from "../components/gate/GatedButton";
-import { guardWrite } from "../lib/gate";
 import { useCartStore } from "../stores/cartStore";
 import { useSessionStore } from "../stores/sessionStore";
 import { useUiStore } from "../stores/uiStore";
@@ -15,8 +14,12 @@ export function Cart() {
   const nav = useNavigate();
   const { items, selectedTotalCents, fetch, setQty, toggle, remove } = useCartStore();
   const auth = useSessionStore((s) => s.auth);
+  const drive = useSessionStore((s) => s.drive);
+  const net = useSessionStore((s) => s.net);
   const toast = useUiStore((s) => s.toast);
   const [user, setUser] = useState<UserInfo | null>(null);
+  // §15.9.7 行车/断网下购物车为只读：勾选/改量/删除置灰禁用（非 toast 拦截）
+  const readonly = drive === "DRIVING" || net === "OFFLINE";
 
   useEffect(() => {
     if (auth === "GUEST") useUiStore.getState().openLogin(() => fetch());
@@ -47,23 +50,26 @@ export function Cart() {
       <div className="phead"><span className="ptitle">购物车</span></div>
       <div className="ls">
         <div className="left scroll">
-          {items.map((i) => (
+          {items.map((i) => {
+            const unavailable = !i.published ? COPY.C049_DELISTED_TAG : i.stock === "SOLD_OUT" ? COPY.C046_SOLD_OUT : null;
+            return (
             <div key={i.itemId} className="card" style={{ display: "flex", alignItems: "center", gap: 12, padding: 12, marginBottom: 10 }}>
-              <span className={`sw${i.selected ? " on" : ""}`} onClick={() => guardWrite(() => toggle(i.itemId, !i.selected))}><i /></span>
+              <span className={`sw${i.selected ? " on" : ""}${readonly ? " dis" : ""}`} onClick={() => { if (!readonly) toggle(i.itemId, !i.selected); }}><i /></span>
               <div className="tile stile t-car" style={{ width: 44, height: 44 }}><Glyph name="box" /></div>
               <div style={{ flex: 1 }}>
-                <div style={{ fontSize: 14, fontWeight: 600 }}>{i.name}</div>
+                <div style={{ fontSize: 14, fontWeight: 600 }}>{i.name}{unavailable && <span className="pill amber" style={{ marginLeft: 8 }}>{unavailable}</span>}</div>
                 <div style={{ fontSize: 11, color: "var(--ink3)" }}>{[i.color, i.capacity].filter(Boolean).join(" / ")}</div>
               </div>
-              <div className="stepper">
-                <button className={i.qty <= 1 ? "dim" : ""} onClick={() => guardWrite(() => setQty(i.itemId, Math.max(1, i.qty - 1)))}>−</button>
+              <div className={`stepper${readonly ? " dis" : ""}`}>
+                <button className={i.qty <= 1 || readonly ? "dim" : ""} onClick={() => { if (!readonly) setQty(i.itemId, Math.max(1, i.qty - 1)); }}>−</button>
                 <span className="n">{i.qty}</span>
-                <button className={i.qty >= 5 ? "dim" : ""} onClick={() => guardWrite(() => setQty(i.itemId, Math.min(5, i.qty + 1)))}>+</button>
+                <button className={i.qty >= 5 || readonly ? "dim" : ""} onClick={() => { if (!readonly) setQty(i.itemId, Math.min(5, i.qty + 1)); }}>+</button>
               </div>
               <span className="price" style={{ width: 80, textAlign: "right" }}>{yuan(i.unitPriceCents * i.qty)}</span>
-              <span className="linkbtn" onClick={() => guardWrite(() => remove(i.itemId))}>删除</span>
+              <span className={`linkbtn${readonly ? " dis" : ""}`} onClick={() => { if (!readonly) remove(i.itemId); }}>删除</span>
             </div>
-          ))}
+            );
+          })}
         </div>
         <div className="right">
           <div className="card summary">

@@ -8,6 +8,7 @@ import { useMembershipStore } from "../stores/membershipStore";
 export function Mine() {
   const { data: u, status: load, reload } = useLoad(() => api.me(), []);
   const status = useMembershipStore((s) => s.status);
+  const mem = useMembershipStore((s) => s.data);
 
   useEffect(() => { useMembershipStore.getState().fetch(); }, []);
 
@@ -29,7 +30,11 @@ export function Mine() {
         <Card title="账号" rows={[["用户名", u.username], ["显示名", u.displayName], ["手机号", u.phoneMasked]]} />
         <Card title="车辆" rows={[["车型", u.vehicle], ["车牌", u.plateMasked], ["颜色", u.vehicleColor]]} />
         <Card title="收货地址" rows={[["收件人", u.receiver.name], ["电话", u.receiver.phone], ["地址", u.receiver.address]]} />
-        <Card title="会员" rows={[["状态", status === "ACTIVE" ? COPY.C033_TAG_ACTIVATED : "未开通"]]} />
+        <Card title="会员" rows={
+          status === "ACTIVE"
+            ? [["状态", COPY.C033_TAG_ACTIVATED], ["绑定车辆", mem.boundVehicle ?? "—"], ["订单号", mem.orderNo ?? "—"]]
+            : [["状态", "未开通"]]
+        } />
       </div>
     </main>
   );

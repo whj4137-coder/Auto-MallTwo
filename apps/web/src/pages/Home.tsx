@@ -9,11 +9,20 @@ import { Glyph, typeVisual } from "../components/icons";
 import { ProductMedia } from "../components/ProductMedia";
 import { PageFallback } from "../components/PageFallback";
 import { useUiStore } from "../stores/uiStore";
+import { useSessionStore } from "../stores/sessionStore";
 
 export function Home() {
   const nav = useNavigate();
   const { data, status, reload } = useLoad(() => api.home(), []);
   const toast = useUiStore((s) => s.toast);
+  const drive = useSessionStore((s) => s.drive);
+  const net = useSessionStore((s) => s.net);
+  // §15.9.2 搜索框：DRIVING→语音占位 C004 / OFFLINE→C002 / 否则进搜索页
+  const onSearch = () => {
+    if (drive === "DRIVING") return toast(COPY.C004_VOICE);
+    if (net === "OFFLINE") return toast(COPY.C002_OFFLINE);
+    nav("/search");
+  };
 
   if (status !== "ok" || !data) return <PageFallback status={status} onRetry={reload} />;
 
@@ -34,7 +43,7 @@ export function Home() {
       <div className="top pad-r">
         <span className="wm">Apex <b>Drive Store</b></span>
         <span className="tagchip">车机商城 · DEMO</span>
-        <div className="search r" onClick={() => nav("/search")}>
+        <div className={`search r${drive === "DRIVING" || net === "OFFLINE" ? " dis" : ""}`} onClick={onSearch}>
           <Glyph name="search" />
           <span className="t">搜索车品、电子配件、会员…</span>
           <span className="mic" onClick={(e) => { e.stopPropagation(); toast(COPY.C004_VOICE); }}>
