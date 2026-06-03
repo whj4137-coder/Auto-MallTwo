@@ -1,11 +1,12 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Product } from "@apex/shared";
 import { ERR, COPY } from "@apex/shared";
 import { api } from "../lib/api";
+import { useLoad } from "../lib/useLoad";
 import { yuan } from "../lib/money";
 import { Glyph, typeVisual } from "../components/icons";
 import { ProductMedia } from "../components/ProductMedia";
+import { PageFallback } from "../components/PageFallback";
 import { GatedButton } from "../components/gate/GatedButton";
 import { useCartStore } from "../stores/cartStore";
 import { useUiStore } from "../stores/uiStore";
@@ -13,7 +14,7 @@ import { useUiStore } from "../stores/uiStore";
 export function ProductDetail() {
   const { code } = useParams();
   const nav = useNavigate();
-  const [p, setP] = useState<Product | null>(null);
+  const { data: p, status, reload } = useLoad(() => api.product(code!), [code]);
   const [color, setColor] = useState<string | undefined>();
   const [cap, setCap] = useState<string | undefined>();
   const [qty, setQty] = useState(1);
@@ -21,17 +22,10 @@ export function ProductDetail() {
   const toast = useUiStore((s) => s.toast);
 
   useEffect(() => {
-    if (!code) return;
-    api.product(code).then((env) => {
-      if (env.code === ERR.OK) {
-        setP(env.data);
-        setColor(env.data.colors[0]);
-        setCap(env.data.capacities[0]);
-      }
-    });
-  }, [code]);
+    if (p) { setColor(p.colors[0]); setCap(p.capacities[0]); }
+  }, [p]);
 
-  if (!p) return <main className="main"><div className="empty">加载中…</div></main>;
+  if (status !== "ok" || !p) return <PageFallback status={status} onRetry={reload} />;
   const v = typeVisual(p.type, p.category);
   const soldOut = p.stock === "SOLD_OUT";
   const lineTotal = (p.priceCents ?? 0) * qty;

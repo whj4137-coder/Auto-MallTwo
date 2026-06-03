@@ -47,4 +47,6 @@ export const COPY = {
   C044_BACK: "返回",
   C045_DELISTED: "部分商品已下架，请移除后再结算",
   C046_SOLD_OUT: "已售罄",
+  C047_RETRY: "重试", // §15.9.1 错误态重试按钮（change 0020 补入 §11）
+  C048_CAT_EMPTY: "该分类下暂无可购商品", // §15.9.3 P2 空态（change 0020 补入 §11）
 } as const;

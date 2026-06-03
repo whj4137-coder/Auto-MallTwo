@@ -1,9 +1,9 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Checkout } from "@apex/shared";
 import { ERR, COPY } from "@apex/shared";
 import { api } from "../lib/api";
+import { useLoad } from "../lib/useLoad";
 import { yuan } from "../lib/money";
+import { PageFallback } from "../components/PageFallback";
 import { GatedButton } from "../components/gate/GatedButton";
 import { useCartStore } from "../stores/cartStore";
 import { useMembershipStore } from "../stores/membershipStore";
@@ -12,14 +12,21 @@ import { useUiStore } from "../stores/uiStore";
 export function Pay() {
   const { id } = useParams();
   const nav = useNavigate();
-  const [c, setC] = useState<Checkout | null>(null);
+  const { data: c, status, reload } = useLoad(() => api.getCheckout(id!), [id]);
   const toast = useUiStore((s) => s.toast);
 
-  useEffect(() => {
-    if (id) api.getCheckout(id).then((env) => env.code === ERR.OK && setC(env.data));
-  }, [id]);
-
-  if (!c) return <main className="main"><div className="empty">{COPY.C035_QR_EXPIRED}</div></main>;
+  if (status === "loading") return <PageFallback status="loading" onRetry={reload} />;
+  // §15.9.9 二维码/会话失效 → COPY-035 + 返回
+  if (status !== "ok" || !c) {
+    return (
+      <main className="main">
+        <div className="empty" style={{ gap: 14 }}>
+          <div className="et">{COPY.C035_QR_EXPIRED}</div>
+          <button className="btn ghost" onClick={() => nav(-1)}>{COPY.C044_BACK}</button>
+        </div>
+      </main>
+    );
+  }
 
   const pay = () =>
     api.pay(c.checkoutId).then(async (env) => {

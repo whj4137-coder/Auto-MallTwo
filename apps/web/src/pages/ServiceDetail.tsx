@@ -1,20 +1,16 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Product } from "@apex/shared";
-import { ERR, COPY } from "@apex/shared";
+import { COPY } from "@apex/shared";
 import { api } from "../lib/api";
+import { useLoad } from "../lib/useLoad";
 import { Glyph, typeVisual } from "../components/icons";
+import { PageFallback } from "../components/PageFallback";
 
 export function ServiceDetail() {
   const { code } = useParams();
   const nav = useNavigate();
-  const [p, setP] = useState<Product | null>(null);
+  const { data: p, status, reload } = useLoad(() => api.product(code!), [code]);
 
-  useEffect(() => {
-    if (code) api.product(code).then((env) => env.code === ERR.OK && setP(env.data));
-  }, [code]);
-
-  if (!p) return <main className="main"><div className="empty">加载中…</div></main>;
+  if (status !== "ok" || !p) return <PageFallback status={status} onRetry={reload} />;
   const v = typeVisual(p.type, p.category);
 
   return (

@@ -1,19 +1,17 @@
-import { useEffect, useState } from "react";
-import type { UserInfo } from "@apex/shared";
-import { ERR, COPY } from "@apex/shared";
+import { useEffect } from "react";
+import { COPY } from "@apex/shared";
 import { api } from "../lib/api";
+import { useLoad } from "../lib/useLoad";
+import { PageFallback } from "../components/PageFallback";
 import { useMembershipStore } from "../stores/membershipStore";
 
 export function Mine() {
-  const [u, setU] = useState<UserInfo | null>(null);
+  const { data: u, status: load, reload } = useLoad(() => api.me(), []);
   const status = useMembershipStore((s) => s.status);
 
-  useEffect(() => {
-    api.me().then((env) => env.code === ERR.OK && setU(env.data));
-    useMembershipStore.getState().fetch();
-  }, []);
+  useEffect(() => { useMembershipStore.getState().fetch(); }, []);
 
-  if (!u) return <main className="main"><div className="empty">加载中…</div></main>;
+  if (load !== "ok" || !u) return <PageFallback status={load} onRetry={reload} />;
 
   const Card = ({ title, rows }: { title: string; rows: [string, string][] }) => (
     <div className="card" style={{ padding: 16 }}>

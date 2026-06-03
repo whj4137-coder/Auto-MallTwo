@@ -1,24 +1,21 @@
-import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
-import type { HomeData, Product } from "@apex/shared";
-import { ERR, COPY } from "@apex/shared";
+import type { Product } from "@apex/shared";
+import { COPY } from "@apex/shared";
 import { api } from "../lib/api";
+import { useLoad } from "../lib/useLoad";
 import { yuan } from "../lib/money";
 import { productPath } from "../lib/paths";
 import { Glyph, typeVisual } from "../components/icons";
 import { ProductMedia } from "../components/ProductMedia";
+import { PageFallback } from "../components/PageFallback";
 import { useUiStore } from "../stores/uiStore";
 
 export function Home() {
   const nav = useNavigate();
-  const [data, setData] = useState<HomeData | null>(null);
+  const { data, status, reload } = useLoad(() => api.home(), []);
   const toast = useUiStore((s) => s.toast);
 
-  useEffect(() => {
-    api.home().then((env) => env.code === ERR.OK && setData(env.data));
-  }, []);
-
-  if (!data) return <main className="main"><div className="empty">加载中…</div></main>;
+  if (status !== "ok" || !data) return <PageFallback status={status} onRetry={reload} />;
 
   const hero = data.banners[0];
   const promoCharge = data.banners.find((b) => b.bannerCode === "banner_002");

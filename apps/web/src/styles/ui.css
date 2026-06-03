@@ -268,6 +268,15 @@ table.tb .amt{font-family:var(--mono); color:var(--amber)}
 .empty{flex:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:14px; color:var(--ink2)}
 .empty .ec{width:64px;height:64px;border-radius:16px;background:var(--panel);border:1px solid var(--line);display:flex;align-items:center;justify-content:center}
 .empty .ec svg{width:30px;height:30px;stroke:var(--ink3);fill:none;stroke-width:1.5}
+.empty .et{font-size:15px;color:var(--ink2)}
+
+/* 骨架屏（§15.9.1 首次加载） */
+.skel-wrap{flex:1;display:flex;flex-direction:column;gap:16px;padding:8px 18px 8px 0}
+.skel-row{display:flex;gap:16px}
+.skel{background:linear-gradient(90deg,var(--panel) 25%,var(--line) 37%,var(--panel) 63%);background-size:400% 100%;border-radius:12px;animation:skel 1.2s ease-in-out infinite}
+.skel-title{width:240px;height:30px}
+.skel-card{flex:1;height:180px}
+@keyframes skel{0%{background-position:100% 50%}100%{background-position:0 50%}}
 
 /* 载入动画 */
 .rev{opacity:0; transform:translateY(9px); animation:rev .5s cubic-bezier(.2,.7,.2,1) forwards}

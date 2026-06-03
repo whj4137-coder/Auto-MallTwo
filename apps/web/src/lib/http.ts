@@ -1,6 +1,8 @@
 import type { Envelope } from "@apex/shared";
+import { ERR, COPY } from "@apex/shared";
 import { useSessionStore } from "../stores/sessionStore";
 import { useAdminStore } from "../stores/adminStore";
+import { useUiStore } from "../stores/uiStore";
 
 // 统一信封解析 + 注入 Authorization / X-Demo-Drive / X-Demo-Net。
 // 返回 {code,message,data}；调用方据 code 处理（0=成功）。
@@ -10,6 +12,9 @@ export class ApiError extends Error {
     super(message);
   }
 }
+
+// 客户端合成的网络失败码（非后端 §12 错误码）：fetch 抛错时统一兜底，使调用方 env.code!==OK 短路。
+export const NETWORK_FAIL = -1;
 
 async function request<T>(method: string, path: string, body?: unknown): Promise<Envelope<T>> {
   const { token, drive, net } = useSessionStore.getState();
@@ -21,13 +26,21 @@ async function request<T>(method: string, path: string, body?: unknown): Promise
   headers["x-demo-drive"] = drive;
   headers["x-demo-net"] = net;
 
-  const res = await fetch(`/api${path}`, {
-    method,
-    headers,
-    body: body !== undefined ? JSON.stringify(body) : undefined,
-  });
-  const env = (await res.json()) as Envelope<T>;
-  return env;
+  try {
+    const res = await fetch(`/api${path}`, {
+      method,
+      headers,
+      body: body !== undefined ? JSON.stringify(body) : undefined,
+    });
+    const env = (await res.json()) as Envelope<T>;
+    // §15.9.1 全局异常：5000 集中提示 COPY-037（调用方仍按 code 各自处理 4004/1001 等）
+    if (env.code === ERR.SERVER_ERROR) useUiStore.getState().toast(COPY.C037_SERVER);
+    return env;
+  } catch {
+    // §15.9.1 网络失败：toast COPY-038 并返回合成信封，避免未捕获 rejection / 白屏
+    useUiStore.getState().toast(COPY.C038_NETWORK);
+    return { code: NETWORK_FAIL, message: COPY.C038_NETWORK, data: null as unknown as T };
+  }
 }
 
 export const http = {

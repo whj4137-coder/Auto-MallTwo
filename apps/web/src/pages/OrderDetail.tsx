@@ -1,21 +1,17 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Order } from "@apex/shared";
-import { ERR, COPY } from "@apex/shared";
+import { COPY } from "@apex/shared";
 import { api } from "../lib/api";
+import { useLoad } from "../lib/useLoad";
 import { yuan } from "../lib/money";
 import { Glyph } from "../components/icons";
+import { PageFallback } from "../components/PageFallback";
 
 export function OrderDetail() {
   const { orderNo } = useParams();
   const nav = useNavigate();
-  const [o, setO] = useState<Order | null>(null);
+  const { data: o, status, reload } = useLoad(() => api.order(orderNo!), [orderNo]);
 
-  useEffect(() => {
-    if (orderNo) api.order(orderNo).then((env) => env.code === ERR.OK && setO(env.data));
-  }, [orderNo]);
-
-  if (!o) return <main className="main"><div className="empty">{COPY.C036_NOT_FOUND}</div></main>;
+  if (status !== "ok" || !o) return <PageFallback status={status} onRetry={reload} />;
   const mem = o.type === "MEMBERSHIP";
 
   return (

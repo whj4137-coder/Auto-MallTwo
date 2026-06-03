@@ -708,6 +708,8 @@ HERO+Grid / LeftFilter+RightGrid / LeftImage+RightDetail / LeftList+RightSummary
 | COPY-044 | 订单详情返回按钮 | 返回 |
 | COPY-045 | 购物车含下架商品结算拦截 | 部分商品已下架，请移除后再结算 |
 | COPY-046 | 售罄标签/按钮/拦截 | 已售罄 |
+| COPY-047 | 错误态重试按钮（§15.9.1，change 0020） | 重试 |
+| COPY-048 | P2 类目空态（§15.9.3，change 0020） | 该分类下暂无可购商品 |
 
 > 错误码 2001/2002 toast 复用 COPY-001/002；1002 复用 COPY-003。
 

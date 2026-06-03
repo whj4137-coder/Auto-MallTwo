@@ -1,10 +1,11 @@
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Product } from "@apex/shared";
 import { ERR, COPY } from "@apex/shared";
 import { api } from "../lib/api";
+import { useLoad } from "../lib/useLoad";
 import { yuan } from "../lib/money";
 import { Glyph } from "../components/icons";
+import { PageFallback } from "../components/PageFallback";
 import { GatedButton } from "../components/gate/GatedButton";
 import { useMembershipStore } from "../stores/membershipStore";
 import { useUiStore } from "../stores/uiStore";
@@ -12,16 +13,13 @@ import { useUiStore } from "../stores/uiStore";
 export function Membership() {
   const { code } = useParams();
   const nav = useNavigate();
-  const [p, setP] = useState<Product | null>(null);
+  const { data: p, status: load, reload } = useLoad(() => api.product(code!), [code]);
   const status = useMembershipStore((s) => s.status);
   const toast = useUiStore((s) => s.toast);
 
-  useEffect(() => {
-    if (code) api.product(code).then((env) => env.code === ERR.OK && setP(env.data));
-  }, [code]);
   useEffect(() => { useMembershipStore.getState().fetch(); }, []);
 
-  if (!p) return <main className="main"><div className="empty">加载中…</div></main>;
+  if (load !== "ok" || !p) return <PageFallback status={load} onRetry={reload} />;
   const active = status === "ACTIVE";
 
   const activate = () =>

@@ -5,19 +5,31 @@ import { ERR, COPY } from "@apex/shared";
 import { api } from "../lib/api";
 import { yuan } from "../lib/money";
 import { Glyph } from "../components/icons";
+import { PageFallback } from "../components/PageFallback";
 import { useSessionStore } from "../stores/sessionStore";
 import { useUiStore } from "../stores/uiStore";
 
 export function Orders() {
   const nav = useNavigate();
-  const [orders, setOrders] = useState<Order[]>([]);
+  const [orders, setOrders] = useState<Order[] | null>(null);
+  const [err, setErr] = useState(false);
   const auth = useSessionStore((s) => s.auth);
 
-  const load = () => api.orders().then((env) => env.code === ERR.OK && setOrders(env.data));
+  const load = () => {
+    setErr(false);
+    api.orders().then((env) => {
+      if (env.code === ERR.OK) setOrders(env.data);
+      else if (env.code === ERR.UNAUTHORIZED) useUiStore.getState().openLogin(load);
+      else setErr(true); // 5000/网络：toast 已抛，给重试入口
+    });
+  };
   useEffect(() => {
     if (auth === "GUEST") useUiStore.getState().openLogin(load);
     else load();
   }, [auth]);
+
+  if (err) return <PageFallback status="error" onRetry={load} />;
+  if (orders === null) return <PageFallback status="loading" onRetry={load} />;
 
   if (orders.length === 0) {
     return (

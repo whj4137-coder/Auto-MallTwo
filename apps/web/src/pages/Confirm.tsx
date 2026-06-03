@@ -1,21 +1,28 @@
-import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
-import type { Checkout } from "@apex/shared";
-import { ERR, COPY } from "@apex/shared";
+import { COPY } from "@apex/shared";
 import { api } from "../lib/api";
+import { useLoad } from "../lib/useLoad";
 import { yuan } from "../lib/money";
+import { PageFallback } from "../components/PageFallback";
 import { GatedButton } from "../components/gate/GatedButton";
 
 export function Confirm() {
   const { id } = useParams();
   const nav = useNavigate();
-  const [c, setC] = useState<Checkout | null>(null);
+  const { data: c, status, reload } = useLoad(() => api.getCheckout(id!), [id]);
 
-  useEffect(() => {
-    if (id) api.getCheckout(id).then((env) => env.code === ERR.OK && setC(env.data));
-  }, [id]);
-
-  if (!c) return <main className="main"><div className="empty">{COPY.C034_CHECKOUT_EXPIRED}</div></main>;
+  if (status === "loading") return <PageFallback status="loading" onRetry={reload} />;
+  // §15.9.8 checkout 失效（4004/错误）→ COPY-034 + 返回购物车
+  if (status !== "ok" || !c) {
+    return (
+      <main className="main">
+        <div className="empty" style={{ gap: 14 }}>
+          <div className="et">{COPY.C034_CHECKOUT_EXPIRED}</div>
+          <button className="btn ghost" onClick={() => nav("/cart")}>{COPY.C044_BACK}</button>
+        </div>
+      </main>
+    );
+  }
   const isMem = c.type === "MEMBERSHIP";
 
   return (
