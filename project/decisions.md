@@ -2,6 +2,18 @@
 
 > 记录值得长期保留的技术/产品/治理取舍。格式：背景 → 决策 → 理由 → 影响 → 状态。
 > 编号 `ADR-NNNN` 全局递增不复用。新决策追加在底部。
+> **ADR 不可变、只追加**：决策变了不删旧条，新写一条标 `supersedes ADR-N`，旧条状态改 `Superseded by ADR-M`。
+
+## ADR 模板（复制下方块新建）
+
+```markdown
+## ADR-NNNN · <决策标题>
+- **状态**：Proposed | Accepted（YYYY-MM-DD）| Superseded by ADR-MMMM
+- **背景（Context）**：面临什么力量/约束，为什么现在要决策。
+- **决策（Decision）**：我们决定做什么（主动语态：「我们将…」）。
+- **理由（Rationale）**：为什么选它，放弃了哪些备选。
+- **影响（Consequences）**：好的、坏的、由此带来的新约束。
+```
 
 ---
 
@@ -129,3 +141,17 @@
   4. 开放问题定夺：图片=矢量 SVG（真照片可覆盖）；Admin 表单=FormModal；搜索=独立页(M-C)；详情不实时刷新；车机 WebView 本期不做。
 - **工程门禁**：`verify`(typecheck+check:ssot+test) + commit-gate hook 持续守护 SSOT 不漂移。
 - **影响**：后续改 §10/§11/SPEC 必须先走 openspec change。下一步进入 M-B 测试补全 / M-C 接口文档收口。
+
+---
+
+## ADR-0010 · 工程纪律强化：提案先行闸门 + 分级规则（机器守门）
+
+- **状态**：Accepted（2026-06-03，change 0019）
+- **背景**：对照 Rust RFC / K8s KEP / Python PEP / ADR 复盘，发现本项目 openspec 落地存在系统性偏差——流程倒置（changes 0002–0011 先写代码再补提案）、commit-gate 不校验提案、状态机直接 Accepted、"对齐 PRD"成绕过出口、缺分级。根因与历史另一项目的"文档发散"同源：**缺机器强制的单一真值闸门，治理靠自觉就塌**。
+- **决策**：
+  1. **分级铁律**：小改（bugfix 回归既有规格/重构/纯测试/文档/性能）走 PR/commit；大改（改商品/价格/文案/门禁/错误码/订单号/接口契约/布局）必须先有 `status: Accepted` 提案。
+  2. **顺序不可逆**：提案未 Accepted 不得动业务代码；禁止事后补提案；偏差只能走提案或登 W 类 issue，不得借"对齐 PRD/派生文档"私改行为。
+  3. **机器守门**：`commit-gate.sh` 加闸门 A——改 SSOT（`product/prd.md`/`design-tokens.md`/`packages/shared/src`）的提交必须引用 Accepted 提案，否则阻断；原 verify 为闸门 B。
+  4. **状态机真用 + Test Plan 前置**：`Draft→In Review→Accepted`；提案模板 Test Plan 未填不得进 In Review。
+- **理由**：把"提案先于代码"从习惯变成 git 拦着，对症两次失败的共同根因。
+- **影响**：今后改 SSOT 的提交若无 Accepted 提案引用将被 hook 拦截；提案模板、CLAUDE.md §5/§8/§10 同步硬化。CI 化（防绕过本地 hook）列为后续未决项。
