@@ -10,7 +10,7 @@
 - **实现已按能力切片走 openspec**：0001–0022 全 Accepted，SPEC-001..005 全 APPROVED。roadmap 与 openspec changes 索引 1:1 对齐。
 - **§15.9 前台交互详规已全量对齐**：0018 父审计单 24 条偏离经 0020/0021/0022 全部对齐（加载/错误/空态/重试基座、P9 刷新恢复、防重点击、交互细节 11 条）。
 - **工程纪律机器守门（change 0019）**：commit-gate 闸门 A——改 SSOT 的提交必须引用 Accepted 提案否则阻断；CLAUDE.md §5/§8 分级铁律 + 顺序不可逆；ADR-0010。
-- **工程门禁就位**：`npm run verify`（typecheck + check:ssot + L1/L2，共 **68**）+ commit-gate hook（闸门 A 提案先行 + 闸门 B verify）；L3 Playwright 单独 `npm run test:e2e`（**11**，含 LAYOUT-01/ADMIN-01/REFRESH-01）。
+- **工程门禁就位**：`npm run verify`（typecheck + check:ssot + L1/L2，共 **70**）+ commit-gate hook（闸门 A 提案先行 + 闸门 B verify）；L3 Playwright 单独 `npm run test:e2e`（**11**，含 LAYOUT-01/ADMIN-01/REFRESH-01）。
 - **1.0.0 已准备**：版本号、CHANGELOG、演示脚本、Admin 价格换算、首页 Hero 价格、下架商品 Banner 过滤均已收口。
 - **WebView APK + 公网部署路线已补底座**：`android-webview/` 横屏 WebView 壳、Docker 单服务部署、Express 托管 `apps/web/dist`、部署指南已入库。
 

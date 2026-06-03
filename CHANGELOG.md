@@ -9,14 +9,17 @@
 
 ## [Unreleased]
 
-> 本组为冻结后「代码对齐已冻结 PRD」的修复与测试硬化，含 openspec change 0012–0016（不改契约）：0012 重复支付/门禁优先级/搜索空查询（I-021/022/023）、0013/0014 测试硬化、0015 CART 实时定价（I-029）、0016 SKU 合法性校验。
+> 本组为冻结后「代码对齐已冻结 PRD」的修复、测试硬化与 §15.9 全量对齐，含 openspec change 0012–0023：0012 重复支付/门禁优先级/搜索空查询（I-021/022/023）、0013/0014 测试硬化、0015 CART 实时定价（I-029）、0016 SKU 合法性校验、0017 派生文档校准、0019 工程纪律机器守门、0018+0020/0021/0022 §15.9 前台交互全对齐（24 偏离）、0023 会员错误码/校验对齐（I-030/031）。
 
 ### Added
+- **§15.9 前台交互全量对齐（[0018](openspec/changes/0018-reconcile-prd-15-9-with-impl.md) 父审计单 + 0020/0021/0022）**：逐条核对 §15.9.1–15.9.14 查出 24 条偏离并全部对齐——`lib/http` 网络失败 COPY-038/5000 COPY-037 兜底、`useLoad`+`PageFallback` 加载骨架/错误重试/4004 未找到三态接入 10 页（0020）；P9 支付结果页刷新经 orderNo+API-024 恢复、写入按钮防重复点击（0021）；登录取消清 pending、搜索框门禁分流、购物车只读置灰+下架/售罄标记、Toast 单条、status 读取、会员卡详情等 11 条交互细节（0022）。新增 SSOT COPY-047/048/049。新增 L3 `REFRESH-01`，E2E 10 → **11**。
+- **工程纪律机器守门（[change 0019](openspec/changes/0019-enforce-proposal-first-discipline.md)）**：commit-gate 闸门 A——改 SSOT 的提交必须引用 Accepted 提案否则阻断；`_template.md` 升级（Test Plan/Non-Goals/分级）；CLAUDE.md §5/§8 分级铁律 + 顺序不可逆；ADR-0010。
 - **L3 跨端联动 E2E `ADMIN-01`**：在 `/admin` UI 真实点击「下架/上架」→ 前台首页 UI 实时反映（商品消失/恢复），补齐"三端联动"此前仅 L2(API)覆盖、无真实点击 E2E 的缺口；自带还原避免污染共享态。E2E 由 9 → **10**。
 - **L2 空白端点补测（[change 0013](openspec/changes/0013-supplement-endpoint-tests.md)）**：逐路由核对后补齐已实现但无断言的端点/边界——登录 1002·登出失效·`/me`、订单详情命中+4004·`/membership` 状态机、目录 4004·类目排序、购物车删除·勾选·改量边界·4004、A-02 BUY_NOW 购物车不变量、`requireAdmin` 拒绝 GUEST·`admin/login`·`admin/session` 快照·banner/service 上下架。L2 由 29 → **48**，`verify` 总测 36 → **55**。纯补测试，不改契约/代码。
 - **EDGE-001..025 逐条 L2（[change 0014](openspec/changes/0014-edge-cases-l2.md)）**：补 §15.12 后端可断言边界 EDGE-001/002/004/005/012/014/016/017/020/024（同 SKU 增量合并封顶、不同 SKU 不合并、cart 改售罄结算 4009、历史订单快照不变、checkout 被 reset 失效、订单后下架快照不变、搜索下架不返回、首页服务货架缺项不补、reset 保留商品改动、多重门禁优先级）。L2 48 → **58**，`verify` 总测 55 → **65**。落地中发现 EDGE-005 重定价偏离 → 记 I-029。
 
 ### Fixed
+- **会员错误码 + checkout 创建校验对齐 PRD（[change 0023](openspec/changes/0023-membership-error-code-and-validation.md)，关 I-030/I-031）**：会员加购此前返 `2003`，按 §15.10.3 改为 `4000`（展示服务仍 `2003`）；会员 checkout 创建此前不校验 `membership=INACTIVE`，按 §15.10.4 改为已 ACTIVE 即返 `4000`（复用 COPY-023）。B-01 互斥幂等用例同步更新 + 补 2 条 L2，L2 61 → **63**，`verify` 总测 68 → **70**。
 - **CART 结算按实时价（EDGE-005 / §15.12，[change 0015](openspec/changes/0015-cart-checkout-live-pricing.md)，关 I-029）**：购物车来源 checkout 此前按"加购时快照价"定价，Admin 改价后不对进行中的购物车重新定价，与 PRD §15.12 EDGE-005 期望（按新价结算）及 BUY_NOW 路径（已读实时价）均不一致。改为 CART 分支取实时商品价 `p.priceCents`，两路径定价口径统一；历史订单仍按落单快照不变。EDGE-005 L2 拆为"新价结算"+"历史快照不变"两断言，L2 58 → **59**，`verify` 总测 65 → **66**。
 - **Checkout 校验 SKU 仍合法（EDGE-006 / §15.10.4，[change 0016](openspec/changes/0016-checkout-sku-validity.md)）**：结算此前只校验 `published`/`stock`，未校验所选 color/capacity 是否仍属该商品。Admin 经 `PATCH` 替换 SKU 数组后，购物车失效项可生成带失效 SKU 的 checkout。改为：CART 来源 SKU 失效返 `4004`、BUY_NOW 传入非法 SKU 返 `4000`，均带 `data.reason=SKU_INVALID` + COPY-036。补 EDGE-006 两 L2 用例，L2 59 → **61**，`verify` 总测 66 → **68**。
 - **重复支付拦截（EDGE-013 / §12.1）**：`POST /checkout/:id/pay` 此前仅对会员幂等，实物 checkout 二次支付会再次落单并使 `ORDER-P` 序号递增。改为支付前判 `c.paid`，已支付直接返回 `4009`（`data.reason=ALREADY_PAID`），不再生成第二单或递增序号。补 L2 用例。

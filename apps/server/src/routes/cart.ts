@@ -32,8 +32,12 @@ cartRouter.post("/cart", gateWrite, requireAuth, (req, res) => {
     fail(res, ERR.NOT_FOUND, COPY.C036_NOT_FOUND);
     return;
   }
+  // §15.10.3：会员加购 → 4000；展示服务加购 → 2003（C-01 强制写入拦截）。前台均无加购入口。
+  if (p.type === "MEMBERSHIP") {
+    fail(res, ERR.VALIDATION, COPY.C039_SCOPE);
+    return;
+  }
   if (p.type !== "PHYSICAL") {
-    // 展示服务 / 会员 均无加购能力（支撑 C-01 强制写入拦截）
     fail(res, ERR.SCOPE_BLOCKED, COPY.C039_SCOPE);
     return;
   }

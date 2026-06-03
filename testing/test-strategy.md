@@ -52,12 +52,12 @@
 | 级别 | 工具 | 文件 | 用例 | 覆盖 |
 |------|------|------|------|------|
 | L1 单测 | Vitest | `apps/server/src/store/sequencer.test.ts`、`services/shelf.test.ts`、`apps/web/src/lib/money.test.ts` | 7 | 订单号 P/M 递增·重置、上下架可见性·排序、分→¥ |
-| L2 集成 | Supertest | `apps/server/src/api.test.ts` | 61 | 信封、home 聚合、门禁 1001/2001/2002/2003、**门禁优先级 DRIVING>OFFLINE>GUEST**、A-01 合并·结算·支付·收货字段·数量上限、B-01 互斥幂等、4009(DELISTED/SOLD_OUT/**ALREADY_PAID 重复支付**)、搜索(空 q→4000/命中/排除展示服务)、Demo 重置、Admin CRUD+校验(4000)、Admin 下架/改价→前台只读实时、门禁矩阵补充；**change 0013 补：登录 1002·登出失效·/me、订单详情命中+4004·/membership 状态机、目录 4004·类目排序、购物车删除·勾选·改量边界·4004、A-02 BUY_NOW 不变量、requireAdmin 拒绝 GUEST·admin/login·admin/session 快照·banner/service 上下架**；**change 0014 补 EDGE-001/002/004/005/012/014/016/017/020/024（§15.12 边界）**；**change 0015 EDGE-005 对齐：CART 改价后按新价结算 + 历史订单快照不变（I-029 已解）**；**change 0016 EDGE-006：CART SKU 失效→4004 / BUY_NOW 非法 SKU→4000** |
+| L2 集成 | Supertest | `apps/server/src/api.test.ts` | 63 | 信封、home 聚合、门禁 1001/2001/2002/2003、**门禁优先级 DRIVING>OFFLINE>GUEST**、A-01 合并·结算·支付·收货字段·数量上限、B-01 互斥幂等、4009(DELISTED/SOLD_OUT/**ALREADY_PAID 重复支付**)、搜索(空 q→4000/命中/排除展示服务)、Demo 重置、Admin CRUD+校验(4000)、Admin 下架/改价→前台只读实时、门禁矩阵补充；**change 0013 补：登录 1002·登出失效·/me、订单详情命中+4004·/membership 状态机、目录 4004·类目排序、购物车删除·勾选·改量边界·4004、A-02 BUY_NOW 不变量、requireAdmin 拒绝 GUEST·admin/login·admin/session 快照·banner/service 上下架**；**change 0014 补 EDGE-001/002/004/005/012/014/016/017/020/024（§15.12 边界）**；**change 0015 EDGE-005 对齐：CART 改价后按新价结算 + 历史订单快照不变（I-029 已解）**；**change 0016 EDGE-006：CART SKU 失效→4004 / BUY_NOW 非法 SKU→4000**；**change 0023 会员加购→4000(展示服务 2003)、会员 checkout 创建 ACTIVE→4000(I-030/I-031)** |
 | L3 E2E | Playwright(1280×720) | `e2e/shop.e2e.ts` | 11 | A-01、B-01、AUTH-01、D-01、A-02、C-01、D-02、SEARCH-01、LAYOUT-01（关键页无横向溢出，非列表页无整页纵向溢出）、ADMIN-01（后台真实点击下架/上架 → 前台 UI 实时反映，真跨端联动）、**REFRESH-01（支付结果页刷新 → 按 orderNo 经 API-024 + 登录恢复订单，change 0021 H3/M12）** |
 
-- `npm run verify`（typecheck + check:ssot + **L1/L2，共 68**）已接入 commit-gate hook；L3（11）因需起服务+浏览器单独 `npm run test:e2e`。
+- `npm run verify`（typecheck + check:ssot + **L1/L2，共 70**）已接入 commit-gate hook；L3（11）因需起服务+浏览器单独 `npm run test:e2e`。
 - 隔离：L2 `beforeEach` 调 `store.resetAll()`；L3 每用例先点「重置数据」；ADMIN-01 改动 Admin 上下架后自带「上架」还原，避免污染共享内存态。
-- 实跑（S-046，本机普通环境）：`verify` 68 + `test:e2e` 11 全绿，含 LAYOUT-01（1280×720 无溢出）、ADMIN-01（跨端联动）、REFRESH-01（刷新恢复）；I-019 沙箱限制已解。
+- 实跑（S-046，本机普通环境）：`verify` 70 + `test:e2e` 11 全绿，含 LAYOUT-01（1280×720 无溢出）、ADMIN-01（跨端联动）、REFRESH-01（刷新恢复）；I-019 沙箱限制已解。
 
 ### 历史：手动冒烟记录（核心闭环首验）
 

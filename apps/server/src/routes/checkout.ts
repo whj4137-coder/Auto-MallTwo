@@ -65,6 +65,11 @@ checkoutRouter.post("/checkout", gateWrite, requireAuth, (req, res) => {
       fail(res, ERR.SCOPE_BLOCKED, COPY.C039_SCOPE);
       return;
     }
+    // §15.10.4 BUY_NOW/MEMBERSHIP 创建校验 membership=INACTIVE：已开通 → 4000（全局单一会员，前台已隐藏入口）
+    if (p.type === "MEMBERSHIP" && store.membership.status === "ACTIVE") {
+      fail(res, ERR.VALIDATION, COPY.C023_ACTIVATED);
+      return;
+    }
     if (p.stock === "SOLD_OUT") {
       fail(res, ERR.NOT_CHECKOUTABLE, COPY.C046_SOLD_OUT, { reason: "SOLD_OUT" });
       return;

@@ -88,11 +88,30 @@ describe("B-01 会员开通（互斥幂等）", () => {
     expect(pay.body.data.order.orderNo).toBe("ORDER-M-001");
     expect(pay.body.data.membership.status).toBe("ACTIVE");
 
-    // 再开通年卡 → 已 ACTIVE，幂等，不新增订单
+    // 再开通年卡 → 已 ACTIVE，创建 checkout 即被拒（§15.10.4 INACTIVE 校验，change 0023 / I-031）
     const co2 = await request(app).post("/api/checkout").set(auth(t)).send({ source: "BUY_NOW", productCode: "mem_002" });
-    await request(app).post(`/api/checkout/${co2.body.data.checkoutId}/pay`).set(auth(t));
+    expect(co2.body.code).toBe(ERR.VALIDATION);
     const orders = await request(app).get("/api/orders").set(auth(t));
     expect(orders.body.data.filter((o: any) => o.type === "MEMBERSHIP")).toHaveLength(1);
+  });
+
+  // I-030：会员加购 → 4000（§15.10.3，区别于展示服务 2003）
+  it("会员加购 → 4000；展示服务加购 → 2003", async () => {
+    const t = await login();
+    const mem = await request(app).post("/api/cart").set(auth(t)).send({ productCode: "mem_001" });
+    expect(mem.body.code).toBe(ERR.VALIDATION);
+    const svc = await request(app).post("/api/cart").set(auth(t)).send({ productCode: "svc_charge_001" });
+    expect(svc.body.code).toBe(ERR.SCOPE_BLOCKED);
+  });
+
+  // I-031：会员 checkout 创建时校验 INACTIVE（§15.10.4）——首次 INACTIVE 放行
+  it("会员 checkout 创建：INACTIVE 放行、ACTIVE 拒 4000", async () => {
+    const t = await login();
+    const first = await request(app).post("/api/checkout").set(auth(t)).send({ source: "BUY_NOW", productCode: "mem_001" });
+    expect(first.body.code).toBe(ERR.OK);
+    await request(app).post(`/api/checkout/${first.body.data.checkoutId}/pay`).set(auth(t));
+    const again = await request(app).post("/api/checkout").set(auth(t)).send({ source: "BUY_NOW", productCode: "mem_001" });
+    expect(again.body.code).toBe(ERR.VALIDATION);
   });
 });
 
