@@ -7,13 +7,13 @@
 ## 运行
 - 前台：`http://localhost:5173/`
 - 后台：`http://localhost:5173/admin`
-- 依赖后端 API：`http://localhost:3000/api`（Vite dev 代理 `/api` → 3000）
+- 依赖后端 API：`http://localhost:3001/api`（Vite dev 代理 `/api` → 3001）
 
 ## 目录树
 ```
 apps/web/
   index.html                      Vite 入口（挂载 #root，1280×720 device 容器）
-  vite.config.ts                  React 插件 + /api 代理到 :3000
+  vite.config.ts                  React 插件 + /api 代理到 :3001
   tailwind.config.js  postcss.config.js
   tsconfig.json
   package.json
@@ -26,26 +26,25 @@ apps/web/
     lib/
       http.ts                     fetch 封装：统一信封解析、超时(连10/读15/写15)、注入 Authorization + X-Demo-Drive/Net 头
       api.ts                      各端点函数（home/catalog/product/auth/cart/checkout/pay/orders/membership/me/demo/admin*）对齐 API-001..026
-      gate.ts                     GateGuard：canWrite() / guard(action) —— DRIVING>OFFLINE>GUEST，pending-action 续作
-      money.ts                    formatYuan(priceCents) → ¥整数
+      gate.ts                     门禁守卫：canWrite() / guardWrite(action) —— DRIVING>OFFLINE>GUEST，pending-action 续作
+      money.ts                    yuan(priceCents)→¥整数；centsToYuanInput / yuanInputToCents（Admin 表单元↔分换算）
+      paths.ts                    productPath(p)：按 type 生成 /product · /membership · /service 路由
+      money.test.ts               L1 单测（分→¥）
     stores/                       Zustand（内存态）
-      sessionStore.ts             auth/drive/net 三态（仅 DemoBar 切换）+ TokenStore
-      cartStore.ts                购物车项/勾选/合计；add/remove/setQty/toggle
-      checkoutStore.ts            当前 checkout 草稿（金额明细）
-      orderStore.ts               订单列表 + 当前订单详情
-      membershipStore.ts          会员状态(ACTIVE/INACTIVE)
+      sessionStore.ts             auth/drive/net 三态（仅 DemoBar 切换）+ token
+      cartStore.ts                购物车项/勾选/合计；add/remove/setQty/toggle/fetch
+      membershipStore.ts          会员状态(ACTIVE/INACTIVE)；fetch
+      adminStore.ts               Admin token + 各列表数据/操作
       uiStore.ts                  toast 队列(单条·优先级)、LoginDialog 开关、pendingAction
     components/
       DemoBar.tsx                 顶部 56dp：DEMO 徽标/品牌/驻车·行车/在线·断网/已登录·未登录/状态文字/重置数据
       SideNav.tsx                 左侧 112dp：首页/分类/购物车/订单/我的，当前路由高亮
-      DeviceFrame.tsx             1280×720 画布 + 网格/颗粒/辉光（包裹前台页面）
+      FrontLayout.tsx             前台外壳：DemoBar + SideNav + <main> + Toast + LoginDialog（1280×720 容器）
       Toast.tsx                   toast 渲染（COPY-001/002/005...）
       LoginDialog.tsx             P12 模态：预填 admin/123456，错误 COPY-003，成功续作
-      ProductCard.tsx             商品卡（图/名/副标题/价格/库存标签/售罄 COPY-046）
       ProductMedia.tsx            商品视觉：有 image 渲 <img>，否则回退类型图标（change 0011）
-      Stepper.tsx                 数量 [1,5] 边界置灰
-      Price.tsx  Tag.tsx  Empty.tsx  Section.tsx   原子组件
-      gate/GatedButton.tsx        交易按钮：未满足门禁置灰/toast/弹登录
+      icons.tsx                   Glyph 内置 SVG 图标集 + typeVisual(type)→图标/配色类
+      gate/GatedButton.tsx        交易按钮：未满足门禁置灰/toast/弹登录（包裹 guardWrite）
     pages/                        前台 P1–P13 + 搜索页
       Home.tsx                    P1：Bento + 类目条 + 精选 rail + 分类货架（见 openspec 0001）
       Search.tsx                  /search：搜索结果（REQ-003 substring/仅实物+会员/门禁/空态 COPY-014·015）

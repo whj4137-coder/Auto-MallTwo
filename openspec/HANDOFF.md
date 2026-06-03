@@ -3,7 +3,7 @@
 > 已有多个 changes（0001–0010）。本文件维护仓库级总览；逐 change 细节见各 `changes/NNNN-*.md`。
 > 模板见 [../docs/templates/HANDOFF.template.md](../docs/templates/HANDOFF.template.md)。
 
-**更新时间**：2026-06-02 ｜ **会话**：S-044 ｜ **active changes**：0001–0016 全 **Accepted**；SPEC-001..005 **APPROVED**（已冻结）
+**更新时间**：2026-06-02 ｜ **会话**：S-044 ｜ **active changes**：0001–0017 全 **Accepted**；SPEC-001..005 **APPROVED**（已冻结）
 
 ## 1. 停在哪（Where we stopped）
 - **可交互核心闭环已实现并联调通过**：monorepo（apps/web + apps/server + packages/shared，npm workspaces）。前台 P1–P13 + 搜索页 + Admin 六模块（含「账号信息」只读）+ Express 后端 + 双层门禁 + Demo 重置。
