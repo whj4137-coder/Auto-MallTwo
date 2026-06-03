@@ -35,7 +35,7 @@ export default function App() {
         <Route path="cart" element={<Cart />} />
         <Route path="confirm/:id" element={<Confirm />} />
         <Route path="pay/:id" element={<Pay />} />
-        <Route path="result" element={<Result />} />
+        <Route path="result/:orderNo" element={<Result />} />
         <Route path="orders" element={<Orders />} />
         <Route path="orders/:orderNo" element={<OrderDetail />} />
         <Route path="mine" element={<Mine />} />

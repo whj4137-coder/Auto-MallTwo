@@ -57,6 +57,26 @@ test("B-01 会员开通：立即开通 → 支付 → 权益已开通 ORDER-M", 
   await expect(page.getByText(/ORDER-M-\d{3}/)).toBeVisible();
 });
 
+// REFRESH-01：支付结果页刷新（=应用重启，复位 GUEST + 丢 router state）→ 依赖 URL 的 orderNo
+// 经 API-024 恢复；GUEST 触发登录，登录后订单详情重现（change 0021 H3/M12）。
+test("REFRESH-01 支付结果页刷新 → 经 API-024 + 登录恢复订单", async ({ page }) => {
+  await reset(page);
+  await login(page);
+  await featured(page, "磁吸手机支架").click();
+  await page.getByRole("button", { name: "加入购物车" }).click();
+  await page.locator('nav.nav a[href="/cart"]').click();
+  await page.getByRole("button", { name: "前往结算" }).click();
+  await page.getByRole("button", { name: "去支付" }).click();
+  await page.getByRole("button", { name: "模拟扫码成功" }).click();
+  await expect(page.getByText("支付成功")).toBeVisible();
+  await expect(page).toHaveURL(/\/result\/ORDER-P-\d{3}/); // 路由携带 orderNo，刷新可恢复
+
+  await page.reload(); // 复位 GUEST，router state 丢失 → Result 按 orderNo 调 API-024 → 1001 弹登录
+  await page.getByRole("button", { name: "登录", exact: true }).click();
+  await expect(page.getByText("支付成功")).toBeVisible();
+  await expect(page.getByText(/ORDER-P-\d{3}/)).toBeVisible();
+});
+
 test("AUTH-01 未登录加购 → 弹登录弹窗", async ({ page }) => {
   await reset(page); // GUEST
   await featured(page, "磁吸手机支架").click();

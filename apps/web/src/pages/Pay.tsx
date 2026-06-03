@@ -33,7 +33,7 @@ export function Pay() {
       if (env.code !== ERR.OK) { toast(env.message); return; }
       await useCartStore.getState().fetch();
       await useMembershipStore.getState().fetch();
-      nav("/result", { state: { order: env.data.order, type: c.type } });
+      nav(`/result/${env.data.order.orderNo}`, { state: { order: env.data.order, type: c.type } });
     });
 
   return (
